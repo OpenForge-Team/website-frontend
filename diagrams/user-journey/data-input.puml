@@ -1,0 +1,49 @@
+@startuml
+start
+partition Input source{
+:Input Source;
+if (on app) then (Yes)
+elseif (Chrome extension) then (Yes)
+:Raw input;
+endif;
+}
+partition Input {
+:User input;
+if (format) is (specific) then
+if (Video?) then (Yes)
+  :Extract timestamps with transcript;
+  :Process transcript with template;
+  -> :Store new knowledge chunk;
+elseif (Document?) then (Yes)
+  :Process Document;
+   :Process with template;
+  -> :Store new knowledge chunk;
+elseif (Podcast?) then (Yes)
+  :Extract timestamps with transcript;
+  :Process transcript with template;
+  -> :Store new knowledge chunk;
+else
+  :Invalid Input;
+  stop
+endif
+else (Note with no relation)
+if (Textual Note) then (Yes)
+elseif (Vocal Note)then (Yes)
+else
+  :Invalid Input;
+  stop
+endif;
+endif;
+:Storage;
+}
+partition Data Access/Manipulation {
+:Data input;
+if (retrieval augmented generation) then (Yes)
+:Pipeline;
+elseif (Vector graph view) then (Yes)
+:View relation of chunks across documents;
+elseif (Share data profile of input) then (Yes)
+:Share to team members/audience;
+endif;
+}
+@enduml

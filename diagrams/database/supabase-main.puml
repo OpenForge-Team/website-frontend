@@ -1,0 +1,50 @@
+@startuml
+entity "auth.users" as auth_users {
+  * id : uuid
+  --
+  ...
+}
+
+entity "public.profiles" as public_profiles {
+  * id : uuid [FK]
+  --
+  created_at : timestamp
+  last_sign_in_at : timestamp
+  raw_app_meta_data : jsonb
+  raw_user_meta_data : jsonb
+  email : text
+}
+
+entity "public.workspaces" as public_workspaces {
+  * id : uuid [PK][UNIQUE] 
+  owner_user_id : uuid [FK]
+  --
+  created_at : timestamp [NOT NULL][now()]
+  name : text [NOT NULL]
+}
+
+entity "public.notes" as public_notes {
+  * id : uuid [PK][UNIQUE]
+  workspace_id : uuid [FK]
+  subject_id : uuid [FK]
+  --
+  created_at : timestamp
+  user_id : uuid [FK]
+  title : text [NOT NULL]
+  content : text [NOT NULL]
+}
+entity "public.subjects" as public_subjects {
+  * id : uuid [PK][UNIQUE] 
+  --
+  name : text [NOT NULL]
+}
+
+
+auth_users ||--|| public_profiles : "id"
+public_profiles  ||--|| public_workspaces : "user_id"
+public_workspaces  ||--|| public_notes : "workspace_id"
+public_notes  ||--|| public_subjects : "subject_id"
+note "need to copy specific data to profiles table as only the public schema is exposed" as n1
+auth_users .. n1
+n1 .. public_profiles
+@enduml
