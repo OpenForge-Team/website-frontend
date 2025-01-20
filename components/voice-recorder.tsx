@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Mic, MicOff } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useToast } from "@/components/hooks/use-toast";
 import { getTranscription } from "@/utils/ai/transcribe";
 
 interface VoiceRecorderProps {
-  onTranscriptionComplete: (text: string, audioBuffer?: Buffer) => void;
+  onTranscriptionComplete: (text: string, audioBlob?: Blob) => void;
   allowRetry?: boolean;
 }
 
@@ -17,40 +17,35 @@ export function VoiceRecorder({
 }: VoiceRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
-  const [hasRecorded, setHasRecorded] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
-    null
-  );
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [audioPreview, setAudioPreview] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
-  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
 
   const handleRecording = async () => {
     if (isRecording) {
       setIsRecording(false);
       mediaRecorder?.stop();
     } else {
+      setAudioPreview(null);
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
         const recorder = new MediaRecorder(stream);
-        setAudioChunks([]);
+        const chunks: BlobPart[] = [];
 
-        const chunks: Blob[] = [];
-
-        recorder.ondataavailable = (e) => {
-          chunks.push(e.data);
-        };
-
+        recorder.ondataavailable = (e) => chunks.push(e.data);
         recorder.onstop = async () => {
           const audioBlob = new Blob(chunks, { type: "audio/webm" });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          setAudioPreview(audioUrl);
+          stream.getTracks().forEach((track) => track.stop());
+
           setIsTranscribing(true);
           try {
             const response = await getTranscription({ audio: audioBlob });
             if (response) {
-              setHasRecorded(true);
-              // Convert Blob to Buffer
-              // Pass the Blob directly
               onTranscriptionComplete(response, audioBlob);
             } else {
               throw new Error("Transcription failed");
@@ -83,13 +78,21 @@ export function VoiceRecorder({
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 min-h-[200px] border rounded-md p-6">
+      {audioPreview && (
+        <audio
+          ref={audioRef}
+          src={audioPreview}
+          controls
+          className="w-full mb-4"
+        />
+      )}
       <Button
         type="button"
         variant={isRecording ? "destructive" : "default"}
         size="lg"
         onClick={handleRecording}
         className="w-24 h-24 rounded-full"
-        disabled={isTranscribing || hasRecorded}
+        disabled={isTranscribing}
       >
         {isRecording ? (
           <MicOff className="h-16 w-16" />
@@ -101,10 +104,10 @@ export function VoiceRecorder({
         {isTranscribing
           ? "Transcribing..."
           : isRecording
-            ? "Recording... Click to stop"
-            : hasRecorded
-              ? "Recording complete - Edit text below if needed"
-              : null}
+          ? "Recording... Click to stop"
+          : audioPreview
+          ? "Recording complete - Listen to preview above"
+          : "Click to start recording"}
       </p>
     </div>
   );
