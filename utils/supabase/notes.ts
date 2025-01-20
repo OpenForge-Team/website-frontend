@@ -34,6 +34,7 @@ export const addNote = async ({
   content,
   workspace_id,
   subject_id,
+  audioBuffer,
 }: addNoteprops) => {
   const supabase = await createClient();
   const { data, error } = await supabase
