@@ -10,16 +10,16 @@ const r2 = new R2({
 const bucket = r2.bucket("openforgevocalnotes");
 interface uploadVocalNoteProps {
   note_id: string;
-  buffer: Buffer;
+  buffer: Blob;
 }
 export const uploadVocalNote = async ({
   buffer,
   note_id,
 }: uploadVocalNoteProps) => {
   try {
-    // Convert Buffer to Blob for upload
-    const blob = new Blob([buffer], { type: 'audio/webm' });
-    await bucket.upload(blob, `${note_id}.webm`);
+    // Convert Blob to ArrayBuffer for upload
+    const arrayBuffer = await buffer.arrayBuffer();
+    await bucket.upload(Buffer.from(arrayBuffer), `${note_id}.webm`);
   } catch (error) {
     console.error('Error uploading vocal note:', error);
     throw error;

@@ -21,7 +21,7 @@ interface addNoteprops {
   content: string;
   workspace_id: string;
   subject_id: string;
-  audioBuffer?: Buffer;
+  audioBuffer?: Blob;
 }
 interface updateNoteprops {
   note_id: string;
