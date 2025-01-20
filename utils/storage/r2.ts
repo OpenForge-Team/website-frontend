@@ -19,7 +19,11 @@ export const uploadVocalNote = async ({
   try {
     // Convert Blob to ArrayBuffer for upload
     const arrayBuffer = await buffer.arrayBuffer();
-    await bucket.upload(Buffer.from(arrayBuffer), `${note_id}.webm`);
+    await bucket.upload(Buffer.from(arrayBuffer), `${note_id}.webm`, {
+      // Explicitly set content type and disable checksum
+      contentType: 'audio/webm',
+      checksumAlgorithm: undefined
+    });
   } catch (error) {
     console.error('Error uploading vocal note:', error);
     throw error;
