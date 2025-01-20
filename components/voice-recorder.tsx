@@ -32,12 +32,14 @@ export function VoiceRecorder({
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
-        const recorder = new MediaRecorder(stream);
+        const recorder = new MediaRecorder(stream, {
+          mimeType: 'audio/mp3'
+        });
         const chunks: BlobPart[] = [];
 
         recorder.ondataavailable = (e) => chunks.push(e.data);
         recorder.onstop = async () => {
-          const audioBlob = new Blob(chunks, { type: "audio/webm" });
+          const audioBlob = new Blob(chunks, { type: "audio/mp3" });
           const audioUrl = URL.createObjectURL(audioBlob);
           setAudioPreview(audioUrl);
           stream.getTracks().forEach((track) => track.stop());
