@@ -21,6 +21,7 @@ interface addNoteprops {
   content: string;
   workspace_id: string;
   subject_id: string;
+  audioBuffer?: Buffer;
 }
 interface updateNoteprops {
   note_id: string;
@@ -59,6 +60,14 @@ export const addNote = async ({
     note_id: data.id,
     content: content,
   });
+
+  if (audioBuffer) {
+    await uploadVocalNote({
+      note_id: data.id,
+      buffer: audioBuffer
+    });
+  }
+  
   return data.id;
 };
 

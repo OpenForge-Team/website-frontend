@@ -124,20 +124,15 @@ export default function NotePage() {
     }
 
     try {
+      const audioBuffer = form.getValues("audioBuffer");
       const newNoteId = await addNote({
         user_id: user.id,
         title: data.title,
         content: data.content,
         workspace_id: activeWorkspace.id,
         subject_id: data.subject,
+        audioBuffer: audioBuffer,
       });
-      if (!newNoteId) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to save vocal note. Please try again.",
-        });
-      } else await addVocalNote({ user_id: user.id, note_id: newNoteId });
       toast({
         title: "Success",
         description: "Note created successfully",
