@@ -11,6 +11,6 @@ export const addVocalNote = async ({ note_id, user_id }: addVocalNoteProps) => {
   try {
     const { data, error } = await supabase
       .from("vocal_notes")
-      .insert({ note_id: "" });
+      .insert({ note_id: "", endpoint_url: "" });
   } catch (error) {}
 };
