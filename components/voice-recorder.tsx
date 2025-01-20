@@ -7,7 +7,7 @@ import { useToast } from "@/components/hooks/use-toast";
 import { getTranscription } from "@/utils/ai/transcribe";
 
 interface VoiceRecorderProps {
-  onTranscriptionComplete: (text: string) => void;
+  onTranscriptionComplete: (text: string, audioBuffer?: Buffer) => void;
   allowRetry?: boolean;
 }
 
@@ -49,7 +49,10 @@ export function VoiceRecorder({
             const response = await getTranscription({ audio: audioBlob });
             if (response) {
               setHasRecorded(true);
-              onTranscriptionComplete(response);
+              // Convert Blob to Buffer
+              const arrayBuffer = await audioBlob.arrayBuffer();
+              const buffer = Buffer.from(arrayBuffer);
+              onTranscriptionComplete(response, buffer);
             } else {
               throw new Error("Transcription failed");
             }
