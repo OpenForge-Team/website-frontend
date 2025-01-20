@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { generateTitleChunks } from "./rag/generate-title-embeddings";
 import { generateContentChunks } from "./rag/generate-content-embeddings";
+import { uploadVocalNote } from "../storage/r2";
 
 export interface Note {
   id: string;
@@ -58,7 +59,7 @@ export const addNote = async ({
     note_id: data.id,
     content: content,
   });
-  return data;
+  return data.id;
 };
 
 export const getNotesbySubjects = async () => {
@@ -75,16 +76,21 @@ export const getNotesbySubjects = async () => {
 };
 export const getNotebyId = async (user_id: string, note_id: string) => {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("notes")
-    .select("title, content, subjects!inner(name)")
-    .eq("subjects.user_id", user_id)
-    .eq("id", note_id)
-    .single();
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabase
+      .from("notes")
+      .select("title, content, subjects!inner(name)")
+      .eq("subjects.user_id", user_id)
+      .eq("id", note_id)
+      .single();
+    if (error) {
+      throw new Error(error.message);
+    }
+    await uploadVocalNote({ note_id: note_id });
+    return data;
+  } catch (error: any) {
+    throw new Error(error);
   }
-  return data;
 };
 export const updateNote = async ({
   note_id,

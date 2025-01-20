@@ -38,6 +38,7 @@ import { User } from "@supabase/supabase-js";
 import { getUser } from "@/utils/queries";
 import { getSubjects, addSubject } from "@/utils/supabase/subjects";
 import { addNote } from "@/utils/supabase/notes";
+import { addVocalNote } from "@/utils/supabase/vocal-notes";
 
 export default function NotePage() {
   const supabase = createClient();
@@ -123,14 +124,20 @@ export default function NotePage() {
     }
 
     try {
-      await addNote({
+      const newNoteId = await addNote({
         user_id: user.id,
         title: data.title,
         content: data.content,
         workspace_id: activeWorkspace.id,
         subject_id: data.subject,
       });
-
+      if (!newNoteId) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to save vocal note. Please try again.",
+        });
+      } else await addVocalNote({ user_id: user.id, note_id: newNoteId });
       toast({
         title: "Success",
         description: "Note created successfully",
@@ -306,7 +313,11 @@ export default function NotePage() {
                         <VoiceRecorder
                           onTranscriptionComplete={(text) => {
                             const currentContent = field.value;
-                            field.onChange(currentContent + (currentContent ? ' ' : '') + text);
+                            field.onChange(
+                              currentContent +
+                                (currentContent ? " " : "") +
+                                text
+                            );
                           }}
                           allowRetry={true}
                         />
