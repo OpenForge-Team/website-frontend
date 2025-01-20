@@ -1,5 +1,6 @@
 "use server";
 
+import { error } from "console";
 import { createClient } from "./server";
 
 interface addVocalNoteProps {
@@ -8,9 +9,10 @@ interface addVocalNoteProps {
 }
 export const addVocalNote = async ({ note_id, user_id }: addVocalNoteProps) => {
   const supabase = await createClient();
-  try {
-    const { data, error } = await supabase
-      .from("vocal_notes")
-      .insert({ note_id: "", endpoint_url: "", user_id: user_id });
-  } catch (error) {}
+  const { data, error } = await supabase
+    .from("vocal_notes")
+    .insert({ note_id: note_id, user_id: user_id });
+  if (error) {
+    throw new Error(error.message);
+  }
 };

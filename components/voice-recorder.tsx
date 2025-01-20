@@ -17,7 +17,9 @@ export function VoiceRecorder({
 }: VoiceRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+    null
+  );
   const [audioPreview, setAudioPreview] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
@@ -32,9 +34,7 @@ export function VoiceRecorder({
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
-        const recorder = new MediaRecorder(stream, {
-          mimeType: 'audio/mp3'
-        });
+        const recorder = new MediaRecorder(stream);
         const chunks: BlobPart[] = [];
 
         recorder.ondataavailable = (e) => chunks.push(e.data);
@@ -106,10 +106,10 @@ export function VoiceRecorder({
         {isTranscribing
           ? "Transcribing..."
           : isRecording
-          ? "Recording... Click to stop"
-          : audioPreview
-          ? "Recording complete - Listen to preview above"
-          : "Click to start recording"}
+            ? "Recording... Click to stop"
+            : audioPreview
+              ? "Recording complete - Listen to preview above"
+              : "Click to start recording"}
       </p>
     </div>
   );

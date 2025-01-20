@@ -38,7 +38,6 @@ import { User } from "@supabase/supabase-js";
 import { getUser } from "@/utils/queries";
 import { getSubjects, addSubject } from "@/utils/supabase/subjects";
 import { addNote } from "@/utils/supabase/notes";
-import { addVocalNote } from "@/utils/supabase/vocal-notes";
 
 export default function NotePage() {
   const supabase = createClient();

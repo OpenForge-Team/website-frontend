@@ -41,18 +41,14 @@ const data = {
   },
   navInput: [
     {
-      title: "Input Format",
+      title: "Input",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "Note",
+          title: "Text/Vocal",
           url: "/dashboard/input/note",
-        },
-        {
-          title: "Vocal",
-          url: "/dashboard/input/vocal",
         },
       ],
     },
