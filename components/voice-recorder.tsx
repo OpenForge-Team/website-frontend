@@ -50,9 +50,8 @@ export function VoiceRecorder({
             if (response) {
               setHasRecorded(true);
               // Convert Blob to Buffer
-              const arrayBuffer = await audioBlob.arrayBuffer();
-              const buffer = Buffer.from(arrayBuffer);
-              onTranscriptionComplete(response, buffer);
+              // Pass the Blob directly
+              onTranscriptionComplete(response, audioBlob);
             } else {
               throw new Error("Transcription failed");
             }

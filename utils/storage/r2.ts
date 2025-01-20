@@ -17,8 +17,11 @@ export const uploadVocalNote = async ({
   note_id,
 }: uploadVocalNoteProps) => {
   try {
-    await bucket.upload(buffer, `${note_id}.mp3`);
+    // Convert Buffer to Blob for upload
+    const blob = new Blob([buffer], { type: 'audio/webm' });
+    await bucket.upload(blob, `${note_id}.webm`);
   } catch (error) {
-    console.log(error);
+    console.error('Error uploading vocal note:', error);
+    throw error;
   }
 };
