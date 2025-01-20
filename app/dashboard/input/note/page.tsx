@@ -89,6 +89,7 @@ export default function NotePage() {
       .string()
       .min(1, "Content is required")
       .max(10000, "Content must be less than 10000 characters"),
+    audioBuffer: z.any().optional(),
   });
 
   type FormValues = z.infer<typeof formSchema>;
