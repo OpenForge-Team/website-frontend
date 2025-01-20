@@ -65,10 +65,10 @@ export const addNote = async ({
   if (audioBuffer) {
     await uploadVocalNote({
       note_id: data.id,
-      buffer: audioBuffer
+      buffer: audioBuffer,
     });
   }
-  
+
   return data.id;
 };
 
@@ -96,7 +96,6 @@ export const getNotebyId = async (user_id: string, note_id: string) => {
     if (error) {
       throw new Error(error.message);
     }
-    await uploadVocalNote({ note_id: note_id });
     return data;
   } catch (error: any) {
     throw new Error(error);
