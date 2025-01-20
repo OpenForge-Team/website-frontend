@@ -307,13 +307,16 @@ export default function NotePage() {
                     <FormControl>
                       <div className="space-y-4">
                         <VoiceRecorder
-                          onTranscriptionComplete={(text) => {
+                          onTranscriptionComplete={(text, audioBuffer) => {
                             const currentContent = field.value;
                             field.onChange(
                               currentContent +
                                 (currentContent ? " " : "") +
                                 text
                             );
+                            if (audioBuffer) {
+                              form.setValue("audioBuffer", audioBuffer);
+                            }
                           }}
                           allowRetry={true}
                         />
