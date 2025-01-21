@@ -88,7 +88,7 @@ export default function NotesViewCarousel({
         opts={{
           align: "center",
         }}
-        className="w-full max-w-xs md:max-w-full mx-auto"
+        className="w-full mx-auto"
       >
         <Card className="w-full">
           <CardHeader>
@@ -105,11 +105,11 @@ export default function NotesViewCarousel({
               {notes.map((note) => (
                 <CarouselItem
                   key={note.id}
-                  className="w-full h-hull md:basis-1/5"
+                  className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                   onClick={() => handleNoteClick(note)}
                 >
                   <Card className="cursor-pointer transition-all duration-200 hover:bg-primary/90 hover:text-black">
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <CardContent className="flex aspect-square items-center justify-center p-4">
                       <span className="text-sm overflow-hidden text-ellipsis text-center">
                         {note.title}
                       </span>
