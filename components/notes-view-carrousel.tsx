@@ -83,12 +83,12 @@ export default function NotesViewCarousel({
   };
 
   return (
-    <div>
+    <div className="w-full overflow-hidden">
       <Carousel
         opts={{
           align: "center",
         }}
-        className="w-full mx-auto"
+        className="w-full mx-auto relative"
       >
         <Card className="w-full">
           <CardHeader>
@@ -100,7 +100,7 @@ export default function NotesViewCarousel({
               </div>
             </div>
           </CardHeader>
-          <CardContent className="mx-auto w-full">
+          <CardContent className="mx-auto w-full overflow-hidden">
             <CarouselContent>
               {notes.map((note) => (
                 <CarouselItem
