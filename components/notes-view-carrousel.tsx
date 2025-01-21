@@ -86,9 +86,12 @@ export default function NotesViewCarousel({
     <div>
       <Carousel
         opts={{
-          align: "center",
+          align: "start",
+          containScroll: "trimSnaps",
+          dragFree: true,
+          loop: true,
         }}
-        className="max-w-sm md:w-auto mx-auto relative"
+        className="w-full relative"
       >
         <Card className="w-full">
           <CardHeader>
