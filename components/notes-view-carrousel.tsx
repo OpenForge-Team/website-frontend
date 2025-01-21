@@ -83,12 +83,12 @@ export default function NotesViewCarousel({
   };
 
   return (
-    <div className="w-full overflow-hidden">
+    <div>
       <Carousel
         opts={{
           align: "center",
         }}
-        className="w-full mx-auto relative"
+        className="max-w-sm md:w-auto mx-auto relative"
       >
         <Card className="w-full">
           <CardHeader>
