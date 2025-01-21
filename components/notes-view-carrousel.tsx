@@ -83,7 +83,7 @@ export default function NotesViewCarousel({
   };
 
   return (
-    <div>
+    <div className="w-[calc(100%-1rem)]">
       <Carousel
         opts={{
           align: "start",
@@ -91,7 +91,7 @@ export default function NotesViewCarousel({
           dragFree: true,
           loop: true,
         }}
-        className="w-full"
+        className="w-[calc(100%-1rem)]"
       >
         <Card>
           <CardHeader>
