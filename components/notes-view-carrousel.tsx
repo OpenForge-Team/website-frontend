@@ -91,9 +91,9 @@ export default function NotesViewCarousel({
           dragFree: true,
           loop: true,
         }}
-        className="w-full relative"
+        className="w-full"
       >
-        <Card className="w-full">
+        <Card>
           <CardHeader>
             <div className="flex items-center justify-between align-middle">
               <CardTitle className="inline-block">{subject}</CardTitle>
@@ -113,7 +113,7 @@ export default function NotesViewCarousel({
                 >
                   <Card className="cursor-pointer transition-all duration-200 hover:bg-primary/90 hover:text-black">
                     <CardContent className="flex aspect-square items-center justify-center p-4">
-                      <span className="text-sm overflow-hidden text-ellipsis text-center">
+                      <span className="overflow-hidden text-sm font-semibold text-center">
                         {note.title}
                       </span>
                     </CardContent>
@@ -126,7 +126,7 @@ export default function NotesViewCarousel({
         </Card>
       </Carousel>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-2xl w-[95%] max-h-[90vh] overflow-y-auto">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit Note</DialogTitle>
             <DialogDescription>
