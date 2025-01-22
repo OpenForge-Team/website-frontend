@@ -91,7 +91,7 @@ export default function NotesViewCarousel({
           dragFree: true,
           loop: true,
         }}
-        className="w-full"
+        className="w-[30%]"
       >
         <Card>
           <CardHeader>
@@ -103,7 +103,7 @@ export default function NotesViewCarousel({
               </div>
             </div>
           </CardHeader>
-          <CardContent className="flex aspect-square items-center justify-center">
+          <CardContent className="aspect-square items-center justify-center">
             <CarouselContent>
               {notes.map((note) => (
                 <CarouselItem
