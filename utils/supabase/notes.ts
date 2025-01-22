@@ -36,6 +36,7 @@ export const addNote = async ({
   subject_id,
   audioBuffer,
 }: addNoteprops) => {
+  console.log(user_id, title, content, workspace_id, subject_id, audioBuffer);
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("notes")
@@ -63,10 +64,10 @@ export const addNote = async ({
   });
 
   if (audioBuffer) {
-    await uploadVocalNote({
-      note_id: data.id,
-      buffer: audioBuffer,
-    });
+    // await uploadVocalNote({
+    //   note_id: data.id,
+    //   buffer: audioBuffer,
+    // });
   }
 
   return data.id;
@@ -96,6 +97,7 @@ export const getNotebyId = async (user_id: string, note_id: string) => {
     if (error) {
       throw new Error(error.message);
     }
+
     return data;
   } catch (error: any) {
     throw new Error(error);

@@ -83,7 +83,7 @@ export default function NotesViewCarousel({
   };
 
   return (
-    <div className="w-full overflow-hidden">
+    <div>
       <Carousel
         opts={{
           align: "start",
@@ -91,7 +91,7 @@ export default function NotesViewCarousel({
           dragFree: true,
           loop: false,
         }}
-        className="w-full max-w-full overflow-visible"
+        className="w-1/2 max-w-full overflow-hidden"
       >
         <div className="flex items-center justify-between align-middle">
           <CardTitle className="inline-block">{subject}</CardTitle>
@@ -105,7 +105,7 @@ export default function NotesViewCarousel({
             <CarouselItem
               key={note.id}
               onClick={() => handleNoteClick(note)}
-              className="basis-[85%] sm:basis-[45%] md:basis-[30%] lg:basis-[22%]"
+              className="basis-1/5"
             >
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center">

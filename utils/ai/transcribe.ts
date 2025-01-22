@@ -11,6 +11,7 @@ const standardOpenAI = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 export const getTranscription = async ({ audio }: { audio: Blob }) => {
+  console.log("start trans");
   // Create temporary file
   const tempFilePath = `temp-${Date.now()}.webm`;
   const arrayBuffer = await audio.arrayBuffer();
@@ -30,5 +31,7 @@ export const getTranscription = async ({ audio }: { audio: Blob }) => {
     // Clean up temp file
     fs.unlinkSync(tempFilePath);
     return transcriptionText;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error("Could not transcribe audio input.");
+  }
 };
