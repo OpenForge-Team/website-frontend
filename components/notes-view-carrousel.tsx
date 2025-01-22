@@ -105,8 +105,7 @@ export default function NotesViewCarousel({
             <CarouselItem
               key={note.id}
               onClick={() => handleNoteClick(note)}
-              // className="sm:basis-1/4 md:basis-1/2 lg:basis-1/3"
-              className="basis-auto"
+              className="basis-[70%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
             >
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center">
