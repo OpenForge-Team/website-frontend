@@ -66,11 +66,11 @@ export default function ViewNotesPage() {
     fetchNotes();
   }, [user, activeWorkspace, toast, refreshTrigger]);
 
-  if (isLoading) {
-    return <div className="m-auto">loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div className="m-auto">loading...</div>;
+  // }
   return (
-    <div className="mx-auto pr-4 w-full">
+    <div>
       <h1 className="text-2xl font-bold mb-6">Notes</h1>
       <div className="space-y-6">
         {Object.entries(groupedNotes).map(([subject, notes]) => (
