@@ -83,7 +83,7 @@ export default function NotesViewCarousel({
   };
 
   return (
-    <div>
+    <div className="w-full overflow-hidden">
       <Carousel
         opts={{
           align: "start",
@@ -91,7 +91,7 @@ export default function NotesViewCarousel({
           dragFree: true,
           loop: true,
         }}
-        className="w-full max-w-full"
+        className="w-full max-w-full overflow-visible"
       >
         <div className="flex items-center justify-between align-middle">
           <CardTitle className="inline-block">{subject}</CardTitle>

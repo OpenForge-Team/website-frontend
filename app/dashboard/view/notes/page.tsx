@@ -70,9 +70,9 @@ export default function ViewNotesPage() {
   //   return <div className="m-auto">loading...</div>;
   // }
   return (
-    <div>
+    <div className="w-full max-w-full overflow-x-hidden px-4">
       <h1 className="text-2xl font-bold mb-6">Notes</h1>
-      <div className="space-y-6">
+      <div className="space-y-6 w-full">
         {Object.entries(groupedNotes).map(([subject, notes]) => (
           <NotesViewCarousel
             key={subject}
