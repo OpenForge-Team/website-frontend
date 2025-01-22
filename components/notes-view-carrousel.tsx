@@ -83,45 +83,41 @@ export default function NotesViewCarousel({
   };
 
   return (
-    <div className="w-full">
+    <div>
       <Carousel
         opts={{
           align: "start",
+          containScroll: "trimSnaps",
+          dragFree: true,
           loop: true,
         }}
-        className="w-full"
+        className="w-full max-w-full"
       >
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between align-middle">
-              <CardTitle className="inline-block">{subject}</CardTitle>
-              <div className="flex gap-2">
-                <CarouselPrevious className="static" />
-                <CarouselNext className="static" />
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {notes.map((note) => (
-                <CarouselItem
-                  key={note.id}
-                  className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
-                  onClick={() => handleNoteClick(note)}
-                >
-                  <Card className="cursor-pointer transition-all duration-200 hover:bg-primary/90 hover:text-black">
-                    <CardContent className="flex items-center justify-center p-2 min-h-[80px]">
-                      <span className="overflow-hidden text-sm font-semibold text-center">
-                        {note.title}
-                      </span>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </CardContent>
-          <CardFooter></CardFooter>
-        </Card>
+        <div className="flex items-center justify-between align-middle">
+          <CardTitle className="inline-block">{subject}</CardTitle>
+          {/* <div className="flex gap-2">
+            <CarouselPrevious className="static" />
+            <CarouselNext className="static" />
+          </div> */}
+        </div>
+        <CarouselContent>
+          {notes.map((note) => (
+            <CarouselItem
+              key={note.id}
+              onClick={() => handleNoteClick(note)}
+              // className="sm:basis-1/4 md:basis-1/2 lg:basis-1/3"
+              className="basis-auto"
+            >
+              <Card>
+                <CardContent className="flex aspect-square items-center justify-center">
+                  <span className="text-sm font-semibold text-center">
+                    {note.title}
+                  </span>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
       </Carousel>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
