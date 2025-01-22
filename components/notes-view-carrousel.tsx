@@ -87,11 +87,9 @@ export default function NotesViewCarousel({
       <Carousel
         opts={{
           align: "start",
-          containScroll: "trimSnaps",
-          dragFree: true,
           loop: true,
         }}
-        className="w-[30%]"
+        className="w-full"
       >
         <Card>
           <CardHeader>
@@ -103,16 +101,16 @@ export default function NotesViewCarousel({
               </div>
             </div>
           </CardHeader>
-          <CardContent className="aspect-square items-center justify-center">
-            <CarouselContent>
+          <CardContent>
+            <CarouselContent className="-ml-2 md:-ml-4">
               {notes.map((note) => (
                 <CarouselItem
                   key={note.id}
-                  className=""
+                  className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                   onClick={() => handleNoteClick(note)}
                 >
                   <Card className="cursor-pointer transition-all duration-200 hover:bg-primary/90 hover:text-black">
-                    <CardContent className="flex aspect-square items-center justify-center p-4">
+                    <CardContent className="flex items-center justify-center p-2 min-h-[80px]">
                       <span className="overflow-hidden text-sm font-semibold text-center">
                         {note.title}
                       </span>
