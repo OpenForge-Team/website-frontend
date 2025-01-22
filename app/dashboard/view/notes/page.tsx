@@ -70,7 +70,7 @@ export default function ViewNotesPage() {
     return <div className="m-auto">loading...</div>;
   }
   return (
-    <div className="w-[calc(100%-1rem)] mx-auto">
+    <div className="mx-auto w-full">
       <h1 className="text-2xl font-bold mb-6">Notes</h1>
       <div className="space-y-6">
         {Object.entries(groupedNotes).map(([subject, notes]) => (
