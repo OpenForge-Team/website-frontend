@@ -12,7 +12,7 @@ export const getProviderUser = async (
   const { data, error } = await supabase
     .from("provider_users")
     .select("*")
-    .eq("id", user_id)
+    .eq("user_id", user_id)
     .eq("provider_name", provider_name)
     .single();
   if (error) {
