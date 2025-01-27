@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { addWorkflowToFavorites, removeWorkflowFromFavorites, getUserFavoriteWorkflows } from "@/utils/supabase/workflow-favorite";
 import {
   Dialog,
   DialogContent,
@@ -32,16 +33,51 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [starredItems, setStarredItems] = useState<Set<string>>(new Set());
   const { toast } = useToast();
-  const toggleStar = (id: string) => {
-    setStarredItems((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      try {
+        const favorites = await getUserFavoriteWorkflows();
+        setStarredItems(favorites);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: "Failed to load favorites",
+        });
       }
-      return newSet;
-    });
+    };
+    loadFavorites();
+  }, [toast]);
+
+  const toggleStar = async (id: string) => {
+    try {
+      if (starredItems.has(id)) {
+        await removeWorkflowFromFavorites(id);
+        setStarredItems((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(id);
+          return newSet;
+        });
+        toast({
+          description: "Removed workflow from favorites",
+        });
+      } else {
+        await addWorkflowToFavorites(id);
+        setStarredItems((prev) => {
+          const newSet = new Set(prev);
+          newSet.add(id);
+          return newSet;
+        });
+        toast({
+          description: "Added workflow to favorites",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Failed to update favorites",
+      });
+    }
   };
 
   const filteredItems = items.filter((item) =>
@@ -158,9 +194,6 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                     onClick={(e) => {
                       e.preventDefault();
                       toggleStar(item.id);
-                      toast({
-                        description: "Removed workflow to favorites",
-                      });
                     }}
                   />
                 ) : (
@@ -169,9 +202,6 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                     onClick={(e) => {
                       e.preventDefault();
                       toggleStar(item.id);
-                      toast({
-                        description: "Added workflow to favorites",
-                      });
                     }}
                   />
                 )}
