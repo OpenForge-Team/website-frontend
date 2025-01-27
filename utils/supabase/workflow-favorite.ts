@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 export type WorkflowFavorites =
   Database["public"]["Tables"]["workflow_favorites"]["Row"];
 
-export const addWorkflowToFavorites = async (workflow_id: string) => {
+export const addWorkflowToFavorites = async (workflow_id: number) => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -17,7 +17,7 @@ export const addWorkflowToFavorites = async (workflow_id: string) => {
 
   const { error } = await supabase
     .from("workflow_favorites")
-    .insert({ user_id: user.id, workflow_id });
+    .insert({ user_id: user.id, workflow_id: workflow_id });
 
   if (error) {
     throw new Error(error.message);

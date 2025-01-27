@@ -44,7 +44,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
     loadFavorites();
   }, [toast]);
 
-  const toggleStar = async (id: string) => {
+  const toggleStar = async (id: number) => {
     try {
       if (starredItems.has(id)) {
         await removeWorkflowFromFavorites(id);
