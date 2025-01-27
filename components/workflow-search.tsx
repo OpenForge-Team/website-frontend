@@ -2,7 +2,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addWorkflowToFavorites, removeWorkflowFromFavorites, getUserFavoriteWorkflows } from "@/utils/supabase/workflow-favorite";
+import {
+  addWorkflowToFavorites,
+  removeWorkflowFromFavorites,
+  getUserFavoriteWorkflows,
+} from "@/utils/supabase/workflow-favorite";
 import {
   Dialog,
   DialogContent,
@@ -140,9 +144,11 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                             ))}
                           </div>
                         </div>
-                        
+
                         <div>
-                          <h4 className="mb-2 font-medium">Manipulation Options</h4>
+                          <h4 className="mb-2 font-medium">
+                            Manipulation Options
+                          </h4>
                           <div className="flex flex-wrap gap-2">
                             {item.choices.manipulation.map((choice) => (
                               <Button

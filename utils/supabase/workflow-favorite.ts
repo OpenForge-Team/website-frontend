@@ -5,10 +5,12 @@ import { createClient } from "@/utils/supabase/server";
 export type WorkflowFavorites =
   Database["public"]["Tables"]["workflow_favorites"]["Row"];
 
-export const addWorkflowToFavorites = async (workflow_id: string) => {
+export const addWorkflowToFavorites = async (workflow_id: number) => {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     throw new Error("User not authenticated");
   }
@@ -24,8 +26,10 @@ export const addWorkflowToFavorites = async (workflow_id: string) => {
 
 export const removeWorkflowFromFavorites = async (workflow_id: string) => {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     throw new Error("User not authenticated");
   }
@@ -42,8 +46,10 @@ export const removeWorkflowFromFavorites = async (workflow_id: string) => {
 
 export const getUserFavoriteWorkflows = async () => {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     throw new Error("User not authenticated");
   }
@@ -57,5 +63,5 @@ export const getUserFavoriteWorkflows = async () => {
     throw new Error(error.message);
   }
 
-  return new Set(data?.map(fav => fav.workflow_id) || []);
+  return new Set(data?.map((fav) => fav.workflow_id) || []);
 };
