@@ -63,5 +63,5 @@ export const getUserFavoriteWorkflows = async () => {
     throw new Error(error.message);
   }
 
-  return new Set(data?.map((fav) => fav.workflow_id) || []);
+  return new Set(data?.map((fav) => fav.workflow_id).filter((id): id is number => id !== null) || []);
 };
