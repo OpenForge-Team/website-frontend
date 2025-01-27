@@ -18,19 +18,10 @@ import { useState } from "react";
 import { Star, StarOff } from "lucide-react";
 import { useToast } from "./hooks/use-toast";
 
+import { Workflows } from "@/utils/supabase/workflows";
+
 interface WorkflowSearchProps {
-  items: {
-    id: string;
-    title: string;
-    short_description: string;
-    long_description: string;
-    steps: number;
-    choices: {
-      input: Array<{ id: string; label: string }>;
-      manipulation: Array<{ id: string; label: string }>;
-      output: Array<{ id: string; label: string }>;
-    };
-  }[];
+  items: Workflows[];
 }
 
 export default function WorkflowSearch({ items }: WorkflowSearchProps) {
