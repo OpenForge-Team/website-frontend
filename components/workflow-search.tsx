@@ -20,6 +20,11 @@ interface WorkflowSearchProps {
     short_description: string;
     long_description: string;
     steps: number;
+    choices: {
+      input: Array<{ id: string; label: string }>;
+      manipulation: Array<{ id: string; label: string }>;
+      output: Array<{ id: string; label: string }>;
+    };
   }[];
 }
 
@@ -77,11 +82,73 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                     <DialogHeader>
                       <DialogTitle>{item.title}</DialogTitle>
                     </DialogHeader>
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                       <p>{item.long_description}</p>
-                      <p className="text-sm text-muted-foreground">
-                        Number of steps: {item.steps}
-                      </p>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="mb-2 font-medium">Input Options</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {item.choices.input.map((choice) => (
+                              <Button
+                                key={choice.id}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  toast({
+                                    description: `Selected input: ${choice.label}`,
+                                  });
+                                }}
+                              >
+                                {choice.label}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <h4 className="mb-2 font-medium">Manipulation Options</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {item.choices.manipulation.map((choice) => (
+                              <Button
+                                key={choice.id}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  toast({
+                                    description: `Selected manipulation: ${choice.label}`,
+                                  });
+                                }}
+                              >
+                                {choice.label}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="mb-2 font-medium">Output Options</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {item.choices.output.map((choice) => (
+                              <Button
+                                key={choice.id}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  toast({
+                                    description: `Selected output: ${choice.label}`,
+                                  });
+                                }}
+                              >
+                                {choice.label}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <p className="text-sm text-muted-foreground">
+                          Number of steps: {item.steps}
+                        </p>
+                      </div>
                     </div>
                   </DialogContent>
                 </Dialog>
