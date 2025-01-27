@@ -17,7 +17,6 @@ export default async function WorkflowTasksPage() {
       <TableCaption>A list of your workflow tasks</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>ID</TableHead>
           <TableHead>Title</TableHead>
           <TableHead>Description</TableHead>
           <TableHead>Status</TableHead>
@@ -26,7 +25,6 @@ export default async function WorkflowTasksPage() {
       <TableBody>
         {tasks.map((task) => (
           <TableRow key={task.id}>
-            <TableCell className="font-medium">{task.id}</TableCell>
             <TableCell>{task.title}</TableCell>
             <TableCell>{task.description}</TableCell>
             <TableCell>{task.status}</TableCell>
