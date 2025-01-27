@@ -26,7 +26,7 @@ interface WorkflowSearchProps {
 
 export default function WorkflowSearch({ items }: WorkflowSearchProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [starredItems, setStarredItems] = useState<Set<string>>(new Set());
+  const [starredItems, setStarredItems] = useState<Set<number>>(new Set());
   const { toast } = useToast();
 
   useEffect(() => {

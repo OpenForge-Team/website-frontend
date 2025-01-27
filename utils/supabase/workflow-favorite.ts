@@ -24,7 +24,7 @@ export const addWorkflowToFavorites = async (workflow_id: number) => {
   }
 };
 
-export const removeWorkflowFromFavorites = async (workflow_id: string) => {
+export const removeWorkflowFromFavorites = async (workflow_id: number) => {
   const supabase = await createClient();
   const {
     data: { user },
