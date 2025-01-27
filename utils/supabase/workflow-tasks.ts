@@ -8,7 +8,7 @@ export type WorkflowTasks =
 export const getWorkflowsTasks = async () => {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from("workflows").select("*");
+  const { data, error } = await supabase.from("workflow_tasks").select("*");
 
   if (error) {
     throw new Error(error.message);

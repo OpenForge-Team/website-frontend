@@ -7,26 +7,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getWorkflowsTasks } from "@/utils/supabase/workflow-tasks";
 
-export default function WorkflowTasksPage() {
+export default async function WorkflowTasksPage() {
+  const tasks = await getWorkflowsTasks();
+
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>A list of your workflow tasks</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead>ID</TableHead>
+          <TableHead>Title</TableHead>
+          <TableHead>Description</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">INV001</TableCell>
-          <TableCell>Paid</TableCell>
-          <TableCell>Credit Card</TableCell>
-          <TableCell className="text-right">$250.00</TableCell>
-        </TableRow>
+        {tasks.map((task) => (
+          <TableRow key={task.id}>
+            <TableCell className="font-medium">{task.id}</TableCell>
+            <TableCell>{task.title}</TableCell>
+            <TableCell>{task.description}</TableCell>
+            <TableCell>{task.status}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
