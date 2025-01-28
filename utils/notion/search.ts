@@ -20,8 +20,7 @@ export async function searchNotion(
   });
 
   try {
-    const response = await notion.search({
-      query: searchQuery || "",
+    const searchParams: any = {
       filter: {
         property: "object",
         value: resourceType,
@@ -31,7 +30,13 @@ export async function searchNotion(
         timestamp: "last_edited_time",
         direction: "descending",
       },
-    });
+    };
+
+    if (searchQuery?.trim()) {
+      searchParams.query = searchQuery;
+    }
+
+    const response = await notion.search(searchParams);
 
     return response.results.map((result: any) => {
       let title = "Untitled";
