@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, StarOff } from "lucide-react";
 import { useToast } from "./hooks/use-toast";
 
@@ -76,7 +76,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
   };
 
   const filteredItems = items.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -98,7 +98,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
           <Card key={item.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center">
-                <CardTitle className="text-lg">{item.title}</CardTitle>
+                <CardTitle className="text-lg">{item.name}</CardTitle>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button
@@ -111,28 +111,26 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>{item.title}</DialogTitle>
+                      <DialogTitle>{item.name}</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-6">
-                      <p>{item.long_description}</p>
+                      <p>{item.long_desc}</p>
                       <div className="space-y-4">
                         <div>
                           <h4 className="mb-2 font-medium">Input Options</h4>
                           <div className="flex flex-wrap gap-2">
-                            {item.choices.input.map((choice) => (
-                              <Button
-                                key={choice.id}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  toast({
-                                    description: `Selected input: ${choice.label}`,
-                                  });
-                                }}
-                              >
-                                {choice.label}
-                              </Button>
-                            ))}
+                            <Button
+                              key={"notion"}
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                toast({
+                                  description: `Selected input: Notion`,
+                                });
+                              }}
+                            >
+                              Notion
+                            </Button>
                           </div>
                         </div>
 
@@ -141,7 +139,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                             Manipulation Options
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {item.choices.manipulation.map((choice) => (
+                            {/* {item.choices.manipulation.map((choice) => (
                               <Button
                                 key={choice.id}
                                 variant="outline"
@@ -154,14 +152,14 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                               >
                                 {choice.label}
                               </Button>
-                            ))}
+                            ))} */}
                           </div>
                         </div>
 
                         <div>
                           <h4 className="mb-2 font-medium">Output Options</h4>
                           <div className="flex flex-wrap gap-2">
-                            {item.choices.output.map((choice) => (
+                            {/* {item.choices.output.map((choice) => (
                               <Button
                                 key={choice.id}
                                 variant="outline"
@@ -174,13 +172,9 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                               >
                                 {choice.label}
                               </Button>
-                            ))}
+                            ))} */}
                           </div>
                         </div>
-
-                        <p className="text-sm text-muted-foreground">
-                          Number of steps: {item.steps}
-                        </p>
                       </div>
                     </div>
                   </DialogContent>
@@ -205,7 +199,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
               </div>
             </CardHeader>
             <CardContent className="flex justify-between">
-              {item.short_description}
+              {item.short_desc}
             </CardContent>
           </Card>
         ))}
