@@ -73,23 +73,22 @@ export function NotionProviderSelect({ user_id }: props) {
     <div className="space-y-4">
       <div className="space-y-4">
         <Select
-        value={selectedResource}
-        onValueChange={(value) => {
-          if (value == "page" || value == "database")
-            setSelectedResource(value);
-        }}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Select Notion resource" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="page">Pages</SelectItem>
-          <SelectItem value="database">Databases</SelectItem>
-          <SelectItem value="block">Blocks</SelectItem>
-          <SelectItem value="comment">Comments</SelectItem>
-        </SelectContent>
-      </Select>
-
+          value={selectedResource}
+          onValueChange={(value) => {
+            if (value == "page" || value == "database")
+              setSelectedResource(value);
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Notion resource" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="page">Pages</SelectItem>
+            <SelectItem value="database">Databases</SelectItem>
+            <SelectItem value="block">Blocks</SelectItem>
+            <SelectItem value="comment">Comments</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       {selectedResource && (
         <>
@@ -106,37 +105,37 @@ export function NotionProviderSelect({ user_id }: props) {
 
           <div className="space-y-4">
             {results.length > 0 && (
-            <Select
-              onValueChange={(value) => {
-                const selectedItem = results.find((r) => r.id === value);
-                if (selectedItem) {
-                  onSelect?.(selectedItem.id, selectedItem.title);
-                  toast({
-                    description: `Selected: ${selectedItem.title}`,
-                  });
-                }
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select an item" />
-              </SelectTrigger>
-              <SelectContent>
-                {results.map((result) => (
-                  <SelectItem
-                    key={result.id}
-                    value={result.id}
-                    className="flex flex-col items-start"
-                  >
-                    <div className="font-medium">{result.title}</div>
-                    {result.url && (
-                      <div className="text-xs text-gray-500 truncate max-w-[300px]">
-                        {result.url}
-                      </div>
-                    )}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <Select
+                onValueChange={(value) => {
+                  const selectedItem = results.find((r) => r.id === value);
+                  if (selectedItem) {
+                    onSelect?.(selectedItem.id, selectedItem.title);
+                    toast({
+                      description: `Selected: ${selectedItem.title}`,
+                    });
+                  }
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select an item" />
+                </SelectTrigger>
+                <SelectContent>
+                  {results.map((result) => (
+                    <SelectItem
+                      key={result.id}
+                      value={result.id}
+                      className="flex flex-col items-start"
+                    >
+                      <div className="font-medium">{result.title}</div>
+                      {result.url && (
+                        <div className="text-xs text-gray-500 truncate max-w-[300px]">
+                          {result.url}
+                        </div>
+                      )}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
           </div>
         </>
