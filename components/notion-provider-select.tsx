@@ -92,7 +92,6 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
         <Command>
           <CommandInput
             placeholder="Search Notion pages..."
-            value={searchQuery}
             onValueChange={(value) => {
               setSearchQuery(value);
               if (value.length > 2) {
@@ -101,7 +100,9 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
                 }
                 searchTimeout.current = setTimeout(() => {
                   searchNotionContent(value);
-                }, 2000);
+                }, 500);
+              } else {
+                setResults([]);
               }
             }}
           />
