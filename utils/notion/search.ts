@@ -11,7 +11,7 @@ interface NotionSearchResult {
 export async function searchNotion(
   notionToken: string,
   searchQuery: string,
-  resourceType: string
+  resourceType: "page" | "database"
 ): Promise<NotionSearchResult[]> {
   if (!notionToken || !searchQuery.trim()) return [];
 
@@ -30,7 +30,7 @@ export async function searchNotion(
 
     return response.results.map((result: any) => {
       let title = "Untitled";
-      
+
       if (result.object === "page") {
         // Handle different page property formats
         const properties = result.properties;
@@ -45,7 +45,7 @@ export async function searchNotion(
         id: result.id,
         title: title,
         type: result.object,
-        url: result.url
+        url: result.url,
       };
     });
   } catch (error: any) {

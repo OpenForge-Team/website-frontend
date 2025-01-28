@@ -10,6 +10,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -37,7 +38,9 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<NotionSearchResult[]>([]);
-  const [selectedItem, setSelectedItem] = useState<NotionSearchResult | null>(null);
+  const [selectedItem, setSelectedItem] = useState<NotionSearchResult | null>(
+    null
+  );
   const [notionToken, setNotionToken] = useState<string | null>(null);
   const searchTimeout = useRef<NodeJS.Timeout>();
 
@@ -105,35 +108,37 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
           <CommandList>
             <CommandEmpty>No pages found.</CommandEmpty>
             <CommandGroup>
-            {results.map((result) => (
-              <CommandItem
-                key={result.id}
-                value={result.id}
-                onSelect={() => {
-                  setSelectedItem(result);
-                  onSelect?.(result.id, result.title);
-                  setOpen(false);
-                  toast({
-                    description: `Selected: ${result.title}`,
-                  });
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    selectedItem?.id === result.id ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                <div className="flex flex-col">
-                  <div className="font-medium">{result.title}</div>
-                  {result.url && (
-                    <div className="text-xs text-muted-foreground truncate max-w-[300px]">
-                      {result.url}
-                    </div>
-                  )}
-                </div>
-              </CommandItem>
-            ))}
+              {results.map((result) => (
+                <CommandItem
+                  key={result.id}
+                  value={result.id}
+                  onSelect={() => {
+                    setSelectedItem(result);
+                    onSelect?.(result.id, result.title);
+                    setOpen(false);
+                    toast({
+                      description: `Selected: ${result.title}`,
+                    });
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedItem?.id === result.id
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                  <div className="flex flex-col">
+                    <div className="font-medium">{result.title}</div>
+                    {result.url && (
+                      <div className="text-xs text-muted-foreground truncate max-w-[300px]">
+                        {result.url}
+                      </div>
+                    )}
+                  </div>
+                </CommandItem>
+              ))}
             </CommandGroup>
           </CommandList>
         </Command>
