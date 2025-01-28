@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "./hooks/use-toast";
 import { getProviderUser } from "@/utils/supabase/provider-users";
-import { searchNotion } from "@/utils/notion/auth";
+import { searchNotion } from "@/utils/notion/search";
 
 interface NotionSearchResult {
   id: string;
@@ -32,9 +32,10 @@ export function NotionProviderSelect({ user_id }: props) {
   useEffect(() => {
     const fetchNotionToken = async () => {
       try {
-        const user = await getProviderUser(user_id, "notion");
-        if (user) {
-          setNotionToken(user.token);
+        const userProvider = await getProviderUser(user_id, "notion");
+        console.log(userProvider);
+        if (userProvider) {
+          setNotionToken(userProvider.token);
         }
       } catch (error) {
         toast({
@@ -46,11 +47,15 @@ export function NotionProviderSelect({ user_id }: props) {
     fetchNotionToken();
   }, [toast]);
 
-  const searchNotion = async () => {
+  const searchNotionContent = async () => {
     if (!notionToken || !searchQuery.trim()) return;
 
     try {
-      const searchResults = await searchNotion(notionToken, searchQuery, selectedResource);
+      const searchResults = await searchNotion(
+        notionToken,
+        searchQuery,
+        selectedResource
+      );
       setResults(searchResults);
     } catch (error) {
       toast({
@@ -90,7 +95,7 @@ export function NotionProviderSelect({ user_id }: props) {
             onChange={(e) => {
               setSearchQuery(e.target.value);
               if (e.target.value.length > 2) {
-                searchNotion();
+                searchNotionContent();
               }
             }}
           />
