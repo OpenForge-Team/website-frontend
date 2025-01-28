@@ -34,6 +34,7 @@ interface WorkflowSearchProps {
 export default function WorkflowSearch({ items }: WorkflowSearchProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [starredItems, setStarredItems] = useState<Set<number>>(new Set());
+  const [selectedInputType, setSelectedInputType] = useState<string>("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -127,6 +128,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                           <h4 className="mb-2 font-medium">Input Type</h4>
                           <Select
                             onValueChange={(value) => {
+                              setSelectedInputType(value);
                               toast({
                                 description: `Selected input type: ${value}`,
                               });
@@ -141,6 +143,23 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                               <SelectItem value="provider">Provider</SelectItem>
                             </SelectContent>
                           </Select>
+                          {selectedInputType === "provider" && (
+                            <Select
+                              className="mt-2"
+                              onValueChange={(value) => {
+                                toast({
+                                  description: `Selected provider: ${value}`,
+                                });
+                              }}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select provider" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="notion">Notion</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          )}
                         </div>
 
                         <div>
