@@ -120,9 +120,9 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                           <h4 className="mb-2 font-medium">Input Type</h4>
                           <div className="flex flex-wrap gap-2">
                             {[
-                              { label: "WORKFLOW", value: "workflow" },
-                              { label: "NOTE", value: "note" },
-                              { label: "PROVIDER", value: "provider" },
+                              { label: "Workflow", value: "workflow" },
+                              { label: "Note", value: "note" },
+                              { label: "Provider", value: "provider" },
                             ].map(({ label, value }) => (
                               <Button
                                 key={value}
@@ -169,13 +169,13 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                           <h4 className="mb-2 font-medium">Output Type</h4>
                           <div className="flex flex-wrap gap-2">
                             {[
-                              { label: "WORKFLOW", value: "workflow" },
-                              { label: "NOTE", value: "note" },
-                              { label: "PROVIDER", value: "provider" },
-                              { label: "SMS", value: "sms" },
-                              { label: "EMAIL", value: "email" },
-                              { label: "TELEGRAM", value: "telegram" },
-                              { label: "WHATSAPP", value: "whatsapp" },
+                              { label: "Workflow", value: "workflow" },
+                              { label: "Note", value: "note" },
+                              { label: "Provider", value: "provider" },
+                              { label: "Sms", value: "sms" },
+                              { label: "Email", value: "email" },
+                              { label: "Telegram", value: "telegram" },
+                              { label: "WhatsApp", value: "whatsapp" },
                             ].map(({ label, value }) => (
                               <Button
                                 key={value}
