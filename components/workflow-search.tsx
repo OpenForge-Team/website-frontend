@@ -147,7 +147,6 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                           </Select>
                           {selectedInputType === "provider" && (
                             <Select
-                              className="mt-2"
                               onValueChange={(value) => {
                                 setSelectedProvider(value);
                                 toast({
