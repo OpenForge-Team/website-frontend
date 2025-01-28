@@ -102,8 +102,9 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
               }
             }}
           />
-          <CommandEmpty>No pages found.</CommandEmpty>
-          <CommandGroup>
+          <CommandList>
+            <CommandEmpty>No pages found.</CommandEmpty>
+            <CommandGroup>
             {results.map((result) => (
               <CommandItem
                 key={result.id}
@@ -133,7 +134,8 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
                 </div>
               </CommandItem>
             ))}
-          </CommandGroup>
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
