@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { NotionProviderSelect } from "./notion-provider-select";
 import {
   Select,
   SelectContent,
@@ -35,6 +36,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [starredItems, setStarredItems] = useState<Set<number>>(new Set());
   const [selectedInputType, setSelectedInputType] = useState<string>("");
+  const [selectedProvider, setSelectedProvider] = useState<string>("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -147,6 +149,7 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                             <Select
                               className="mt-2"
                               onValueChange={(value) => {
+                                setSelectedProvider(value);
                                 toast({
                                   description: `Selected provider: ${value}`,
                                 });
@@ -159,6 +162,9 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                                 <SelectItem value="notion">Notion</SelectItem>
                               </SelectContent>
                             </Select>
+                            {selectedInputType === "provider" && selectedProvider === "notion" && (
+                              <NotionProviderSelect />
+                            )}
                           )}
                         </div>
 
