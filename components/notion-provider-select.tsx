@@ -24,7 +24,7 @@ interface props {
   onSelect?: (pageId: string, pageTitle: string) => void;
 }
 
-export function NotionProviderSelect({ user_id }: props) {
+export function NotionProviderSelect({ user_id, onSelect }: props) {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<NotionSearchResult[]>([]);
