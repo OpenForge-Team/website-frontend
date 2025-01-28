@@ -119,18 +119,22 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                         <div>
                           <h4 className="mb-2 font-medium">Input Type</h4>
                           <div className="flex flex-wrap gap-2">
-                            {["workflow", "note", "provider"].map((type) => (
+                            {[
+                              { label: "WORKFLOW", value: "workflow" },
+                              { label: "NOTE", value: "note" },
+                              { label: "PROVIDER", value: "provider" },
+                            ].map(({ label, value }) => (
                               <Button
-                                key={type}
+                                key={value}
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                   toast({
-                                    description: `Selected input type: ${type}`,
+                                    description: `Selected input type: ${value}`,
                                   });
                                 }}
                               >
-                                {type}
+                                {label}
                               </Button>
                             ))}
                           </div>
@@ -141,18 +145,21 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                             Transformation Type
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {["n8n", "llm"].map((type) => (
+                            {[
+                              { label: "N8N", value: "n8n" },
+                              { label: "LLM", value: "llm" },
+                            ].map(({ label, value }) => (
                               <Button
-                                key={type}
+                                key={value}
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                   toast({
-                                    description: `Selected transformation: ${type}`,
+                                    description: `Selected transformation: ${value}`,
                                   });
                                 }}
                               >
-                                {type}
+                                {label}
                               </Button>
                             ))}
                           </div>
@@ -162,25 +169,25 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                           <h4 className="mb-2 font-medium">Output Type</h4>
                           <div className="flex flex-wrap gap-2">
                             {[
-                              "workflow",
-                              "note",
-                              "provider",
-                              "sms",
-                              "email",
-                              "telegram",
-                              "whatsapp",
-                            ].map((type) => (
+                              { label: "WORKFLOW", value: "workflow" },
+                              { label: "NOTE", value: "note" },
+                              { label: "PROVIDER", value: "provider" },
+                              { label: "SMS", value: "sms" },
+                              { label: "EMAIL", value: "email" },
+                              { label: "TELEGRAM", value: "telegram" },
+                              { label: "WHATSAPP", value: "whatsapp" },
+                            ].map(({ label, value }) => (
                               <Button
-                                key={type}
+                                key={value}
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                   toast({
-                                    description: `Selected output: ${type}`,
+                                    description: `Selected output: ${value}`,
                                   });
                                 }}
                               >
-                                {type}
+                                {label}
                               </Button>
                             ))}
                           </div>
