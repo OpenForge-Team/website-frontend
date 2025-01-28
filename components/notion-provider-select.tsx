@@ -27,7 +27,9 @@ export function NotionProviderSelect({ user_id }: props) {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<NotionSearchResult[]>([]);
-  const [selectedResource, setSelectedResource] = useState("");
+  const [selectedResource, setSelectedResource] = useState<"page" | "database">(
+    "page"
+  );
   const [notionToken, setNotionToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -71,10 +73,8 @@ export function NotionProviderSelect({ user_id }: props) {
       <Select
         value={selectedResource}
         onValueChange={(value) => {
-          setSelectedResource(value);
-          toast({
-            description: `Selected Notion resource: ${value}`,
-          });
+          if (value == "page" || value == "database")
+            setSelectedResource(value);
         }}
       >
         <SelectTrigger>
@@ -116,8 +116,8 @@ export function NotionProviderSelect({ user_id }: props) {
               </SelectTrigger>
               <SelectContent>
                 {results.map((result) => (
-                  <SelectItem 
-                    key={result.id} 
+                  <SelectItem
+                    key={result.id}
                     value={result.id}
                     className="flex flex-col items-start"
                   >
