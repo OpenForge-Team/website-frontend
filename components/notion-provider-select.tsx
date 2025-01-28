@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Select,
   SelectContent,
@@ -32,6 +32,7 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
     "page"
   );
   const [notionToken, setNotionToken] = useState<string | null>(null);
+  const searchTimeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     const fetchNotionToken = async () => {
@@ -98,7 +99,14 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
             onChange={(e) => {
               setSearchQuery(e.target.value);
               if (e.target.value.length > 2) {
-                searchNotionContent();
+                // Clear existing timeout
+                if (searchTimeout.current) {
+                  clearTimeout(searchTimeout.current);
+                }
+                // Set new timeout
+                searchTimeout.current = setTimeout(() => {
+                  searchNotionContent();
+                }, 2000);
               }
             }}
           />
