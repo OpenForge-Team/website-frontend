@@ -38,8 +38,12 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [allPages, setAllPages] = useState<NotionSearchResult[]>([]);
-  const [filteredResults, setFilteredResults] = useState<NotionSearchResult[]>([]);
-  const [selectedItem, setSelectedItem] = useState<NotionSearchResult | null>(null);
+  const [filteredResults, setFilteredResults] = useState<NotionSearchResult[]>(
+    []
+  );
+  const [selectedItem, setSelectedItem] = useState<NotionSearchResult | null>(
+    null
+  );
   const [notionToken, setNotionToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,7 +53,8 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
         const userProvider = await getProviderUser(user_id, "notion");
         if (userProvider) {
           setNotionToken(userProvider.token);
-          const pages = await searchNotion(userProvider.token, "", "page");
+          const pages = await searchNotion(userProvider.token, "", 5, "page");
+          console.log(pages);
           setAllPages(pages);
           setFilteredResults(pages);
         }
@@ -67,7 +72,7 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
 
   useEffect(() => {
     if (searchQuery.length > 2) {
-      const filtered = allPages.filter(page => 
+      const filtered = allPages.filter((page) =>
         page.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredResults(filtered);
@@ -92,7 +97,9 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput
-            placeholder={isLoading ? "Loading pages..." : "Search Notion pages..."}
+            placeholder={
+              isLoading ? "Loading pages..." : "Search Notion pages..."
+            }
             onValueChange={setSearchQuery}
             disabled={isLoading}
           />
