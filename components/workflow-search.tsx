@@ -161,9 +161,12 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                                 <SelectItem value="notion">Notion</SelectItem>
                               </SelectContent>
                             </Select>
-                            {selectedInputType === "provider" && selectedProvider === "notion" && (
+                          )}
+                          {selectedInputType === "provider" && selectedProvider === "notion" && (
+                            <div className="mt-2">
                               <NotionProviderSelect />
-                            )}
+                            </div>
+                          )}
                           )}
                         </div>
 
