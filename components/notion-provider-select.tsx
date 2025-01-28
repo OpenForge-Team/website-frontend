@@ -17,8 +17,11 @@ interface NotionSearchResult {
   title: string;
   type: "page" | "database" | "block" | "comment";
 }
+interface props {
+  user_id: string;
+}
 
-export function NotionProviderSelect() {
+export function NotionProviderSelect({ user_id }: props) {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<NotionSearchResult[]>([]);
@@ -28,9 +31,9 @@ export function NotionProviderSelect() {
   useEffect(() => {
     const fetchNotionToken = async () => {
       try {
-        const user = await getProviderUser("current_user", "notion");
+        const user = await getProviderUser(user_id, "notion");
         if (user) {
-          setNotionToken(user.access_token);
+          setNotionToken(user.token);
         }
       } catch (error) {
         toast({
@@ -49,7 +52,7 @@ export function NotionProviderSelect() {
       const response = await fetch("https://api.notion.com/v1/search", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${notionToken}`,
+          Authorization: `Bearer ${notionToken}`,
           "Notion-Version": "2022-06-28",
           "Content-Type": "application/json",
         },
@@ -67,11 +70,14 @@ export function NotionProviderSelect() {
       }
 
       const data = await response.json();
-      const searchResults: NotionSearchResult[] = data.results.map((result: any) => ({
-        id: result.id,
-        title: result.properties?.title?.title?.[0]?.plain_text || "Untitled",
-        type: result.object,
-      }));
+      console.log(data);
+      const searchResults: NotionSearchResult[] = data.results.map(
+        (result: any) => ({
+          id: result.id,
+          title: result.properties?.title?.title?.[0]?.plain_text || "Untitled",
+          type: result.object,
+        })
+      );
 
       setResults(searchResults);
     } catch (error) {
