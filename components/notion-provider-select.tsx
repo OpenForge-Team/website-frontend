@@ -93,9 +93,8 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput
-            placeholder={
-              isLoading ? "Loading pages..." : "Search Notion pages..."
-            }
+            placeholder={isLoading ? "Loading pages..." : "Search Notion pages..."}
+            value={searchQuery}
             onValueChange={(value) => {
               setSearchQuery(value);
               if (value.length > 2) {
@@ -112,7 +111,9 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
             disabled={isLoading}
           />
           <CommandList>
-            <CommandEmpty>No pages found.</CommandEmpty>
+            <CommandEmpty>
+              {isLoading ? "Searching..." : searchQuery.length > 2 ? "No pages found." : "Type to search..."}
+            </CommandEmpty>
             <CommandGroup>
               {results.map((result) => (
                 <CommandItem
