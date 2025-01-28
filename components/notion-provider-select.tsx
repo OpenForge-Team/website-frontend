@@ -21,6 +21,7 @@ interface NotionSearchResult {
 }
 interface props {
   user_id: string;
+  onSelect?: (pageId: string, pageTitle: string) => void;
 }
 
 export function NotionProviderSelect({ user_id }: props) {
@@ -107,11 +108,13 @@ export function NotionProviderSelect({ user_id }: props) {
             {results.length > 0 && (
             <Select
               onValueChange={(value) => {
-                toast({
-                  description: `Selected item: ${
-                    results.find((r) => r.id === value)?.title || value
-                  }`,
-                });
+                const selectedItem = results.find((r) => r.id === value);
+                if (selectedItem) {
+                  onSelect?.(selectedItem.id, selectedItem.title);
+                  toast({
+                    description: `Selected: ${selectedItem.title}`,
+                  });
+                }
               }}
             >
               <SelectTrigger>
