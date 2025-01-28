@@ -17,6 +17,7 @@ interface NotionSearchResult {
   id: string;
   title: string;
   type: "page" | "database" | "block" | "comment";
+  url?: string;
 }
 interface props {
   user_id: string;
@@ -115,8 +116,17 @@ export function NotionProviderSelect({ user_id }: props) {
               </SelectTrigger>
               <SelectContent>
                 {results.map((result) => (
-                  <SelectItem key={result.id} value={result.id}>
-                    {result.title}
+                  <SelectItem 
+                    key={result.id} 
+                    value={result.id}
+                    className="flex flex-col items-start"
+                  >
+                    <div className="font-medium">{result.title}</div>
+                    {result.url && (
+                      <div className="text-xs text-gray-500 truncate max-w-[300px]">
+                        {result.url}
+                      </div>
+                    )}
                   </SelectItem>
                 ))}
               </SelectContent>
