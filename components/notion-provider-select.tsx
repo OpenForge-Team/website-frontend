@@ -70,7 +70,8 @@ export function NotionProviderSelect({ user_id }: props) {
 
   return (
     <div className="space-y-4">
-      <Select
+      <div className="space-y-4">
+        <Select
         value={selectedResource}
         onValueChange={(value) => {
           if (value == "page" || value == "database")
@@ -88,6 +89,7 @@ export function NotionProviderSelect({ user_id }: props) {
         </SelectContent>
       </Select>
 
+      </div>
       {selectedResource && (
         <>
           <Input
@@ -101,7 +103,8 @@ export function NotionProviderSelect({ user_id }: props) {
             }}
           />
 
-          {results.length > 0 && (
+          <div className="space-y-4">
+            {results.length > 0 && (
             <Select
               onValueChange={(value) => {
                 toast({
@@ -131,7 +134,8 @@ export function NotionProviderSelect({ user_id }: props) {
                 ))}
               </SelectContent>
             </Select>
-          )}
+            )}
+          </div>
         </>
       )}
     </div>
