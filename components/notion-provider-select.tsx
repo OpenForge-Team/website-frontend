@@ -37,43 +37,44 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [results, setResults] = useState<NotionSearchResult[]>([]);
-  const [selectedItem, setSelectedItem] = useState<NotionSearchResult | null>(
-    null
-  );
+  const [allPages, setAllPages] = useState<NotionSearchResult[]>([]);
+  const [filteredResults, setFilteredResults] = useState<NotionSearchResult[]>([]);
+  const [selectedItem, setSelectedItem] = useState<NotionSearchResult | null>(null);
   const [notionToken, setNotionToken] = useState<string | null>(null);
-  const searchTimeout = useRef<NodeJS.Timeout>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchNotionToken = async () => {
+    const fetchNotionData = async () => {
       try {
         const userProvider = await getProviderUser(user_id, "notion");
         if (userProvider) {
           setNotionToken(userProvider.token);
+          const pages = await searchNotion(userProvider.token, "", "page");
+          setAllPages(pages);
+          setFilteredResults(pages);
         }
       } catch (error) {
         toast({
           variant: "destructive",
-          description: "Failed to fetch Notion token",
+          description: "Failed to fetch Notion pages",
         });
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchNotionToken();
+    fetchNotionData();
   }, [toast, user_id]);
 
-  const searchNotionContent = async (query: string) => {
-    if (!notionToken || !query.trim()) return;
-
-    try {
-      const searchResults = await searchNotion(notionToken, query, "page");
-      setResults(searchResults);
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        description: "Failed to search Notion",
-      });
+  useEffect(() => {
+    if (searchQuery.length > 2) {
+      const filtered = allPages.filter(page => 
+        page.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredResults(filtered);
+    } else {
+      setFilteredResults(allPages);
     }
-  };
+  }, [searchQuery, allPages]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -91,25 +92,14 @@ export function NotionProviderSelect({ user_id, onSelect }: props) {
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput
-            placeholder="Search Notion pages..."
-            onValueChange={(value) => {
-              setSearchQuery(value);
-              if (value.length > 2) {
-                if (searchTimeout.current) {
-                  clearTimeout(searchTimeout.current);
-                }
-                searchTimeout.current = setTimeout(() => {
-                  searchNotionContent(value);
-                }, 500);
-              } else {
-                setResults([]);
-              }
-            }}
+            placeholder={isLoading ? "Loading pages..." : "Search Notion pages..."}
+            onValueChange={setSearchQuery}
+            disabled={isLoading}
           />
           <CommandList>
             <CommandEmpty>No pages found.</CommandEmpty>
             <CommandGroup>
-              {results.map((result) => (
+              {filteredResults.map((result) => (
                 <CommandItem
                   key={result.id}
                   value={result.id}

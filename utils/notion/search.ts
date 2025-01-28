@@ -21,7 +21,7 @@ export async function searchNotion(
 
   try {
     const response = await notion.search({
-      query: searchQuery,
+      query: searchQuery || "",
       filter: {
         property: "object",
         value: resourceType,
