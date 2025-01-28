@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "./hooks/use-toast";
 import { getProviderUser } from "@/utils/supabase/provider-users";
+import { searchNotion } from "@/utils/notion/auth";
 
 interface NotionSearchResult {
   id: string;
@@ -49,36 +50,7 @@ export function NotionProviderSelect({ user_id }: props) {
     if (!notionToken || !searchQuery.trim()) return;
 
     try {
-      const response = await fetch("https://api.notion.com/v1/search", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${notionToken}`,
-          "Notion-Version": "2022-06-28",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: searchQuery,
-          filter: {
-            property: "object",
-            value: selectedResource,
-          },
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to search Notion");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      const searchResults: NotionSearchResult[] = data.results.map(
-        (result: any) => ({
-          id: result.id,
-          title: result.properties?.title?.title?.[0]?.plain_text || "Untitled",
-          type: result.object,
-        })
-      );
-
+      const searchResults = await searchNotion(notionToken, searchQuery, selectedResource);
       setResults(searchResults);
     } catch (error) {
       toast({
