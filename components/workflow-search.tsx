@@ -117,62 +117,72 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                       <p>{item.long_desc}</p>
                       <div className="space-y-4">
                         <div>
-                          <h4 className="mb-2 font-medium">Input Options</h4>
+                          <h4 className="mb-2 font-medium">Input Type</h4>
                           <div className="flex flex-wrap gap-2">
-                            <Button
-                              key={"notion"}
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                toast({
-                                  description: `Selected input: Notion`,
-                                });
-                              }}
-                            >
-                              Notion
-                            </Button>
+                            {["workflow", "note", "provider"].map((type) => (
+                              <Button
+                                key={type}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  toast({
+                                    description: `Selected input type: ${type}`,
+                                  });
+                                }}
+                              >
+                                {type}
+                              </Button>
+                            ))}
                           </div>
                         </div>
 
                         <div>
                           <h4 className="mb-2 font-medium">
-                            Manipulation Options
+                            Transformation Type
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {/* {item.choices.manipulation.map((choice) => (
+                            {["n8n", "llm"].map((type) => (
                               <Button
-                                key={choice.id}
+                                key={type}
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                   toast({
-                                    description: `Selected manipulation: ${choice.label}`,
+                                    description: `Selected transformation: ${type}`,
                                   });
                                 }}
                               >
-                                {choice.label}
+                                {type}
                               </Button>
-                            ))} */}
+                            ))}
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="mb-2 font-medium">Output Options</h4>
+                          <h4 className="mb-2 font-medium">Output Type</h4>
                           <div className="flex flex-wrap gap-2">
-                            {/* {item.choices.output.map((choice) => (
+                            {[
+                              "workflow",
+                              "note",
+                              "provider",
+                              "sms",
+                              "email",
+                              "telegram",
+                              "whatsapp",
+                            ].map((type) => (
                               <Button
-                                key={choice.id}
+                                key={type}
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                   toast({
-                                    description: `Selected output: ${choice.label}`,
+                                    description: `Selected output: ${type}`,
                                   });
                                 }}
                               >
-                                {choice.label}
+                                {type}
                               </Button>
-                            ))} */}
+                            ))}
                           </div>
                         </div>
                       </div>
