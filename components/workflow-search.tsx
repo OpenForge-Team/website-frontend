@@ -3,6 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   addWorkflowToFavorites,
   removeWorkflowFromFavorites,
   getUserFavoriteWorkflows,
@@ -118,79 +125,67 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                       <div className="space-y-4">
                         <div>
                           <h4 className="mb-2 font-medium">Input Type</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {[
-                              { label: "Workflow", value: "workflow" },
-                              { label: "Note", value: "note" },
-                              { label: "Provider", value: "provider" },
-                            ].map(({ label, value }) => (
-                              <Button
-                                key={value}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  toast({
-                                    description: `Selected input type: ${value}`,
-                                  });
-                                }}
-                              >
-                                {label}
-                              </Button>
-                            ))}
-                          </div>
+                          <Select
+                            onValueChange={(value) => {
+                              toast({
+                                description: `Selected input type: ${value}`,
+                              });
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select input type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="workflow">Workflow</SelectItem>
+                              <SelectItem value="note">Note</SelectItem>
+                              <SelectItem value="provider">Provider</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
 
                         <div>
                           <h4 className="mb-2 font-medium">
                             Transformation Type
                           </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {[
-                              { label: "N8N", value: "n8n" },
-                              { label: "LLM", value: "llm" },
-                            ].map(({ label, value }) => (
-                              <Button
-                                key={value}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  toast({
-                                    description: `Selected transformation: ${value}`,
-                                  });
-                                }}
-                              >
-                                {label}
-                              </Button>
-                            ))}
-                          </div>
+                          <Select
+                            onValueChange={(value) => {
+                              toast({
+                                description: `Selected transformation: ${value}`,
+                              });
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select transformation type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="n8n">N8N</SelectItem>
+                              <SelectItem value="llm">LLM</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
 
                         <div>
                           <h4 className="mb-2 font-medium">Output Type</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {[
-                              { label: "Workflow", value: "workflow" },
-                              { label: "Note", value: "note" },
-                              { label: "Provider", value: "provider" },
-                              { label: "Sms", value: "sms" },
-                              { label: "Email", value: "email" },
-                              { label: "Telegram", value: "telegram" },
-                              { label: "WhatsApp", value: "whatsapp" },
-                            ].map(({ label, value }) => (
-                              <Button
-                                key={value}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  toast({
-                                    description: `Selected output: ${value}`,
-                                  });
-                                }}
-                              >
-                                {label}
-                              </Button>
-                            ))}
-                          </div>
+                          <Select
+                            onValueChange={(value) => {
+                              toast({
+                                description: `Selected output: ${value}`,
+                              });
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select output type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="workflow">Workflow</SelectItem>
+                              <SelectItem value="note">Note</SelectItem>
+                              <SelectItem value="provider">Provider</SelectItem>
+                              <SelectItem value="sms">SMS</SelectItem>
+                              <SelectItem value="email">Email</SelectItem>
+                              <SelectItem value="telegram">Telegram</SelectItem>
+                              <SelectItem value="whatsapp">WhatsApp</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                     </div>
