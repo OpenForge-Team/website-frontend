@@ -26,13 +26,11 @@ export async function searchNotion(
         property: "object",
         value: resourceType,
       },
-      page_size: 10,
-      sorts: [
-        {
-          timestamp: "last_edited_time",
-          direction: "descending"
-        }
-      ]
+      page_size: 100,
+      sort: {
+        timestamp: "last_edited_time",
+        direction: "descending",
+      },
     });
 
     return response.results.map((result: any) => {
