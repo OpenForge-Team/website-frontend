@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { Star, StarOff, User } from "lucide-react";
 import { useToast } from "./hooks/use-toast";
 import { searchNotion } from "@/utils/notion/search";
+import { getProviderUser } from "@/utils/supabase/provider-users";
 
 import { Workflows } from "@/utils/supabase/workflows";
 
@@ -185,7 +186,14 @@ export default function WorkflowSearch({
                                 <Button 
                                   onClick={async () => {
                                     try {
+                                      const providerUser = await getProviderUser(user_id, "notion");
+                                      
+                                      if (!providerUser?.access_token) {
+                                        throw new Error("Notion integration not connected");
+                                      }
+
                                       const results = await searchNotion({
+                                        notionToken: providerUser.access_token,
                                         searchQuery: notionPageUrl,
                                         pageSize: 10,
                                         resourceType: "page"
