@@ -40,6 +40,10 @@ export default function WorkflowSearch({
   const [starredItems, setStarredItems] = useState<Set<number>>(new Set());
   const [selectedInputType, setSelectedInputType] = useState<string>("");
   const [selectedProvider, setSelectedProvider] = useState<string>("");
+  const [notionPageUrl, setNotionPageUrl] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [selectedPage, setSelectedPage] = useState<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -171,7 +175,51 @@ export default function WorkflowSearch({
                         <div>
                           {selectedInputType === "provider" &&
                             selectedProvider === "notion" && (
-                              <div className="mt-2"></div>
+                              <div className="space-y-2">
+                                <Input
+                                  placeholder="Enter page title to search"
+                                  value={notionPageUrl}
+                                  onChange={(e) => setNotionPageUrl(e.target.value)}
+                                />
+                                <Button 
+                                  onClick={async () => {
+                                    const results = await fetch(`/api/notion/search?query=${encodeURIComponent(notionPageUrl)}`)
+                                      .then(res => res.json());
+                                    setSearchResults(results);
+                                    setIsDialogOpen(true);
+                                  }}
+                                >
+                                  Search Notion Pages
+                                </Button>
+
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                  <DialogContent>
+                                    <DialogHeader>
+                                      <DialogTitle>Select a Notion Page</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="max-h-[60vh] overflow-y-auto">
+                                      {searchResults.map((page) => (
+                                        <div
+                                          key={page.id}
+                                          className={`p-2 hover:bg-accent cursor-pointer ${
+                                            selectedPage?.id === page.id ? 'bg-accent' : ''
+                                          }`}
+                                          onClick={() => {
+                                            setSelectedPage(page);
+                                            setNotionPageUrl(page.url);
+                                            setIsDialogOpen(false);
+                                          }}
+                                        >
+                                          <div className="font-medium">{page.title}</div>
+                                          <div className="text-sm text-muted-foreground">
+                                            {page.last_edited_time}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                              </div>
                             )}
                         </div>
                       </div>
