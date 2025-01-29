@@ -25,8 +25,8 @@ export default async function WorkflowTasksPage() {
       <TableBody>
         {tasks.map((task) => (
           <TableRow key={task.id}>
-            <TableCell>{task.workflows?.title}</TableCell>
-            <TableCell>{task.workflows?.short_description}</TableCell>
+            <TableCell>{task.workflows?.name}</TableCell>
+            <TableCell>{task.workflows?.short_desc}</TableCell>
             <TableCell>{task.status}</TableCell>
           </TableRow>
         ))}

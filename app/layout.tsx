@@ -37,14 +37,13 @@ export default function RootLayout({
             <div className="flex flex-col w-full p-5 mb-auto">
               <QueryProviders>{children}</QueryProviders>
             </div>
-
-            <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-              <p>MyBookQuest Inc.</p>
-              <ThemeSwitcher />
-            </footer>
           </main>
           <Toaster />
         </ThemeProvider>
+        {/* <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+          <p>MyBookQuest Inc.</p>
+          <ThemeSwitcher />
+        </footer> */}
       </body>
     </html>
   );

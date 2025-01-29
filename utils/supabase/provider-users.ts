@@ -13,10 +13,25 @@ export const getProviderUser = async (
     .from("provider_users")
     .select("*")
     .eq("user_id", user_id)
-    .eq("provider_name", provider_name)
-    .single();
+    .eq("provider_name", provider_name);
   if (error) {
     throw new Error(error.message);
   }
-  return data;
+  if (data.length < 1) return null;
+  return data[0];
+};
+
+export const deleteProviderUser = async (
+  user_id: string,
+  provider_name: string
+) => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("provider_users")
+    .delete()
+    .eq("user_id", user_id)
+    .eq("provider_name", provider_name);
+  if (error) {
+    throw new Error(error.message);
+  }
 };

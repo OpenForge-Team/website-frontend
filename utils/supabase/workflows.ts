@@ -6,16 +6,15 @@ export type Workflows = Database["public"]["Tables"]["workflows"]["Row"];
 
 export const getWorkflows = async () => {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     throw new Error("User not authenticated");
   }
 
-  const { data, error } = await supabase
-    .from("workflows")
-    .select("*")
-    .eq("user_id", user.id);
+  const { data, error } = await supabase.from("workflows").select("*");
 
   if (error) {
     throw new Error(error.message);

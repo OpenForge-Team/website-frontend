@@ -2,7 +2,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { NotionProviderSelect } from "./notion-provider-select";
 import {
   Select,
   SelectContent,
@@ -23,16 +22,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-import { Star, StarOff } from "lucide-react";
+import { Star, StarOff, User } from "lucide-react";
 import { useToast } from "./hooks/use-toast";
 
 import { Workflows } from "@/utils/supabase/workflows";
 
 interface WorkflowSearchProps {
   items: Workflows[];
+  user_id: string;
 }
 
-export default function WorkflowSearch({ items }: WorkflowSearchProps) {
+export default function WorkflowSearch({
+  items,
+  user_id,
+}: WorkflowSearchProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [starredItems, setStarredItems] = useState<Set<number>>(new Set());
   const [selectedInputType, setSelectedInputType] = useState<string>("");
@@ -162,12 +165,10 @@ export default function WorkflowSearch({ items }: WorkflowSearchProps) {
                               </SelectContent>
                             </Select>
                           )}
-                          {selectedInputType === "provider" && selectedProvider === "notion" && (
-                            <div className="mt-2">
-                              <NotionProviderSelect />
-                            </div>
-                          )}
-                          )}
+                          {selectedInputType === "provider" &&
+                            selectedProvider === "notion" && (
+                              <div className="mt-2"></div>
+                            )}
                         </div>
 
                         <div>

@@ -11,9 +11,10 @@ interface NotionSearchResult {
 export async function searchNotion(
   notionToken: string,
   searchQuery: string,
+  pageSize: number,
   resourceType: "page" | "database"
 ): Promise<NotionSearchResult[]> {
-  if (!notionToken || !searchQuery.trim()) return [];
+  if (!notionToken) return [];
 
   const notion = new Client({
     auth: notionToken,
@@ -37,7 +38,7 @@ export async function searchNotion(
     }
 
     const response = await notion.search(searchParams);
-
+    console.log(response);
     return response.results.map((result: any) => {
       let title = "Untitled";
 

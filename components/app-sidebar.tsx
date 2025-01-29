@@ -63,6 +63,17 @@ const data = {
         },
       ],
     },
+    {
+      title: "AI",
+      url: "#",
+      icon: Bot,
+      items: [
+        {
+          title: "Chat",
+          url: "/dashboard/chat",
+        },
+      ],
+    },
   ],
   navManipulation: [
     {
@@ -78,17 +89,6 @@ const data = {
     },
   ],
   navOutput: [
-    {
-      title: "AI",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Chat",
-          url: "/dashboard/chat",
-        },
-      ],
-    },
     {
       title: "Workflows",
       url: "#",
