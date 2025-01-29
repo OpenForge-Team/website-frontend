@@ -2,19 +2,13 @@
 import { Client, APIErrorCode } from "@notionhq/client";
 import { SearchResponse } from "@notionhq/client/build/src/api-endpoints";
 
-interface NotionSearchResult {
-  id: string;
-  title: string;
-  type: "page" | "database" | "block" | "comment";
-  url?: string;
-}
-
 interface searchNotionProps {
   notionToken: string;
   searchQuery?: string;
   pageSize: number;
   resourceType: "page" | "database";
 }
+
 export async function searchNotion({
   notionToken,
   searchQuery,
@@ -45,8 +39,8 @@ export async function searchNotion({
     }
 
     const response: SearchResponse = await notion.search(searchParams);
-    console.log(response);
-    response.results.
+    return response;
+    
   } catch (error: any) {
     if (error.code === APIErrorCode.ObjectNotFound) {
       console.error("Notion object not found:", error);

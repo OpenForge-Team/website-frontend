@@ -183,10 +183,21 @@ export default function WorkflowSearch({
                                 />
                                 <Button 
                                   onClick={async () => {
-                                    const results = await fetch(`/api/notion/search?query=${encodeURIComponent(notionPageUrl)}`)
-                                      .then(res => res.json());
-                                    setSearchResults(results);
-                                    setIsDialogOpen(true);
+                                    try {
+                                      const response = await fetch(`/api/notion/search?query=${encodeURIComponent(notionPageUrl)}`);
+                                      if (!response.ok) {
+                                        throw new Error(await response.text());
+                                      }
+                                      const results = await response.json();
+                                      setSearchResults(results);
+                                      setIsDialogOpen(true);
+                                    } catch (error) {
+                                      toast({
+                                        variant: "destructive",
+                                        title: "Search failed",
+                                        description: error instanceof Error ? error.message : "Failed to search Notion pages"
+                                      });
+                                    }
                                   }}
                                 >
                                   Search Notion Pages
