@@ -1,5 +1,6 @@
 "use server";
 import { Client, APIErrorCode } from "@notionhq/client";
+import { SearchResponse } from "@notionhq/client/build/src/api-endpoints";
 
 interface NotionSearchResult {
   id: string;
@@ -8,13 +9,19 @@ interface NotionSearchResult {
   url?: string;
 }
 
-export async function searchNotion(
-  notionToken: string,
-  searchQuery: string,
-  pageSize: number,
-  resourceType: "page" | "database"
-): Promise<NotionSearchResult[]> {
-  if (!notionToken) return [];
+interface searchNotionProps {
+  notionToken: string;
+  searchQuery?: string;
+  pageSize: number;
+  resourceType: "page" | "database";
+}
+export async function searchNotion({
+  notionToken,
+  searchQuery,
+  pageSize,
+  resourceType,
+}: searchNotionProps): Promise<SearchResponse> {
+  if (!notionToken) throw new Error("No Notion token provided!");
 
   const notion = new Client({
     auth: notionToken,
@@ -26,7 +33,7 @@ export async function searchNotion(
         property: "object",
         value: resourceType,
       },
-      page_size: 100,
+      page_size: pageSize,
       sort: {
         timestamp: "last_edited_time",
         direction: "descending",
@@ -37,28 +44,9 @@ export async function searchNotion(
       searchParams.query = searchQuery;
     }
 
-    const response = await notion.search(searchParams);
+    const response: SearchResponse = await notion.search(searchParams);
     console.log(response);
-    return response.results.map((result: any) => {
-      let title = "Untitled";
-
-      if (result.object === "page") {
-        // Handle different page property formats
-        const properties = result.properties;
-        if (properties.title?.title?.[0]?.plain_text) {
-          title = properties.title.title[0].plain_text;
-        } else if (properties.Name?.title?.[0]?.plain_text) {
-          title = properties.Name.title[0].plain_text;
-        }
-      }
-
-      return {
-        id: result.id,
-        title: title,
-        type: result.object,
-        url: result.url,
-      };
-    });
+    response.results.
   } catch (error: any) {
     if (error.code === APIErrorCode.ObjectNotFound) {
       console.error("Notion object not found:", error);
