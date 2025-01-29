@@ -46,6 +46,7 @@ export default function WorkflowSearch({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [selectedPage, setSelectedPage] = useState<any>(null);
+  const [selectedPageId, setSelectedPageId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -184,7 +185,21 @@ export default function WorkflowSearch({
                                   onChange={(e) =>
                                     setNotionPageUrl(e.target.value)
                                   }
+                                  disabled={!!selectedPageId}
                                 />
+                                {selectedPageId && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      setSelectedPageId(null);
+                                      setSelectedPage(null);
+                                      setNotionPageUrl("");
+                                    }}
+                                  >
+                                    Clear Selection
+                                  </Button>
+                                )}
                                 <Button
                                   onClick={async () => {
                                     try {
@@ -232,7 +247,7 @@ export default function WorkflowSearch({
                                     }
                                   }}
                                 >
-                                  Search Notion Pages
+                                  {selectedPageId ? "Change Notion Page" : "Search Notion Pages"}
                                 </Button>
 
                                 <Dialog
@@ -256,7 +271,8 @@ export default function WorkflowSearch({
                                           }`}
                                           onClick={() => {
                                             setSelectedPage(page);
-                                            setNotionPageUrl(page.url);
+                                            setSelectedPageId(page.id);
+                                            setNotionPageUrl(page.title);
                                             setIsDialogOpen(false);
                                           }}
                                         >
