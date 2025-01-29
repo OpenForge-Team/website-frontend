@@ -181,38 +181,53 @@ export default function WorkflowSearch({
                                 <Input
                                   placeholder="Enter page title to search"
                                   value={notionPageUrl}
-                                  onChange={(e) => setNotionPageUrl(e.target.value)}
+                                  onChange={(e) =>
+                                    setNotionPageUrl(e.target.value)
+                                  }
                                 />
-                                <Button 
+                                <Button
                                   onClick={async () => {
                                     try {
-                                      const providerUser = await getProviderUser(user_id, "notion");
-                                      
-                                      if (!providerUser?.access_token) {
-                                        throw new Error("Notion integration not connected");
+                                      const providerUser =
+                                        await getProviderUser(
+                                          user_id,
+                                          "notion"
+                                        );
+
+                                      if (!providerUser?.token) {
+                                        throw new Error(
+                                          "Notion integration not connected"
+                                        );
                                       }
 
                                       const results = await searchNotion({
-                                        notionToken: providerUser.access_token,
+                                        notionToken: providerUser.token,
                                         searchQuery: notionPageUrl,
                                         pageSize: 10,
-                                        resourceType: "page"
+                                        resourceType: "page",
                                       });
-                                      
-                                      const formattedResults = results.results.map((page: any) => ({
-                                        id: page.id,
-                                        title: page.properties?.title?.title[0]?.plain_text || 'Untitled',
-                                        url: page.url,
-                                        last_edited_time: page.last_edited_time
-                                      }));
-                                      
+
+                                      const formattedResults =
+                                        results.results.map((page: any) => ({
+                                          id: page.id,
+                                          title:
+                                            page.properties?.title?.title[0]
+                                              ?.plain_text || "Untitled",
+                                          url: page.url,
+                                          last_edited_time:
+                                            page.last_edited_time,
+                                        }));
+
                                       setSearchResults(formattedResults);
                                       setIsDialogOpen(true);
                                     } catch (error) {
                                       toast({
                                         variant: "destructive",
                                         title: "Search failed",
-                                        description: error instanceof Error ? error.message : "Failed to search Notion pages"
+                                        description:
+                                          error instanceof Error
+                                            ? error.message
+                                            : "Failed to search Notion pages",
                                       });
                                     }
                                   }}
@@ -220,17 +235,24 @@ export default function WorkflowSearch({
                                   Search Notion Pages
                                 </Button>
 
-                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                <Dialog
+                                  open={isDialogOpen}
+                                  onOpenChange={setIsDialogOpen}
+                                >
                                   <DialogContent>
                                     <DialogHeader>
-                                      <DialogTitle>Select a Notion Page</DialogTitle>
+                                      <DialogTitle>
+                                        Select a Notion Page
+                                      </DialogTitle>
                                     </DialogHeader>
                                     <div className="max-h-[60vh] overflow-y-auto">
                                       {searchResults.map((page) => (
                                         <div
                                           key={page.id}
                                           className={`p-2 hover:bg-accent cursor-pointer ${
-                                            selectedPage?.id === page.id ? 'bg-accent' : ''
+                                            selectedPage?.id === page.id
+                                              ? "bg-accent"
+                                              : ""
                                           }`}
                                           onClick={() => {
                                             setSelectedPage(page);
@@ -238,7 +260,9 @@ export default function WorkflowSearch({
                                             setIsDialogOpen(false);
                                           }}
                                         >
-                                          <div className="font-medium">{page.title}</div>
+                                          <div className="font-medium">
+                                            {page.title}
+                                          </div>
                                           <div className="text-sm text-muted-foreground">
                                             {page.last_edited_time}
                                           </div>
