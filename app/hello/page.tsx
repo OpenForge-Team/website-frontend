@@ -45,32 +45,36 @@ export default function Home() {
         
     </div>
         <div id="featureCards" className="flex flex-col justify-center items-center gap-16 self-stretch">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <FeatureCard
-                icon={<svg>/* Icon for Seamless Information Movement */</svg>}
-                title="Seamless Information Movement"
-                description="Automated workflows ensure every process flows effortlessly within your business, eliminating bottlenecks and inefficiencies."
-                learnMoreHref="#"
-            />
-            <FeatureCard
-                icon={<svg>/* Icon for Effortless Connectivity */</svg>}
-                title="Effortless Connectivity"
-                description="Unified I/O channels automatically gather and distribute information across all tools, inside and outside your business, ensuring no insights are lost."
-                learnMoreHref="#"
-            />
-            <FeatureCard
-                icon={<svg>/* Icon for Self-Updating Knowledge Base */</svg>}
-                title="Self-Updating Knowledge Base"
-                description="A dynamic hub where all your business knowledge is connected to resources, departments, and operational arenas, providing consistent and up-to-date information."
-                learnMoreHref="#"
-            />
-            <FeatureCard
-                icon={<svg>/* Icon for Custom Business Blueprint */</svg>}
-                title="Custom Business Blueprint"
-                description="A flexible system designed to adapt to your unique business structure, allowing you to model your entities and workflows exactly the way you operate, without the need to conform to rigid systems."
-                learnMoreHref="#"
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <FeatureCard
+                    icon={<svg>/* Icon for Seamless Information Movement */</svg>}
+                    title="Seamless Information Movement"
+                    description="Automated workflows ensure every process flows effortlessly within your business, eliminating bottlenecks and inefficiencies."
+                    learnMoreHref="#"
+                />
+                <FeatureCard
+                    icon={<svg>/* Icon for Effortless Connectivity */</svg>}
+                    title="Effortless Connectivity"
+                    description="Unified I/O channels automatically gather and distribute information across all tools, inside and outside your business, ensuring no insights are lost."
+                    learnMoreHref="#"
+                />
+                <FeatureCard
+                    icon={<svg>/* Icon for Self-Updating Knowledge Base */</svg>}
+                    title="Self-Updating Knowledge Base"
+                    description="A dynamic hub where all your business knowledge is connected to resources, departments, and operational arenas, providing consistent and up-to-date information."
+                    learnMoreHref="#"
+                />
+                <FeatureCard
+                    icon={<svg>/* Icon for Custom Business Blueprint */</svg>}
+                    title="Custom Business Blueprint"
+                    description="A flexible system designed to adapt to your unique business structure, allowing you to model your entities and workflows exactly the way you operate, without the need to conform to rigid systems."
+                    learnMoreHref="#"
+                />
+            </div>
         </div>
+        <div style={{ display: 'flex', padding: '64px 320px', flexDirection: 'column', alignItems: 'flex-start', gap: '10px', alignSelf: 'stretch', background: 'var(--Generic-White, #FFF)' }}>
+            <h3>How It Works</h3>
+            <p>Discover the unique features that make our platform stand out and help you enhance your jiu-jitsu journey.</p>
         </div>
 
     </div>
