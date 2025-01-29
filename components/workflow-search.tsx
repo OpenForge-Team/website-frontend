@@ -129,8 +129,8 @@ export default function WorkflowSearch({
                     <div className="space-y-6">
                       <p>{item.long_desc}</p>
                       <div className="space-y-4">
+                        <h4 className="mb-2 font-medium">Input Type</h4>
                         <div>
-                          <h4 className="mb-2 font-medium">Input Type</h4>
                           <Select
                             onValueChange={(value) => {
                               setSelectedInputType(value);
@@ -148,6 +148,8 @@ export default function WorkflowSearch({
                               <SelectItem value="provider">Provider</SelectItem>
                             </SelectContent>
                           </Select>
+                        </div>
+                        <div>
                           {selectedInputType === "provider" && (
                             <Select
                               onValueChange={(value) => {
@@ -165,56 +167,58 @@ export default function WorkflowSearch({
                               </SelectContent>
                             </Select>
                           )}
+                        </div>
+                        <div>
                           {selectedInputType === "provider" &&
                             selectedProvider === "notion" && (
                               <div className="mt-2"></div>
                             )}
                         </div>
+                      </div>
 
-                        <div>
-                          <h4 className="mb-2 font-medium">
-                            Transformation Type
-                          </h4>
-                          <Select
-                            onValueChange={(value) => {
-                              toast({
-                                description: `Selected transformation: ${value}`,
-                              });
-                            }}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select transformation type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="n8n">N8N</SelectItem>
-                              <SelectItem value="llm">LLM</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
+                      <div className="space-y-4">
+                        <h4 className="mb-2 font-medium">
+                          Transformation Type
+                        </h4>
+                        <Select
+                          onValueChange={(value) => {
+                            toast({
+                              description: `Selected transformation: ${value}`,
+                            });
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select transformation type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="n8n">N8N</SelectItem>
+                            <SelectItem value="llm">LLM</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
 
-                        <div>
-                          <h4 className="mb-2 font-medium">Output Type</h4>
-                          <Select
-                            onValueChange={(value) => {
-                              toast({
-                                description: `Selected output: ${value}`,
-                              });
-                            }}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select output type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="workflow">Workflow</SelectItem>
-                              <SelectItem value="note">Note</SelectItem>
-                              <SelectItem value="provider">Provider</SelectItem>
-                              <SelectItem value="sms">SMS</SelectItem>
-                              <SelectItem value="email">Email</SelectItem>
-                              <SelectItem value="telegram">Telegram</SelectItem>
-                              <SelectItem value="whatsapp">WhatsApp</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
+                      <div className="space-y-4">
+                        <h4 className="mb-2 font-medium">Output Type</h4>
+                        <Select
+                          onValueChange={(value) => {
+                            toast({
+                              description: `Selected output: ${value}`,
+                            });
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select output type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="workflow">Workflow</SelectItem>
+                            <SelectItem value="note">Note</SelectItem>
+                            <SelectItem value="provider">Provider</SelectItem>
+                            <SelectItem value="sms">SMS</SelectItem>
+                            <SelectItem value="email">Email</SelectItem>
+                            <SelectItem value="telegram">Telegram</SelectItem>
+                            <SelectItem value="whatsapp">WhatsApp</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </DialogContent>
