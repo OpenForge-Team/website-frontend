@@ -24,6 +24,7 @@ import {
 import { useEffect, useState } from "react";
 import { Star, StarOff, User } from "lucide-react";
 import { useToast } from "./hooks/use-toast";
+import { searchNotion } from "@/utils/notion/search";
 
 import { Workflows } from "@/utils/supabase/workflows";
 
@@ -184,12 +185,20 @@ export default function WorkflowSearch({
                                 <Button 
                                   onClick={async () => {
                                     try {
-                                      const response = await fetch(`/api/notion/search?query=${encodeURIComponent(notionPageUrl)}`);
-                                      if (!response.ok) {
-                                        throw new Error(await response.text());
-                                      }
-                                      const results = await response.json();
-                                      setSearchResults(results);
+                                      const results = await searchNotion({
+                                        searchQuery: notionPageUrl,
+                                        pageSize: 10,
+                                        resourceType: "page"
+                                      });
+                                      
+                                      const formattedResults = results.results.map((page: any) => ({
+                                        id: page.id,
+                                        title: page.properties?.title?.title[0]?.plain_text || 'Untitled',
+                                        url: page.url,
+                                        last_edited_time: page.last_edited_time
+                                      }));
+                                      
+                                      setSearchResults(formattedResults);
                                       setIsDialogOpen(true);
                                     } catch (error) {
                                       toast({
