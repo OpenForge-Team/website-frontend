@@ -63,6 +63,7 @@ export const uploadDocument = async ({
       subject_id,
       name: file.name,
       file_name: `${file_name}.${extension}`,
+      mime_type: file.type,
     })
     .select()
     .single();

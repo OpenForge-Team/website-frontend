@@ -54,12 +54,12 @@ export const uploadDocumentR2 = async ({
     throw error;
   }
 };
-export const downloadDocumentR2 = async (file_name: string) => {
+export const getDocumentUrl = async (file_name: string) => {
   try {
-    const public_urls = await bucketDocuments.getObjectPublicUrls(file_name);
-    return public_urls;
+    const url = await bucketDocuments.getObjectPublicUrl(file_name);
+    return url;
   } catch (error) {
-    console.error("Error downloading document:", error);
+    console.error("Error getting document URL:", error);
     throw error;
   }
 };

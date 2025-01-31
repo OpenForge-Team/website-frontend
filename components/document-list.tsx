@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getDocuments, type Documents } from "@/utils/supabase/documents";
 import { FileText } from "lucide-react";
+import { DocumentViewer } from "./document-viewer";
 
 interface DocumentListProps {
   userId: string | undefined;
@@ -11,6 +12,7 @@ interface DocumentListProps {
 export function DocumentList({ userId }: DocumentListProps) {
   const [documents, setDocuments] = useState<Documents[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDocument, setSelectedDocument] = useState<Documents | null>(null);
 
   useEffect(() => {
     async function fetchDocuments() {
@@ -54,11 +56,11 @@ export function DocumentList({ userId }: DocumentListProps) {
                 })}
               </p>
               <div className="flex items-center justify-end space-x-2 mt-2">
-                <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                <button 
+                  onClick={() => setSelectedDocument(doc)}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                >
                   View
-                </button>
-                <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
-                  Download
                 </button>
               </div>
             </div>
@@ -73,6 +75,13 @@ export function DocumentList({ userId }: DocumentListProps) {
             Upload documents to see them listed here
           </p>
         </div>
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          fileName={selectedDocument.file_name}
+          fileType={selectedDocument.mime_type || 'application/octet-stream'}
+          onClose={() => setSelectedDocument(null)}
+        />
       )}
     </div>
   );
