@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getSubjects } from "@/utils/supabase/subjects";
+import { getSubjects, deleteSubject } from "@/utils/supabase/subjects";
 import { SubjectCard } from "./subject-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUser } from "@/utils/queries";
@@ -51,10 +51,25 @@ export function SubjectsView() {
     );
   }
 
+  const handleDelete = async (id: string) => {
+    if (user) {
+      try {
+        await deleteSubject(id);
+        setSubjects(subjects.filter(subject => subject.id !== id));
+      } catch (error) {
+        console.error("Error deleting subject:", error);
+      }
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {subjects.map((subject) => (
-        <SubjectCard key={subject.id} subject={subject} />
+        <SubjectCard 
+          key={subject.id} 
+          subject={subject}
+          onDelete={handleDelete}
+        />
       ))}
     </div>
   );

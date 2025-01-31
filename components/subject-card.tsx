@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { File, ChevronRight } from "lucide-react";
+import { File, ChevronRight, Trash2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,9 +14,10 @@ interface SubjectCardProps {
     documents?: any[];
     notes?: any[];
   };
+  onDelete?: (id: string) => void;
 }
 
-export function SubjectCard({ subject }: SubjectCardProps) {
+export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const documents = subject.documents || [];
   const notes = subject.notes || [];
@@ -26,15 +27,27 @@ export function SubjectCard({ subject }: SubjectCardProps) {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{subject.name}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="transition-transform duration-200 ease-in-out"
-            style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
-          >
-            <ChevronRight size={20} />
-          </Button>
+          <div className="flex gap-2">
+            {onDelete && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onDelete(subject.id)}
+                className="text-destructive hover:text-destructive"
+              >
+                <Trash2 size={20} />
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="transition-transform duration-200 ease-in-out"
+              style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
+            >
+              <ChevronRight size={20} />
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
       <AnimatePresence>
