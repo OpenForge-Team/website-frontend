@@ -58,7 +58,7 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                           href={`/dashboard/knowledge/documents/${doc.id}`}
                           className="hover:underline"
                         >
-                          {doc.title}
+                          {doc.name}
                         </Link>
                       </li>
                     ))}
