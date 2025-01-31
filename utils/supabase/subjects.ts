@@ -40,3 +40,15 @@ export const addSubject = async ({
   }
   return data;
 };
+
+export const deleteSubject = async (subject_id: string) => {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("subjects")
+    .delete()
+    .eq("id", subject_id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
