@@ -12,24 +12,54 @@ const r2 = new R2(
   }
 );
 // Initialize bucket instance
-const bucket = r2.bucket("openforgevocalnotes");
-interface uploadVocalNoteProps {
+const bucketVocal = r2.bucket("openforgevocalnotes");
+interface uploadVocalNoteR2Props {
   note_id: string;
   buffer: Blob;
 }
-export const uploadVocalNote = async ({
+export const uploadVocalNoteR2 = async ({
   buffer,
   note_id,
-}: uploadVocalNoteProps) => {
+}: uploadVocalNoteR2Props) => {
   try {
     if (!buffer || !note_id) {
       throw new Error("No Buffer or Note ID!");
     }
     // Convert Blob to ArrayBuffer for upload
     const arrayBuffer = Buffer.from(await buffer.arrayBuffer());
-    await bucket.upload(arrayBuffer, `${note_id}.mp3`);
+    await bucketVocal.upload(arrayBuffer, `${note_id}.mp3`);
   } catch (error) {
     console.error("Error uploading vocal note:", error);
+    throw error;
+  }
+};
+const bucketDocuments = r2.bucket("openforgedocuments");
+interface uploadDocumentProps {
+  file_name: string;
+  buffer: Blob;
+}
+export const uploadDocumentR2 = async ({
+  buffer,
+  file_name,
+}: uploadDocumentProps) => {
+  try {
+    if (!buffer || !file_name) {
+      throw new Error("No Buffer or Note ID!");
+    }
+    // Convert Blob to ArrayBuffer for upload
+    const arrayBuffer = Buffer.from(await buffer.arrayBuffer());
+    await bucketDocuments.upload(arrayBuffer, `${file_name}`);
+  } catch (error) {
+    console.error("Error uploading vocal note:", error);
+    throw error;
+  }
+};
+export const downloadDocumentR2 = async (file_name: string) => {
+  try {
+    const public_urls = await bucketDocuments.getObjectPublicUrls(file_name);
+    return public_urls;
+  } catch (error) {
+    console.error("Error downloading document:", error);
     throw error;
   }
 };
