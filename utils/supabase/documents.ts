@@ -1,7 +1,11 @@
 "use server";
 import type { Database } from "@/database.types";
 import { createClient } from "@/utils/supabase/server";
-import { uploadDocumentR2, uploadVocalNoteR2 } from "@/utils/storage/r2";
+import {
+  deleteDocumentR2,
+  uploadDocumentR2,
+  uploadVocalNoteR2,
+} from "@/utils/storage/r2";
 import crypto from "crypto";
 var mime = require("mime-types");
 export type Documents = Database["public"]["Tables"]["documents"]["Row"];
@@ -84,9 +88,12 @@ interface DeleteDocumentProps {
   file_name: string;
 }
 
-export const deleteDocument = async ({ document_id, file_name }: DeleteDocumentProps) => {
+export const deleteDocument = async ({
+  document_id,
+  file_name,
+}: DeleteDocumentProps) => {
   const supabase = await createClient();
-  
+
   // Delete from database
   const { error } = await supabase
     .from("documents")
