@@ -78,3 +78,25 @@ export const uploadDocument = async ({
 
   return data;
 };
+
+interface DeleteDocumentProps {
+  document_id: string;
+  file_name: string;
+}
+
+export const deleteDocument = async ({ document_id, file_name }: DeleteDocumentProps) => {
+  const supabase = await createClient();
+  
+  // Delete from database
+  const { error } = await supabase
+    .from("documents")
+    .delete()
+    .eq("id", document_id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // Delete from R2 storage
+  await deleteDocumentR2({ file_name });
+};

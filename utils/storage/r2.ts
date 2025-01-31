@@ -63,3 +63,16 @@ export const getDocumentUrl = async (file_name: string) => {
     throw error;
   }
 };
+
+interface deleteDocumentR2Props {
+  file_name: string;
+}
+
+export const deleteDocumentR2 = async ({ file_name }: deleteDocumentR2Props) => {
+  try {
+    await bucketDocuments.delete(file_name);
+  } catch (error) {
+    console.error("Error deleting document:", error);
+    throw error;
+  }
+};

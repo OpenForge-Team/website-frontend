@@ -1,9 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getDocuments, type Documents } from "@/utils/supabase/documents";
+import { getDocuments, type Documents, deleteDocument } from "@/utils/supabase/documents";
 import { FileText } from "lucide-react";
 import { DocumentViewer } from "./document-viewer";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface DocumentListProps {
   userId: string | undefined;
@@ -65,6 +77,43 @@ export function DocumentList({ userId }: DocumentListProps) {
                 >
                   View
                 </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="text-sm font-medium"
+                    >
+                      Remove
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently delete the document and cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            await deleteDocument({
+                              document_id: doc.id,
+                              file_name: doc.file_name
+                            });
+                            setDocuments(prev => prev.filter(d => d.id !== doc.id));
+                          } catch (error) {
+                            console.error("Failed to delete document:", error);
+                          }
+                        }}
+                      >
+                        Confirm Remove
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </div>
