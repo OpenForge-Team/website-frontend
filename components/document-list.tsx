@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { formatDate } from "@/lib/utils";
-import { getDocuments, type Documents, deleteDocument } from "@/utils/supabase/documents";
+import {
+  getDocuments,
+  type Documents,
+  deleteDocument,
+} from "@/utils/supabase/documents";
 import { FileText } from "lucide-react";
 import { DocumentViewer } from "./document-viewer";
 import { Button } from "@/components/ui/button";
@@ -52,7 +55,7 @@ export function DocumentList({ userId }: DocumentListProps) {
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {documents.map((doc) => (
-          <div 
+          <div
             key={doc.id}
             className="group flex flex-col p-6 bg-background border border-border/40 rounded-lg transition-all hover:border-primary/30 hover:bg-accent/50 duration-200"
           >
@@ -82,11 +85,7 @@ export function DocumentList({ userId }: DocumentListProps) {
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="h-8"
-                    >
+                    <Button variant="destructive" size="sm" className="h-8">
                       Remove
                     </Button>
                   </AlertDialogTrigger>
@@ -94,7 +93,8 @@ export function DocumentList({ userId }: DocumentListProps) {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This will permanently delete the document and cannot be undone.
+                        This will permanently delete the document and cannot be
+                        undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -104,9 +104,11 @@ export function DocumentList({ userId }: DocumentListProps) {
                           try {
                             await deleteDocument({
                               document_id: doc.id,
-                              file_name: doc.file_name
+                              file_name: doc.file_name,
                             });
-                            setDocuments(prev => prev.filter(d => d.id !== doc.id));
+                            setDocuments((prev) =>
+                              prev.filter((d) => d.id !== doc.id)
+                            );
                           } catch (error) {
                             console.error("Failed to delete document:", error);
                           }
@@ -125,7 +127,9 @@ export function DocumentList({ userId }: DocumentListProps) {
       {documents.length === 0 && (
         <div className="text-center py-12 bg-muted rounded-lg border border-border/40">
           <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-          <p className="text-muted-foreground text-lg">No documents uploaded yet.</p>
+          <p className="text-muted-foreground text-lg">
+            No documents uploaded yet.
+          </p>
           <p className="text-muted-foreground/80 text-sm mt-1">
             Upload documents to see them listed here
           </p>
