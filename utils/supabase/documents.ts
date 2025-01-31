@@ -84,7 +84,7 @@ export const uploadDocument = async ({
 };
 
 interface DeleteDocumentProps {
-  document_id: string;
+  document_id: number;
   file_name: string;
 }
 
