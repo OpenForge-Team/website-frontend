@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { NoteEditDialog } from "./note-edit-dialog";
 import { File, ChevronRight, Trash2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,12 @@ interface SubjectCardProps {
 
 export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<{
+    id: string;
+    title: string;
+    content: string;
+  } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const documents = subject.documents || [];
   const notes = subject.notes || [];
 
@@ -72,12 +78,15 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                     {notes.map((note) => (
                       <li key={note.id} className="flex items-center space-x-2">
                         <File size={16} />
-                        <Link
-                          href={`/dashboard/knowledge/notes/${note.id}`}
+                        <button
+                          onClick={() => {
+                            setSelectedNote(note);
+                            setIsDialogOpen(true);
+                          }}
                           className="hover:underline"
                         >
                           {note.title}
-                        </Link>
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -101,6 +110,14 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
           </Button>
         )}
       </div>
+      <NoteEditDialog
+        selectedNote={selectedNote}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onNoteUpdated={() => {
+          // You might want to add a refresh callback here if needed
+        }}
+      />
     </Card>
   );
 }
