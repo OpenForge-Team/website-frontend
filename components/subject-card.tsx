@@ -27,27 +27,15 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{subject.name}</span>
-          <div className="flex gap-2">
-            {onDelete && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onDelete(subject.id)}
-                className="text-destructive hover:text-destructive"
-              >
-                <Trash2 size={20} />
-              </Button>
-            )}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="transition-transform duration-200 ease-in-out"
-              style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
-            >
-              <ChevronRight size={20} />
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="transition-transform duration-200 ease-in-out"
+            style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
+          >
+            <ChevronRight size={20} />
+          </Button>
         </CardTitle>
       </CardHeader>
       <AnimatePresence>
@@ -101,6 +89,18 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="flex justify-end p-4 pt-0">
+        {onDelete && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onDelete(subject.id)}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 size={20} />
+          </Button>
+        )}
+      </div>
     </Card>
   );
 }
