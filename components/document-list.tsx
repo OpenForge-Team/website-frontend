@@ -12,8 +12,10 @@ interface DocumentListProps {
 export function DocumentList({ userId }: DocumentListProps) {
   const [documents, setDocuments] = useState<Documents[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDocument, setSelectedDocument] = useState<Documents | null>(null);
-
+  const [selectedDocument, setSelectedDocument] = useState<Documents | null>(
+    null
+  );
+  var mime = require("mime-types");
   useEffect(() => {
     async function fetchDocuments() {
       if (!userId) return;
@@ -49,14 +51,15 @@ export function DocumentList({ userId }: DocumentListProps) {
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-sm text-gray-500">
-                Uploaded: {new Date(doc.added_at).toLocaleDateString(undefined, {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
+                Uploaded:{" "}
+                {new Date(doc.added_at).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </p>
               <div className="flex items-center justify-end space-x-2 mt-2">
-                <button 
+                <button
                   onClick={() => setSelectedDocument(doc)}
                   className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
@@ -79,7 +82,7 @@ export function DocumentList({ userId }: DocumentListProps) {
       {selectedDocument && (
         <DocumentViewer
           fileName={selectedDocument.file_name}
-          fileType={selectedDocument.mime_type || 'application/octet-stream'}
+          fileType={mime.lookup(selectedDocument.file_name)}
           onClose={() => setSelectedDocument(null)}
         />
       )}

@@ -56,7 +56,7 @@ export const uploadDocumentR2 = async ({
 };
 export const getDocumentUrl = async (file_name: string) => {
   try {
-    const url = await bucketDocuments.getObjectPublicUrl(file_name);
+    const url = await bucketDocuments.getObjectSignedUrl(file_name, 3600);
     return url;
   } catch (error) {
     console.error("Error getting document URL:", error);
