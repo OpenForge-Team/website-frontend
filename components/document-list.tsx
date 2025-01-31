@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { formatDate } from "@/lib/utils";
 import { getDocuments, type Documents, deleteDocument } from "@/utils/supabase/documents";
 import { FileText } from "lucide-react";
 import { DocumentViewer } from "./document-viewer";
@@ -51,38 +52,40 @@ export function DocumentList({ userId }: DocumentListProps) {
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {documents.map((doc) => (
-          <div
+          <div 
             key={doc.id}
-            className="group flex flex-col p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+            className="group flex flex-col p-6 bg-background border border-border/40 rounded-lg transition-all hover:border-primary/30 hover:bg-accent/50 duration-200"
           >
-            <div className="flex items-center space-x-3 mb-3">
-              <FileText className="h-8 w-8 text-blue-500" />
-              <h3 className="font-medium text-lg text-gray-900 truncate flex-1">
+            <div className="flex items-center space-x-3 mb-4">
+              <FileText className="h-8 w-8 text-muted-foreground" />
+              <h3 className="font-semibold text-base text-foreground truncate flex-1">
                 {doc.name}
               </h3>
             </div>
             <div className="flex flex-col space-y-2">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Uploaded:{" "}
-                {new Date(doc.added_at).toLocaleDateString(undefined, {
+                {formatDate(doc.added_at, {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
                 })}
               </p>
-              <div className="flex items-center justify-end space-x-2 mt-2">
-                <button
+              <div className="flex items-center justify-end gap-2 mt-2">
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="text-primary h-8 px-0 hover:underline"
                   onClick={() => setSelectedDocument(doc)}
-                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
                   View
-                </button>
+                </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="destructive"
                       size="sm"
-                      className="text-sm font-medium"
+                      className="h-8"
                     >
                       Remove
                     </Button>
@@ -120,10 +123,10 @@ export function DocumentList({ userId }: DocumentListProps) {
         ))}
       </div>
       {documents.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
-          <FileText className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-          <p className="text-gray-500 text-lg">No documents uploaded yet.</p>
-          <p className="text-gray-400 text-sm mt-1">
+        <div className="text-center py-12 bg-muted rounded-lg border border-border/40">
+          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+          <p className="text-muted-foreground text-lg">No documents uploaded yet.</p>
+          <p className="text-muted-foreground/80 text-sm mt-1">
             Upload documents to see them listed here
           </p>
         </div>
