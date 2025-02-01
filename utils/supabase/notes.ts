@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { generateTitleChunks } from "./rag/generate-title-embeddings";
 import { generateContentChunks } from "./rag/generate-content-embeddings";
-import { uploadVocalNote } from "../storage/r2";
+import { uploadVocalNoteR2 } from "../storage/r2";
 
 export interface Note {
   id: string;
@@ -64,7 +64,7 @@ export const addNote = async ({
   });
 
   if (audioBuffer) {
-    // await uploadVocalNote({
+    // await uploadVocalNoteR2({
     //   note_id: data.id,
     //   buffer: audioBuffer,
     // });
