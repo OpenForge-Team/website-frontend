@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { formatDate } from "@/lib/date";
+import { formatDate } from "@/utils/date";
 import {
   getDocuments,
   type Documents,
@@ -66,7 +66,7 @@ export function DocumentList({ userId }: DocumentListProps) {
                 {doc.name}
               </h3>
             </div>
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-4">
               <p className="text-sm text-muted-foreground">
                 Uploaded:{" "}
                 {formatDate(doc.added_at, {
@@ -75,15 +75,7 @@ export function DocumentList({ userId }: DocumentListProps) {
                   day: "numeric",
                 })}
               </p>
-              <div className="flex items-center justify-end gap-2 mt-2">
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="text-primary h-8 px-0 hover:underline"
-                  onClick={() => setSelectedDocument(doc)}
-                >
-                  View
-                </Button>
+              <div className="flex items-center gap-2 justify-between">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="destructive" size="sm" className="h-8">
@@ -120,6 +112,14 @@ export function DocumentList({ userId }: DocumentListProps) {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="text-primary h-8 px-0 hover:underline"
+                  onClick={() => setSelectedDocument(doc)}
+                >
+                  View
+                </Button>
               </div>
             </div>
           </div>
