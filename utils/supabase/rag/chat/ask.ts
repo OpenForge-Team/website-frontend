@@ -11,8 +11,10 @@ import { retrieveContentChunks } from "../retrieve-content-embeddings";
 import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
 
 const llm = new Ollama({
+  numGpu: 2,
+  numCtx: 4096,
   baseUrl: process.env.OLLAMA_BASEURL,
-  model: "llama3.1:8b-instruct-q6_K",
+  model: "phi4:14b-q4_K_M",
 });
 interface Ask {
   user_id: string;
@@ -32,7 +34,7 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
     user_id,
     workspace_id,
     message,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   try {
@@ -61,7 +63,7 @@ For document references, include the document name and relevant section where po
     });
     console.log("Notes Context:", notesContext.length);
     console.log("Documents Context:", documentsContext.length);
-    
+
     const context = [...notesContext, ...documentsContext];
     console.log("Combined Context:", context.length);
 
@@ -120,6 +122,8 @@ For document references, include the document name and relevant section where po
     // });
   } catch (error) {
     console.error("AI Response Error:", error);
-    throw new Error(`Error generating response: ${error instanceof Error ? error.message : "Unknown error"}`);
+    throw new Error(
+      `Error generating response: ${error instanceof Error ? error.message : "Unknown error"}`
+    );
   }
 };
