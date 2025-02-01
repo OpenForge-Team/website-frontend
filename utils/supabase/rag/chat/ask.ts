@@ -24,6 +24,17 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
     throw new Error('Missing "message" in request body.');
   }
 
+  if (!process.env.OLLAMA_BASEURL) {
+    throw new Error("Missing OLLAMA_BASEURL environment variable");
+  }
+
+  console.log("AI Request:", {
+    user_id,
+    workspace_id,
+    message,
+    timestamp: new Date().toISOString()
+  });
+
   try {
     const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context, if documents are relevant, return the metadata of each chunk as a listicle. 
 If the context doesn't contain any relevant information to the question, don't make something up and just say "I don't know":
@@ -46,7 +57,16 @@ If the context doesn't contain any relevant information to the question, don't m
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
     });
+    console.log("Notes Context:", notesContext.length);
+    console.log("Documents Context:", documentsContext.length);
+    
     const context = [...notesContext, ...documentsContext];
+    console.log("Combined Context:", context.length);
+
+    if (!context || context.length === 0) {
+      console.warn("No context found for query:", message);
+      return "I couldn't find any relevant information to answer that question.";
+    }
     // Build source variable with metadata (avoiding duplicates)
     let source = "## Information Sources\n\n";
     const uniqueSourceIds = new Set();
@@ -68,9 +88,17 @@ If the context doesn't contain any relevant information to the question, don't m
 
     let finalResponse = "";
 
-    // Collect chunks from the response stream
-    for await (const chunk of responseStream) {
-      finalResponse += chunk;
+    try {
+      for await (const chunk of responseStream) {
+        if (typeof chunk === "string") {
+          finalResponse += chunk;
+        } else {
+          console.warn("Received non-string chunk:", chunk);
+        }
+      }
+    } catch (streamError) {
+      console.error("Stream Error:", streamError);
+      throw new Error("Failed to process response stream");
     }
 
     // Add metadata markers to the response
@@ -89,6 +117,7 @@ If the context doesn't contain any relevant information to the question, don't m
     //   stream: true,
     // });
   } catch (error) {
-    throw new Error("Error generating response.");
+    console.error("AI Response Error:", error);
+    throw new Error(`Error generating response: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
 };
