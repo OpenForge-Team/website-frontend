@@ -38,7 +38,7 @@ export default function ViewNotesPage() {
       }
 
       try {
-        const notesbySubjects = await fetchNotesBySubjects();
+        const notesbySubjects = await fetchNotesBySubjects(user.id, activeWorkspace.id);
 
         // Group notes by subject name
         const grouped = notesbySubjects.reduce(

@@ -73,13 +73,13 @@ export const addNote = async ({
   return data.id;
 };
 
-export const getNotesbySubjects = async () => {
+export const getNotesbySubjects = async (user_id: string, subject_id: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("notes")
     .select("id, subject_id, title, content, subjects!inner(name)")
-    .eq("subjects.user_id", "68723abd-6fda-48d5-86b6-0d9badcae0e8")
-    .eq("subjects.workspace_id", "cf010514-ef06-4f05-8a92-f0f79ac5ae15");
+    .eq("subjects.user_id", user_id)
+    .eq("subject_id", subject_id);
   if (error) {
     throw new Error(error.message);
   }
