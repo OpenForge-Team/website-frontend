@@ -51,7 +51,8 @@ If the context doesn't contain any relevant information to the question, don't m
     let source = "## Information Sources\n\n";
     const uniqueSourceIds = new Set();
     context.forEach((doc) => {
-      const sourceId = doc.metadata.note_id || doc.metadata.document_id || "Unknown";
+      const sourceId =
+        doc.metadata.note_id || doc.metadata.document_id || "Unknown";
       if (!uniqueSourceIds.has(sourceId)) {
         uniqueSourceIds.add(sourceId);
         const sourceType = doc.metadata.note_id ? "Note" : "Document";

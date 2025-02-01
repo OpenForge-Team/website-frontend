@@ -7,6 +7,7 @@ import {
   uploadVocalNoteR2,
 } from "@/utils/storage/r2";
 import crypto from "crypto";
+import { generateContentChunks } from "./rag/generate-document-embeddings";
 var mime = require("mime-types");
 export type Documents = Database["public"]["Tables"]["documents"]["Row"];
 interface GetDocumentsProps {
@@ -67,24 +68,31 @@ export const uploadDocument = async ({
       subject_id,
       name: file.name,
       file_name: `${file_name}.${extension}`,
-      mime_type: file.type,
     })
     .select()
     .single();
-  //Upload file to R2
-  await uploadDocumentR2({
-    file_name: file_name + "." + extension,
-    buffer: blob,
-  });
+
   if (error) {
     throw new Error(error.message);
   }
-
+  try {
+    //Upload file to R2
+    await uploadDocumentR2({
+      file_name: file_name + "." + extension,
+      buffer: blob,
+    });
+    generateContentChunks({
+      document_id: data.id,
+      document_buffer: blob,
+    });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
   return data;
 };
 
 interface DeleteDocumentProps {
-  document_id: number;
+  document_id: string;
   file_name: string;
 }
 
