@@ -8,6 +8,7 @@ import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { createClient } from "@/utils/supabase/server";
 import { Ollama } from "@langchain/ollama";
 import { retrieveContentChunks } from "../retrieve-content-embeddings";
+import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
 
 const llm = new Ollama({
   baseUrl: process.env.OLLAMA_BASEURL,
@@ -41,8 +42,11 @@ If the context doesn't contain any relevant information to the question, don't m
       llm,
       prompt: questionAnsweringPrompt,
     });
-    const context = await retrieveContentChunks({ query: message });
-    console.log(context);
+    const notesContext = await retrieveContentChunks({ query: message });
+    const documentsContext = await retrieveDocumentContentChunks({
+      query: message,
+    });
+    const context = [notesContext, documentsContext];
     // Build source variable with metadata (avoiding duplicates)
     let source = "## Information Sources\n\n";
     const uniqueNoteIds = new Set();
