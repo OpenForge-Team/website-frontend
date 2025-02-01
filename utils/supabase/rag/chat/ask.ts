@@ -38,10 +38,11 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
   });
 
   try {
-    const SYSTEM_TEMPLATE = `Answer strictly using only the provided context. When referencing information:
-- Cite sources inline with [Source: Note/Document Name]
-- Only list sources that were actually used in your answer
-- Omit sources that didn't contribute meaningful information
+    const SYSTEM_TEMPLATE = `Answer strictly using only the provided context. Follow these rules:
+1. When using information from a source, IMMEDIATELY mark it with [SourceRef:ID] where ID is the note/document ID
+2. Only mark sources that provided meaningful information
+3. List each source reference ONCE per paragraph
+4. Never mention sources that weren't used
 
 <context>
 {context}
@@ -69,7 +70,20 @@ If no context is relevant, say "I don't have enough information to answer that."
     console.log("Notes Context:", notesContext.length);
     console.log("Documents Context:", documentsContext.length);
 
-    const context = [...notesContext, ...documentsContext];
+    let usedSourceIds = new Set<string>();
+    const context = [...notesContext, ...documentsContext]
+      .filter(doc => doc.pageContent?.trim()) // Filter empty content first
+      .map(doc => {
+        const sourceId = doc.metadata?.note_id || doc.metadata?.document_id;
+        if (sourceId) {
+          // Add special markers that we'll detect in the response
+          return {
+            ...doc,
+            pageContent: `${doc.pageContent}\n[SourceRef:${sourceId}]`
+          };
+        }
+        return doc;
+      });
     console.log("Combined Context:", context.length);
 
     if (!context || context.length === 0) {
@@ -99,11 +113,21 @@ If no context is relevant, say "I don't have enough information to answer that."
     });
 
     let finalResponse = "";
+    const detectedSourceIds = new Set<string>();
 
     try {
       for await (const chunk of responseStream) {
         if (typeof chunk === "string") {
-          finalResponse += chunk;
+          // Detect source references in the generated text
+          const sourceMatches = chunk.match(/\[SourceRef:([^\]]+)\]/g);
+          if (sourceMatches) {
+            sourceMatches.forEach(match => {
+              const sourceId = match.replace(/\[SourceRef:(.+)\]/, '$1');
+              detectedSourceIds.add(sourceId);
+            });
+          }
+          // Clean the markers from the final output
+          finalResponse += chunk.replace(/\[SourceRef:[^\]]+\]/g, '');
         } else {
           console.warn("Received non-string chunk:", chunk);
         }
@@ -113,9 +137,25 @@ If no context is relevant, say "I don't have enough information to answer that."
       throw new Error("Failed to process response stream");
     }
 
-    // Add metadata markers to the response
+    // Build source list using only detected sources
+    let source = "## Information Sources\n\n";
+    const uniqueSourceIds = new Set<string>();
+
+    context.forEach((doc) => {
+      const sourceId = doc.metadata?.note_id || doc.metadata?.document_id;
+      if (sourceId && detectedSourceIds.has(sourceId) && !uniqueSourceIds.has(sourceId)) {
+        uniqueSourceIds.add(sourceId);
+        const sourceType = doc.metadata.note_id ? "Note" : "Document";
+        source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
+      }
+    });
+
+    // Update metadata filtering to match detected sources
     const sourceMetadata = context
-      .filter(doc => doc.metadata && (doc.metadata.note_id || doc.metadata.document_id))
+      .filter(doc => {
+        const sourceId = doc.metadata?.note_id || doc.metadata?.document_id;
+        return sourceId && detectedSourceIds.has(sourceId);
+      })
       .map((doc) => ({
         id: doc.metadata.note_id || doc.metadata.document_id,
         type: doc.metadata.note_id ? "note" : "document",
