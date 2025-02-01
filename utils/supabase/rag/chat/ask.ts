@@ -38,15 +38,16 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
   });
 
   try {
-    const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context. If documents or notes are referenced, include their titles in the response.
-If the context doesn't contain any relevant information to the question, respond with "I don't have enough relevant information to answer that question."
-
-For document references, include the document name and relevant section where possible.
+    const SYSTEM_TEMPLATE = `Answer strictly using only the provided context. When referencing information:
+- Cite sources inline with [Source: Note/Document Name]
+- Only list sources that were actually used in your answer
+- Omit sources that didn't contribute meaningful information
 
 <context>
 {context}
 </context>
-`;
+
+If no context is relevant, say "I don't have enough information to answer that."`;
 
     const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
       ["system", SYSTEM_TEMPLATE],
@@ -57,9 +58,13 @@ For document references, include the document name and relevant section where po
       llm,
       prompt: questionAnsweringPrompt,
     });
-    const notesContext = await retrieveContentChunks({ query: message });
+    const notesContext = await retrieveContentChunks({
+      query: message,
+      filter: "content,metadata.note_id,metadata.document_id",
+    });
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
+      filter: "content,metadata.note_id,metadata.document_id",
     });
     console.log("Notes Context:", notesContext.length);
     console.log("Documents Context:", documentsContext.length);
@@ -73,14 +78,17 @@ For document references, include the document name and relevant section where po
     }
     // Build source variable with metadata (avoiding duplicates)
     let source = "## Information Sources\n\n";
-    const uniqueSourceIds = new Set();
+    const uniqueSourceIds = new Set<string>();
+
     context.forEach((doc) => {
-      const sourceId =
-        doc.metadata.note_id || doc.metadata.document_id || "Unknown";
-      if (!uniqueSourceIds.has(sourceId)) {
-        uniqueSourceIds.add(sourceId);
-        const sourceType = doc.metadata.note_id ? "Note" : "Document";
-        source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
+      // Only include sources that have content and are referenced in metadata
+      if (doc.pageContent?.trim() && doc.metadata) {
+        const sourceId = doc.metadata.note_id || doc.metadata.document_id;
+        if (sourceId && !uniqueSourceIds.has(sourceId)) {
+          uniqueSourceIds.add(sourceId);
+          const sourceType = doc.metadata.note_id ? "Note" : "Document";
+          source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
+        }
       }
     });
 
@@ -106,10 +114,12 @@ For document references, include the document name and relevant section where po
     }
 
     // Add metadata markers to the response
-    const sourceMetadata = context.map((doc) => ({
-      id: doc.metadata.note_id || doc.metadata.document_id,
-      type: doc.metadata.note_id ? "note" : "document",
-    }));
+    const sourceMetadata = context
+      .filter(doc => doc.metadata && (doc.metadata.note_id || doc.metadata.document_id))
+      .map((doc) => ({
+        id: doc.metadata.note_id || doc.metadata.document_id,
+        type: doc.metadata.note_id ? "note" : "document",
+      }));
 
     finalResponse += `\n\n${source}`;
     finalResponse += `\n<!-- METADATA:${JSON.stringify(sourceMetadata)} -->`;
