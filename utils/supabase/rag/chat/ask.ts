@@ -36,8 +36,10 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
   });
 
   try {
-    const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context, if documents are relevant, return the metadata of each chunk as a listicle. 
-If the context doesn't contain any relevant information to the question, don't make something up and just say "I don't know":
+    const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context. If documents or notes are referenced, include their titles in the response.
+If the context doesn't contain any relevant information to the question, respond with "I don't have enough relevant information to answer that question."
+
+For document references, include the document name and relevant section where possible.
 
 <context>
 {context}
