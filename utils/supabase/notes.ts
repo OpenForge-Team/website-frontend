@@ -103,6 +103,18 @@ export const getNotebyId = async (user_id: string, note_id: string) => {
     throw new Error(error);
   }
 };
+
+export const getNoteById = async (noteId: string) => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('notes')
+    .select('*')
+    .eq('id', noteId)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
 export const updateNote = async ({
   note_id,
   title,

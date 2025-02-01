@@ -96,6 +96,18 @@ interface DeleteDocumentProps {
   file_name: string;
 }
 
+export const getDocumentById = async (documentId: string) => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('documents')
+    .select('*')
+    .eq('id', documentId)
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
 export const deleteDocument = async ({
   document_id,
   file_name,

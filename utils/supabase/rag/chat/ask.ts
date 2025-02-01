@@ -73,8 +73,14 @@ If the context doesn't contain any relevant information to the question, don't m
       finalResponse += chunk;
     }
 
-    // Append the source markdown to the final response
+    // Add metadata markers to the response
+    const sourceMetadata = context.map(doc => ({
+      id: doc.metadata.note_id || doc.metadata.document_id,
+      type: doc.metadata.note_id ? 'note' : 'document'
+    }));
+
     finalResponse += `\n\n${source}`;
+    finalResponse += `\n<!-- METADATA:${JSON.stringify(sourceMetadata)} -->`;
 
     return finalResponse;
     // const response = await ollama.chat({
