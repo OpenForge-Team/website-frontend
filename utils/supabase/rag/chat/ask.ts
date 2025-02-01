@@ -74,9 +74,9 @@ If the context doesn't contain any relevant information to the question, don't m
     }
 
     // Add metadata markers to the response
-    const sourceMetadata = context.map(doc => ({
+    const sourceMetadata = context.map((doc) => ({
       id: doc.metadata.note_id || doc.metadata.document_id,
-      type: doc.metadata.note_id ? 'note' : 'document'
+      type: doc.metadata.note_id ? "note" : "document",
     }));
 
     finalResponse += `\n\n${source}`;
