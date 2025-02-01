@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { NoteEditDialog } from "./note-edit-dialog";
 import { File, ChevronRight, Trash2 } from "lucide-react";
-import mime from "mime-types";
+const mime = require("mime-types");
 import { DocumentViewer } from "./document-viewer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,7 +69,12 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                       <li key={doc.id} className="flex items-center space-x-2">
                         <File size={16} />
                         <button
-                          onClick={() => setSelectedDocument(doc)}
+                          onClick={() =>
+                            setSelectedDocument({
+                              ...doc,
+                              file_name: `/documents/${doc.file_name}`,
+                            })
+                          }
                           className="hover:underline"
                         >
                           {doc.name}
@@ -121,7 +126,10 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
       {selectedDocument && (
         <DocumentViewer
           fileName={selectedDocument.file_name}
-          fileType={mime.lookup(selectedDocument.file_name)}
+          fileType={
+            mime.lookup(selectedDocument.file_name) ||
+            "application/octet-stream"
+          }
           onClose={() => setSelectedDocument(null)}
         />
       )}
