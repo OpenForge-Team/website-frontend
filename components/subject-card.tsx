@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { NoteEditDialog } from "./note-edit-dialog";
 import { File, ChevronRight, Trash2 } from "lucide-react";
+import mime from "mime-types";
+import { DocumentViewer } from "./document-viewer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,6 +28,11 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
     content: string;
   } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<{
+    id: string;
+    file_name: string;
+    name: string;
+  } | null>(null);
   const documents = subject.documents || [];
   const notes = subject.notes || [];
 
@@ -61,12 +68,12 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                     {documents.map((doc) => (
                       <li key={doc.id} className="flex items-center space-x-2">
                         <File size={16} />
-                        <Link
-                          href={`/dashboard/knowledge/documents/${doc.id}`}
+                        <button
+                          onClick={() => setSelectedDocument(doc)}
                           className="hover:underline"
                         >
                           {doc.name}
-                        </Link>
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -111,6 +118,13 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
           </Button>
         )}
       </div>
+      {selectedDocument && (
+        <DocumentViewer
+          fileName={selectedDocument.file_name}
+          fileType={mime.lookup(selectedDocument.file_name)}
+          onClose={() => setSelectedDocument(null)}
+        />
+      )}
       <NoteEditDialog
         selectedNote={selectedNote}
         open={isDialogOpen}
