@@ -46,15 +46,16 @@ If the context doesn't contain any relevant information to the question, don't m
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
     });
-    const context = [notesContext, documentsContext];
+    const context = [...notesContext, ...documentsContext];
     // Build source variable with metadata (avoiding duplicates)
     let source = "## Information Sources\n\n";
-    const uniqueNoteIds = new Set();
-    context.forEach((doc, index) => {
-      const noteId = doc.metadata.note_id || "Unknown";
-      if (!uniqueNoteIds.has(noteId)) {
-        uniqueNoteIds.add(noteId);
-        source += `- Note ${index}: [View Source](#source-${noteId})\n`;
+    const uniqueSourceIds = new Set();
+    context.forEach((doc) => {
+      const sourceId = doc.metadata.note_id || doc.metadata.document_id || "Unknown";
+      if (!uniqueSourceIds.has(sourceId)) {
+        uniqueSourceIds.add(sourceId);
+        const sourceType = doc.metadata.note_id ? "Note" : "Document";
+        source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
       }
     });
 
