@@ -69,12 +69,7 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                       <li key={doc.id} className="flex items-center space-x-2">
                         <File size={16} />
                         <button
-                          onClick={() =>
-                            setSelectedDocument({
-                              ...doc,
-                              file_name: `/documents/${doc.file_name}`,
-                            })
-                          }
+                          onClick={() => setSelectedDocument(doc)}
                           className="hover:underline"
                         >
                           {doc.name}
@@ -126,10 +121,7 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
       {selectedDocument && (
         <DocumentViewer
           fileName={selectedDocument.file_name}
-          fileType={
-            mime.lookup(selectedDocument.file_name) ||
-            "application/octet-stream"
-          }
+          fileType={mime.lookup(selectedDocument.file_name) || "application/octet-stream"}
           onClose={() => setSelectedDocument(null)}
         />
       )}
