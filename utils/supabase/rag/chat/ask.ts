@@ -135,7 +135,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
 
     // Build the source list with actual titles
     sourcesWithTitles.forEach((src) => {
-      source += `- ${src.type === 'note' ? 'Note' : 'Document'}: [${src.title}](#source-${src.id})\n`;
+      source += `- ${src.type === 'note' ? 'Note' : 'Document'}: [${src.title}](#${src.type}-${src.id})\n`;
     });
     console.log("before");
     // Stream the response
