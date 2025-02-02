@@ -42,3 +42,4 @@ next-env.d.ts
 .aider*
 .aider.chat.history.md
 .aider.chat.history.md
+.env.ai
