@@ -6,6 +6,26 @@ import {
 } from "@langchain/core/prompts";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { createClient } from "@/utils/supabase/server";
+
+const getNoteTitle = async (noteId: string) => {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('notes')
+    .select('title')
+    .eq('id', noteId)
+    .single();
+  return data?.title || 'Untitled Note';
+};
+
+const getDocumentTitle = async (documentId: string) => {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('documents')
+    .select('file_name')
+    .eq('id', documentId)
+    .single();
+  return data?.file_name || 'Untitled Document';
+};
 import { Ollama } from "@langchain/ollama";
 import { retrieveContentChunks } from "../retrieve-content-embeddings";
 import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
@@ -46,15 +66,16 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
   });
 
   try {
-    const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context. If documents or notes are referenced, include their titles in the response.
-If the context doesn't contain any relevant information to the question, respond with "I don't have enough relevant information to answer that question."
-
-For document references, include the document name and relevant section where possible.
+    const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context. When referencing documents or notes:
+1. Always include the exact title from the metadata
+2. Mention the title naturally in the response
+3. Only reference documents/notes that contain relevant information
 
 <context>
 {context}
 </context>
-`;
+
+If the context doesn't contain relevant information, respond with "I don't have enough relevant information to answer that question."`;
 
     const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
       ["system", SYSTEM_TEMPLATE],
@@ -82,14 +103,39 @@ For document references, include the document name and relevant section where po
     // Build source variable with metadata (avoiding duplicates)
     let source = "## Information Sources\n\n";
     const uniqueSourceIds = new Set();
-    context.forEach((doc) => {
-      const sourceId =
-        doc.metadata.note_id || doc.metadata.document_id || "Unknown";
-      if (!uniqueSourceIds.has(sourceId)) {
+    const sourceDetails = [];
+
+    // First collect all source metadata
+    for (const doc of context) {
+      const sourceId = doc.metadata.note_id || doc.metadata.document_id;
+      if (sourceId && !uniqueSourceIds.has(sourceId)) {
         uniqueSourceIds.add(sourceId);
-        const sourceType = doc.metadata.note_id ? "Note" : "Document";
-        source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
+        sourceDetails.push({
+          id: sourceId,
+          type: doc.metadata.note_id ? 'note' : 'document'
+        });
       }
+    }
+
+    // Then fetch titles in parallel
+    const titlePromises = sourceDetails.map(async (src) => {
+      if (src.type === 'note') {
+        return {
+          ...src,
+          title: await getNoteTitle(src.id)
+        };
+      }
+      return {
+        ...src,
+        title: await getDocumentTitle(src.id)
+      };
+    });
+
+    const sourcesWithTitles = await Promise.all(titlePromises);
+
+    // Build the source list with actual titles
+    sourcesWithTitles.forEach((src) => {
+      source += `- ${src.type === 'note' ? 'Note' : 'Document'}: ${src.title}\n`;
     });
     console.log("before");
     // Stream the response
@@ -120,7 +166,7 @@ For document references, include the document name and relevant section where po
     }));
 
     finalResponse += `\n\n${source}`;
-    finalResponse += `\n<!-- METADATA:${JSON.stringify(sourceMetadata)} -->`;
+    finalResponse += `\n<!-- METADATA:${JSON.stringify(sourcesWithTitles)} -->`;
 
     return finalResponse;
     // const response = await ollama.chat({
