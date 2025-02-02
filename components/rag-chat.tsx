@@ -46,13 +46,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
   const { toast } = useToast();
-  const [dialogSourceContent, setDialogSourceContent] = useState<{
-    title: string;
-    content: string;
-    subjects: {
-      name: string;
-    };
-  } | null>(null);
+  const [dialogSourceContent, setDialogSourceContent] = useState<any>(null);
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
