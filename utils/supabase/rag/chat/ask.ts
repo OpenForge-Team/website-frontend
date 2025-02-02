@@ -21,10 +21,10 @@ const getDocumentTitle = async (documentId: string) => {
   const supabase = await createClient();
   const { data } = await supabase
     .from('documents')
-    .select('file_name')
+    .select('name')
     .eq('id', documentId)
     .single();
-  return data?.file_name || 'Untitled Document';
+  return data?.name || 'Untitled Document';
 };
 import { Ollama } from "@langchain/ollama";
 import { retrieveContentChunks } from "../retrieve-content-embeddings";
@@ -135,7 +135,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
 
     // Build the source list with actual titles
     sourcesWithTitles.forEach((src) => {
-      source += `- ${src.type === 'note' ? 'Note' : 'Document'}: ${src.title}\n`;
+      source += `- ${src.type === 'note' ? 'Note' : 'Document'}: [${src.title}](#source-${src.id})\n`;
     });
     console.log("before");
     // Stream the response
