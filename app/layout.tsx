@@ -1,14 +1,8 @@
-import DeployButton from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
-import Link from "next/link";
 import "./globals.css";
 import QueryProviders from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { Fragment_Mono } from "next/font/google";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -18,13 +12,19 @@ export const metadata = {
   title: "Next.js and Supabase Starter Kit",
   description: "The fastest way to build apps with Next.js and Supabase",
 };
+const fragmentMono = Fragment_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-fragment-mono",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+    <html lang="en" className={fragmentMono.variable} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
@@ -33,7 +33,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="min-h-screen flex flex-col items-center">
-            <div className="flex flex-col w-full p-5 mb-auto">
+            <div className="flex flex-col w-full mb-auto">
               <QueryProviders>{children}</QueryProviders>
             </div>
           </main>
