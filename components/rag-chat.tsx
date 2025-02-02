@@ -31,6 +31,7 @@ import {
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { getNotebyId } from "@/utils/supabase/notes";
 import { Textarea } from "./ui/textarea";
+import { getDocumentById } from "@/utils/supabase/documents";
 interface Props {
   editable: boolean;
   mode: "chat" | "view";
@@ -201,12 +202,24 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
       setDialogSourceContent(note);
     } catch (error) {}
   };
+  const handleGetDocumentSource = async (document_id: string) => {
+    if (!user) return;
+    try {
+      const document = await getDocumentById(document_id);
+      setDialogSourceContent(document);
+    } catch (error) {}
+  };
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const href = event.currentTarget.getAttribute("href");
-    if (href && href.startsWith("#source-")) {
+    console.log(href);
+    if (href && href.startsWith("#note-")) {
       event.preventDefault();
-      const noteId = href.replace("#source-", ""); // Extract the UUID
-      handleGetNoteSource(noteId); // Call your function
+      const targetId = href.replace("#note-", ""); // Extract the UUID
+      handleGetNoteSource(targetId); // Call your function
+    } else if (href && href.startsWith("#document-")) {
+      event.preventDefault();
+      const targetId = href.replace("#document-", ""); // Extract the UUID
+      handleGetDocumentSource(targetId); // Call your function
     }
   };
   useEffect(() => {

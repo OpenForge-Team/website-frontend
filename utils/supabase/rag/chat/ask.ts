@@ -10,21 +10,21 @@ import { createClient } from "@/utils/supabase/server";
 const getNoteTitle = async (noteId: string) => {
   const supabase = await createClient();
   const { data } = await supabase
-    .from('notes')
-    .select('title')
-    .eq('id', noteId)
+    .from("notes")
+    .select("title")
+    .eq("id", noteId)
     .single();
-  return data?.title || 'Untitled Note';
+  return data?.title || "Untitled Note";
 };
 
 const getDocumentTitle = async (documentId: string) => {
   const supabase = await createClient();
   const { data } = await supabase
-    .from('documents')
-    .select('name')
-    .eq('id', documentId)
+    .from("documents")
+    .select("name")
+    .eq("id", documentId)
     .single();
-  return data?.name || 'Untitled Document';
+  return data?.name || "Untitled Document";
 };
 import { Ollama } from "@langchain/ollama";
 import { retrieveContentChunks } from "../retrieve-content-embeddings";
@@ -112,22 +112,22 @@ If the context doesn't contain relevant information, respond with "I don't have 
         uniqueSourceIds.add(sourceId);
         sourceDetails.push({
           id: sourceId,
-          type: doc.metadata.note_id ? 'note' : 'document'
+          type: doc.metadata.note_id ? "note" : "document",
         });
       }
     }
 
     // Then fetch titles in parallel
     const titlePromises = sourceDetails.map(async (src) => {
-      if (src.type === 'note') {
+      if (src.type === "note") {
         return {
           ...src,
-          title: await getNoteTitle(src.id)
+          title: await getNoteTitle(src.id),
         };
       }
       return {
         ...src,
-        title: await getDocumentTitle(src.id)
+        title: await getDocumentTitle(src.id),
       };
     });
 
@@ -135,7 +135,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
 
     // Build the source list with actual titles
     sourcesWithTitles.forEach((src) => {
-      source += `- ${src.type === 'note' ? 'Note' : 'Document'}: [${src.title}](#${src.type}-${src.id})\n`;
+      source += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
     });
     console.log("before");
     // Stream the response
@@ -166,7 +166,6 @@ If the context doesn't contain relevant information, respond with "I don't have 
     }));
 
     finalResponse += `\n\n${source}`;
-    finalResponse += `\n<!-- METADATA:${JSON.stringify(sourcesWithTitles)} -->`;
 
     return finalResponse;
     // const response = await ollama.chat({
