@@ -10,9 +10,10 @@ export const getSubjects = async (user_id: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("subjects")
-    .select("id, name")
+    .select(
+      "id, name, documents(id,subject_id,name,file_name), notes(id,subject_id,title,content)"
+    )
     .eq("user_id", user_id);
-
   if (data != null) {
     return data;
   } else {

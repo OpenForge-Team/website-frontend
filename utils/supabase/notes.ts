@@ -73,7 +73,10 @@ export const addNote = async ({
   return data.id;
 };
 
-export const getNotesbySubjects = async (user_id: string, subject_id: string) => {
+export const getNotesbySubjects = async (
+  user_id: string,
+  subject_id: string
+) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("notes")
@@ -87,6 +90,7 @@ export const getNotesbySubjects = async (user_id: string, subject_id: string) =>
 };
 export const getNotebyId = async (user_id: string, note_id: string) => {
   const supabase = await createClient();
+  console.log(user_id, " ", note_id);
   try {
     const { data, error } = await supabase
       .from("notes")
@@ -107,9 +111,9 @@ export const getNotebyId = async (user_id: string, note_id: string) => {
 export const getNoteById = async (noteId: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('notes')
-    .select('*')
-    .eq('id', noteId)
+    .from("notes")
+    .select("*")
+    .eq("id", noteId)
     .single();
 
   if (error) throw new Error(error.message);

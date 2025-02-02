@@ -66,14 +66,16 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                 {documents.length > 0 ? (
                   <ul className="pl-4 space-y-1">
                     {documents.map((doc) => (
-                      <li key={doc.id} className="flex items-center space-x-2">
+                      <li
+                        key={doc.id}
+                        className="flex items-center space-x-2"
+                        onClick={() => {
+                          setSelectedDocument(doc);
+                          console.log(doc);
+                        }}
+                      >
                         <File size={16} />
-                        <button
-                          onClick={() => setSelectedDocument(doc)}
-                          className="hover:underline"
-                        >
-                          {doc.name}
-                        </button>
+                        <button className="hover:underline">{doc.name}</button>
                       </li>
                     ))}
                   </ul>
@@ -121,7 +123,10 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
       {selectedDocument && (
         <DocumentViewer
           fileName={selectedDocument.file_name}
-          fileType={mime.lookup(selectedDocument.file_name) || "application/octet-stream"}
+          fileType={
+            mime.lookup(selectedDocument.file_name) ||
+            "application/octet-stream"
+          }
           onClose={() => setSelectedDocument(null)}
         />
       )}

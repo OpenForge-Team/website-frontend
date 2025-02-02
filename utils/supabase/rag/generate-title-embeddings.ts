@@ -20,7 +20,11 @@ export const generateTitleChunks = async ({
 }: generateChunksProps) => {
   const supabase = await createClient();
   //Check if chunks already exist --> delete first
-  await supabase.from("note_title_embeddings").delete().eq("note_id", note_id);
+  const { data, error } = await supabase
+    .from("note_title_embeddings")
+    .delete()
+    .eq("metadata->>note_id", note_id);
+  console.log(data, error);
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 100,
     chunkOverlap: 20,

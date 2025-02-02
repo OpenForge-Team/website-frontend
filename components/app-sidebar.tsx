@@ -41,72 +41,36 @@ const data = {
   },
   navInput: [
     {
-      title: "Input",
+      title: "Knowledge",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "Text/Vocal",
-          url: "/dashboard/input/note",
-        },
-      ],
-    },
-    {
-      title: "View",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
           title: "Notes",
-          url: "/dashboard/view/notes",
+          url: "/dashboard/knowledge/note",
+        },
+        {
+          title: "Documents",
+          url: "/dashboard/knowledge/documents",
+        },
+        {
+          title: "Subjects",
+          url: "/dashboard/knowledge/subjects",
         },
       ],
     },
     {
-      title: "AI",
-      url: "#",
+      title: "Editor",
+      url: "/dashboard/editor",
+      icon: BookOpen,
+      items: [],
+    },
+    {
+      title: "Chat",
+      url: "/dashboard/chat",
       icon: Bot,
-      items: [
-        {
-          title: "Chat",
-          url: "/dashboard/chat",
-        },
-      ],
-    },
-  ],
-  navManipulation: [
-    {
-      title: "Diagrams",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Workflows",
-          url: "/dashboard/workflow-diagrams",
-        },
-      ],
-    },
-  ],
-  navOutput: [
-    {
-      title: "Workflows",
-      url: "#",
-      icon: Workflow,
-      items: [
-        {
-          title: "Search",
-          url: "/dashboard/workflow-search",
-        },
-        {
-          title: "Favorites",
-          url: "/dashboard/workflow-favorites",
-        },
-        {
-          title: "Tasks",
-          url: "/dashboard/workflow-tasks",
-        },
-      ],
+      items: [],
     },
   ],
 };
@@ -166,8 +130,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navInput} />
-        {/* <NavManipulation items={data.navManipulation} /> */}
-        <NavOutput items={data.navOutput} />
       </SidebarContent>
       <SidebarFooter>
         {user && profile && <NavUser profile={profile} />}

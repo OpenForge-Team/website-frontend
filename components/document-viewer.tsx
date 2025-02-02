@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { getDocumentUrl } from "@/utils/storage/r2";
-
 interface DocumentViewerProps {
   fileName: string;
   fileType: string;
   onClose: () => void;
 }
+import { EmbedPDF } from "@simplepdf/react-embed-pdf";
 
-export function DocumentViewer({ fileName, fileType, onClose }: DocumentViewerProps) {
+export function DocumentViewer({
+  fileName,
+  fileType,
+  onClose,
+}: DocumentViewerProps) {
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,6 +19,7 @@ export function DocumentViewer({ fileName, fileType, onClose }: DocumentViewerPr
     const fetchUrl = async () => {
       try {
         const documentUrl = await getDocumentUrl(fileName);
+        console.log(documentUrl);
         setUrl(documentUrl);
       } catch (error) {
         setError("Failed to load document");
@@ -55,27 +60,36 @@ export function DocumentViewer({ fileName, fileType, onClose }: DocumentViewerPr
           <h2 className="text-xl font-semibold">Document Viewer</h2>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-black rounded hover:bg-black/80"
           >
             Close
           </button>
         </div>
-        
+
         <div className="flex-1 overflow-hidden">
-          {fileType.startsWith('image/') ? (
-            <img src={url} alt="Document preview" className="max-w-full h-auto" />
-          ) : fileType.startsWith('video/') ? (
+          {fileType.startsWith("image/") ? (
+            <img
+              src={url}
+              alt="Document preview"
+              className="max-w-full h-auto"
+            />
+          ) : fileType.startsWith("video/") ? (
             <video controls className="w-full h-full">
               <source src={url} type={fileType} />
               Your browser does not support the video tag.
             </video>
-          ) : fileType.startsWith('audio/') ? (
+          ) : fileType.startsWith("audio/") ? (
             <audio controls className="w-full">
               <source src={url} type={fileType} />
               Your browser does not support the audio tag.
             </audio>
-          ) : fileType === 'application/pdf' ? (
-            <iframe src={url} className="w-full h-full" />
+          ) : fileType === "application/pdf" ? (
+            <EmbedPDF
+              companyIdentifier="react-viewer"
+              mode="inline"
+              documentURL={url}
+              className="w-full h-full"
+            />
           ) : (
             <div className="text-center p-4">
               <p>This file type cannot be previewed.</p>

@@ -8,7 +8,7 @@ export default function OpenForgeLogoIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g
-        clip-path="url(#bgblur_0_213_3396_clip_path)"
+        clipPath="url(#bgblur_0_213_3396_clip_path)"
         data-figma-skip-parse="true"
       >
         <foreignObject x="0" y="0" width="0" height="0"></foreignObject>

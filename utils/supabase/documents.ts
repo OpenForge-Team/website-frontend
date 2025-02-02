@@ -81,14 +81,11 @@ export const uploadDocument = async ({
       file_name: file_name + "." + extension,
       buffer: blob,
     });
-    // Extract text content from the document
-    const textContent = await extractTextFromDocument(blob);
-    
+
     // Generate embeddings with the text content
     generateContentChunks({
       document_id: data.id,
       document_buffer: blob,
-      content: textContent
     });
   } catch (error: any) {
     throw new Error(error.message);
@@ -104,9 +101,9 @@ interface DeleteDocumentProps {
 export const getDocumentById = async (documentId: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('documents')
-    .select('*')
-    .eq('id', documentId)
+    .from("documents")
+    .select("*")
+    .eq("id", documentId)
     .single();
 
   if (error) throw new Error(error.message);

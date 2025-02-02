@@ -56,8 +56,13 @@ export const uploadDocumentR2 = async ({
 };
 export const getDocumentUrl = async (file_name: string) => {
   try {
-    const url = await bucketDocuments.getObjectSignedUrl(file_name, 3600);
-    return url;
+    const exists = await bucketDocuments.objectExists(file_name);
+    if (exists) {
+      const url = await bucketDocuments.getObjectSignedUrl(file_name, 3600);
+      return url;
+    } else {
+      throw new Error("The object doesn't exist with filename" + file_name);
+    }
   } catch (error) {
     console.error("Error getting document URL:", error);
     throw error;
@@ -68,9 +73,11 @@ interface deleteDocumentR2Props {
   file_name: string;
 }
 
-export const deleteDocumentR2 = async ({ file_name }: deleteDocumentR2Props) => {
+export const deleteDocumentR2 = async ({
+  file_name,
+}: deleteDocumentR2Props) => {
   try {
-    await bucketDocuments.delete(file_name);
+    await bucketDocuments.deleteObject(file_name);
   } catch (error) {
     console.error("Error deleting document:", error);
     throw error;

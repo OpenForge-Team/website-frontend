@@ -247,7 +247,9 @@ export default function WorkflowSearch({
                                     }
                                   }}
                                 >
-                                  {selectedPageId ? "Change Notion Page" : "Search Notion Pages"}
+                                  {selectedPageId
+                                    ? "Change Notion Page"
+                                    : "Search Notion Pages"}
                                 </Button>
 
                                 <Dialog

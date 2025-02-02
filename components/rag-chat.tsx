@@ -190,7 +190,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   const addInitialMessageIfNeeded = () => {
     if (chatMessages.length === 0 && mode === "chat") {
       setChatMessages([
-        { role: "ai", messageContent: "Ask me for suggestions!" },
+        { role: "ai", messageContent: "Ask me to retrieve your knowledge" },
       ]);
     }
   };
@@ -231,7 +231,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   return (
     <Card className="w-full mx-auto min-h-[700px] md:min-h-[800px] flex flex-col bg-background border-border">
       <CardHeader className="border-b border-border">
-        <CardTitle className="text-foreground">AI Assistant</CardTitle>
+        <CardTitle className="text-foreground">Forge AI</CardTitle>
       </CardHeader>
 
       <CardContent className="flex-1 overflow-hidden p-4">
@@ -263,7 +263,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
                   <div
                     className={`px-4 py-2 rounded-lg relative  ${
                       message.role === "ai"
-                        ? "bg-muted/50 text-foreground prose prose-a:text-blue-500 prose-headings:text-white text-white"
+                        ? "bg-muted/50 text-foreground prose prose-a:text-blue-500 prose-headings:text-white prose-strong:text-white text-white"
                         : "bg-primary text-primary-foreground"
                     }`}
                   >
@@ -302,7 +302,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
           </div>
         </ScrollArea>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="space-x-2">
         <Input
           type="text"
           placeholder="Type your message..."
