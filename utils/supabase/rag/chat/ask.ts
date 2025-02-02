@@ -9,13 +9,21 @@ import { createClient } from "@/utils/supabase/server";
 import { Ollama } from "@langchain/ollama";
 import { retrieveContentChunks } from "../retrieve-content-embeddings";
 import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
-
+import { ChatOpenAI } from "@langchain/openai";
+import { DeepInfraLLM } from "@langchain/community/llms/deepinfra";
 const llm = new Ollama({
   numGpu: 2,
-  numCtx: 4096,
+  numCtx: 16384,
   baseUrl: process.env.OLLAMA_BASEURL,
   model: "phi4:14b-q4_K_M",
 });
+// const llm = new DeepInfraLLM({
+//   apiKey: process.env.DEEPINFRA_API_KEY,
+//   temperature: 1,
+//   maxTokens: 500,
+//   model: "meta-llama/Llama-3.3-70B-Instruct",
+// });
+
 interface Ask {
   user_id: string;
   workspace_id: string;
@@ -38,17 +46,15 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
   });
 
   try {
-    const SYSTEM_TEMPLATE = `Answer strictly using only the provided context. Follow these rules:
-1. When using information from a source, IMMEDIATELY mark it with [SourceRef:ID] where ID is the note/document ID
-2. Only mark sources that provided meaningful information
-3. List each source reference ONCE per paragraph
-4. Never mention sources that weren't used
+    const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context. If documents or notes are referenced, include their titles in the response.
+If the context doesn't contain any relevant information to the question, respond with "I don't have enough relevant information to answer that question."
+
+For document references, include the document name and relevant section where possible.
 
 <context>
 {context}
 </context>
-
-If no context is relevant, say "I don't have enough information to answer that."`;
+`;
 
     const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
       ["system", SYSTEM_TEMPLATE],
@@ -59,31 +65,14 @@ If no context is relevant, say "I don't have enough information to answer that."
       llm,
       prompt: questionAnsweringPrompt,
     });
-    const notesContext = await retrieveContentChunks({
-      query: message,
-      filter: "content,metadata.note_id,metadata.document_id",
-    });
+    const notesContext = await retrieveContentChunks({ query: message });
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
-      filter: "content,metadata.note_id,metadata.document_id",
     });
     console.log("Notes Context:", notesContext.length);
     console.log("Documents Context:", documentsContext.length);
 
-    let usedSourceIds = new Set<string>();
-    const context = [...notesContext, ...documentsContext]
-      .filter(doc => doc.pageContent?.trim()) // Filter empty content first
-      .map(doc => {
-        const sourceId = doc.metadata?.note_id || doc.metadata?.document_id;
-        if (sourceId) {
-          // Add special markers that we'll detect in the response
-          return {
-            ...doc,
-            pageContent: `${doc.pageContent}\n[SourceRef:${sourceId}]`
-          };
-        }
-        return doc;
-      });
+    const context = [...notesContext, ...documentsContext];
     console.log("Combined Context:", context.length);
 
     if (!context || context.length === 0) {
@@ -92,42 +81,29 @@ If no context is relevant, say "I don't have enough information to answer that."
     }
     // Build source variable with metadata (avoiding duplicates)
     let source = "## Information Sources\n\n";
-    const uniqueSourceIds = new Set<string>();
-
+    const uniqueSourceIds = new Set();
     context.forEach((doc) => {
-      // Only include sources that have content and are referenced in metadata
-      if (doc.pageContent?.trim() && doc.metadata) {
-        const sourceId = doc.metadata.note_id || doc.metadata.document_id;
-        if (sourceId && !uniqueSourceIds.has(sourceId)) {
-          uniqueSourceIds.add(sourceId);
-          const sourceType = doc.metadata.note_id ? "Note" : "Document";
-          source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
-        }
+      const sourceId =
+        doc.metadata.note_id || doc.metadata.document_id || "Unknown";
+      if (!uniqueSourceIds.has(sourceId)) {
+        uniqueSourceIds.add(sourceId);
+        const sourceType = doc.metadata.note_id ? "Note" : "Document";
+        source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
       }
     });
-
+    console.log("before");
     // Stream the response
     const responseStream = await documentChain.stream({
       messages: [new HumanMessage(message)],
       context: context,
     });
-
+    console.log("after");
     let finalResponse = "";
-    const detectedSourceIds = new Set<string>();
 
     try {
       for await (const chunk of responseStream) {
         if (typeof chunk === "string") {
-          // Detect source references in the generated text
-          const sourceMatches = chunk.match(/\[SourceRef:([^\]]+)\]/g);
-          if (sourceMatches) {
-            sourceMatches.forEach(match => {
-              const sourceId = match.replace(/\[SourceRef:(.+)\]/, '$1');
-              detectedSourceIds.add(sourceId);
-            });
-          }
-          // Clean the markers from the final output
-          finalResponse += chunk.replace(/\[SourceRef:[^\]]+\]/g, '');
+          finalResponse += chunk;
         } else {
           console.warn("Received non-string chunk:", chunk);
         }
@@ -137,29 +113,11 @@ If no context is relevant, say "I don't have enough information to answer that."
       throw new Error("Failed to process response stream");
     }
 
-    // Build source list using only detected sources
-    let source = "## Information Sources\n\n";
-    const uniqueSourceIds = new Set<string>();
-
-    context.forEach((doc) => {
-      const sourceId = doc.metadata?.note_id || doc.metadata?.document_id;
-      if (sourceId && detectedSourceIds.has(sourceId) && !uniqueSourceIds.has(sourceId)) {
-        uniqueSourceIds.add(sourceId);
-        const sourceType = doc.metadata.note_id ? "Note" : "Document";
-        source += `- ${sourceType}: [View Source](#source-${sourceId})\n`;
-      }
-    });
-
-    // Update metadata filtering to match detected sources
-    const sourceMetadata = context
-      .filter(doc => {
-        const sourceId = doc.metadata?.note_id || doc.metadata?.document_id;
-        return sourceId && detectedSourceIds.has(sourceId);
-      })
-      .map((doc) => ({
-        id: doc.metadata.note_id || doc.metadata.document_id,
-        type: doc.metadata.note_id ? "note" : "document",
-      }));
+    // Add metadata markers to the response
+    const sourceMetadata = context.map((doc) => ({
+      id: doc.metadata.note_id || doc.metadata.document_id,
+      type: doc.metadata.note_id ? "note" : "document",
+    }));
 
     finalResponse += `\n\n${source}`;
     finalResponse += `\n<!-- METADATA:${JSON.stringify(sourceMetadata)} -->`;
