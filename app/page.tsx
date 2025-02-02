@@ -1,8 +1,8 @@
-import Listicle from "@/components/listicle"
-import { Navbar } from "@/components/navbar"
-import { BadgeGroup } from "@/components/ui/badge-group"
-import { CustomButton } from "@/components/ui/custom-button"
-import { FeatureCard } from "@/components/ui/feature-card"
+import Listicle from "@/components/listicle";
+import { Navbar } from "@/components/navbar";
+import { BadgeGroup } from "@/components/ui/badge-group";
+import { CustomButton } from "@/components/ui/custom-button";
+import { FeatureCard } from "@/components/ui/feature-card";
 
 export default function Home() {
   return (
@@ -27,7 +27,9 @@ export default function Home() {
                 Scale your operations without scaling team.
               </p>
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 self-stretch">
-                <CustomButton className="w-full sm:w-auto">Ready to scale? Book a Call</CustomButton>
+                <CustomButton className="w-full sm:w-auto">
+                  Ready to scale? Book a Call
+                </CustomButton>
                 <CustomButton variant="secondary" className="w-full sm:w-auto">
                   Schedule a Demo
                 </CustomButton>
@@ -38,7 +40,10 @@ export default function Home() {
       </section>
 
       {/* Feature Section */}
-      <section id="featureSection" className="bg-[#EEF2FF] py-16 sm:py-20 md:py-24">
+      <section
+        id="featureSection"
+        className="bg-[#EEF2FF] py-16 sm:py-20 md:py-24"
+      >
         <div className="max-w-[1140px] mx-auto px-4 sm:px-8 md:px-16 lg:pl-[120px] lg:pr-8">
           <div className="flex flex-col items-center sm:items-start gap-16 sm:gap-20 md:gap-24 lg:gap-32">
             <div className="flex flex-col items-center sm:items-start gap-4 sm:gap-5 md:gap-6 self-stretch">
@@ -46,15 +51,23 @@ export default function Home() {
                 Why OpenForge?
               </h2>
               <p className="text-[rgba(49,46,129,0.60)] font-['Fragment_Mono'] text-sm sm:text-base md:text-lg leading-relaxed sm:leading-relaxed md:leading-[24px] tracking-tight sm:tracking-tighter md:tracking-[-0.252px] text-center sm:text-left">
-                Open Forge offers a unified, automated, and fully customizable work management system designed to help
-                organizations streamline operations, reduce costs, and scale efficiently without the typical growing
-                pains. Unlike generic solutions, Open Forge provides:
+                Open Forge offers a unified, automated, and fully customizable
+                workflow management system designed to help organizations
+                streamline operations, reduce costs, and scale efficiently
+                without the typical growing pains. Unlike generic solutions,
+                Open Forge provides:
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-12 self-stretch">
               <FeatureCard
                 icon={
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
                       stroke="#4F46E5"
@@ -93,7 +106,13 @@ export default function Home() {
               />
               <FeatureCard
                 icon={
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M17.54 8.31C17.54 8.31 14.31 12.3 12.09 12.3C9.87 12.3 6.62 8.31 6.62 8.31"
                       stroke="#4F46E5"
@@ -116,7 +135,13 @@ export default function Home() {
               />
               <FeatureCard
                 icon={
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14"
                       stroke="#4F46E5"
@@ -153,7 +178,13 @@ export default function Home() {
               />
               <FeatureCard
                 icon={
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M3.17004 7.44L12 12.55L20.77 7.47"
                       stroke="#4F46E5"
@@ -214,13 +245,14 @@ export default function Home() {
       <section className="bg-white py-16 sm:py-20 md:py-24">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-8 md:px-16 lg:pl-[120px] lg:pr-8">
           <Listicle
-            supportingText="Explore the key features of Open Forge"
-            heading="Key Features"
+            supportingText="Impact"
+            heading="Add Meaning to Your Scattered Knowledge for Real Results"
             steps={[
               { title: "Reduce Operational Overhead" },
-              { title: "Improve Margins" },
               { title: "Free Up Valuable Time and Resources" },
               { title: "Consistent and Predictable Deliverables" },
+              { title: "Improve Margins" },
+              { title: "Higher Throughput, Higher Profits" },
             ]}
           />
         </div>
@@ -233,13 +265,13 @@ export default function Home() {
             Why Choose Open Forge?
           </h2>
           <p className="text-[rgba(49,46,129,0.60)] font-['Fragment_Mono'] text-sm sm:text-base md:text-lg leading-relaxed mb-8">
-            Open Forge is designed to adapt to your unique business needs, providing a seamless experience that enhances
-            productivity and collaboration.
+            Open Forge is designed to adapt to your unique business needs,
+            providing a seamless experience that enhances productivity and
+            collaboration.
           </p>
           <CustomButton size="lg">Get Started</CustomButton>
         </div>
       </section>
     </div>
-  )
+  );
 }
-
