@@ -1,4 +1,4 @@
-import { ArrowRight as ArrowRightIcon } from "lucide-react"
+import { ArrowRightIcon } from "lucide-react"
 
 interface BadgeGroupProps {
   version: string

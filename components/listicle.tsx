@@ -1,5 +1,4 @@
-import type React from "react"
-import Step from "./Step"
+import Step from "@/components/step"
 
 interface ListicleProps {
   supportingText: string
