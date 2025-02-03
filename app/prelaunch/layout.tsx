@@ -4,7 +4,11 @@ import { createClient } from "@/utils/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 
-export default async function ProtectedPage() {
+export default async function ProtectedLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const supabase = await createClient();
 
   const {
@@ -16,10 +20,10 @@ export default async function ProtectedPage() {
   }
   if (user) {
     const profile = await getProfile(user.id);
-    if (!profile?.is_allowed_prelaunch) {
-      return redirect("/prelaunch");
+    if (profile?.is_allowed_prelaunch) {
+      return redirect("/dashboard");
     }
   }
 
-  return <div className="flex-1 w-full flex flex-col gap-12"></div>;
+  return <div className="flex-1 w-full flex flex-col gap-12">{children}</div>;
 }
