@@ -55,10 +55,20 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
     const { data, error } = await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: ["delivered@resend.dev"],
-      subject: "Hello world",
-      react: EmailTemplate({ firstName: "John" }),
+      from: "OpenForge <onboarding@resend.dev>",
+      to: ["theodufort05@gmail.com"],
+      subject: "New OpenForge Signup",
+      text: `
+New signup details:
+- First Name: ${firstname}
+- Last Name: ${lastname}
+- Email: ${email}
+- Company Name: ${companyName}
+- Company Sector: ${companySector}
+- Company Size: ${companySize}
+- Role: ${role}
+- Use Case: ${useCase}
+      `
     });
     return encodedRedirect(
       "success",
