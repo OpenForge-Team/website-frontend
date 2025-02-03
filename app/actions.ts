@@ -21,14 +21,31 @@ export const signUpAction = async (formData: FormData) => {
     );
   }
 
+  const companyName = formData.get("companyName")?.toString();
+  const companySector = formData.get("companySector")?.toString();
+  const companySize = formData.get("companySize")?.toString();
+  const role = formData.get("role")?.toString();
+
+  if (!companyName || !companySector || !companySize || !role) {
+    return encodedRedirect(
+      "error",
+      "/sign-up",
+      "All fields are required"
+    );
+  }
+
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
       data: {
-        firstname: firstname,
-        lastname: lastname,
+        firstname,
+        lastname,
+        companyName,
+        companySector,
+        companySize,
+        role,
       },
     },
   });
