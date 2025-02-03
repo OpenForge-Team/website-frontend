@@ -55,7 +55,7 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
     try {
-      const { data, error } = await resend.emails.send({
+      resend.emails.send({
         from: "OpenForge <info@mybookquest.com>",
         to: ["theodufort05@gmail.com"],
         subject: "New OpenForge Signup",
