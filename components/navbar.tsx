@@ -49,7 +49,7 @@ export function Navbar() {
         {/* Auth Buttons */}
         <div className="hidden lg:flex items-center gap-3">
           <CustomButton variant="secondary">Log in</CustomButton>
-          <CustomButton>Start free trial</CustomButton>
+          <CustomButton>Get Early Access</CustomButton>
         </div>
 
         {/* Mobile Menu Button */}
@@ -66,7 +66,7 @@ export function Navbar() {
             <CustomButton variant="secondary" className="w-full">
               Log in
             </CustomButton>
-            <CustomButton className="w-full">Start free trial</CustomButton>
+            <CustomButton className="w-full">Get Early Access</CustomButton>
           </div>
         </div>
       )}
