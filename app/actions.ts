@@ -1,9 +1,10 @@
 "use server";
-
+import { Resend } from "resend";
 import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const signUpAction = async (formData: FormData) => {
   const firstname = formData.get("firstname")?.toString();
@@ -29,11 +30,7 @@ export const signUpAction = async (formData: FormData) => {
   const useCase = formData.get("useCase")?.toString();
 
   if (!companyName || !companySector || !companySize || !role || !useCase) {
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "All fields are required"
-    );
+    return encodedRedirect("error", "/sign-up", "All fields are required");
   }
 
   const { error } = await supabase.auth.signUp({
@@ -57,6 +54,12 @@ export const signUpAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
+    const { data, error } = await resend.emails.send({
+      from: "Acme <onboarding@resend.dev>",
+      to: ["delivered@resend.dev"],
+      subject: "Hello world",
+      react: EmailTemplate({ firstName: "John" }),
+    });
     return encodedRedirect(
       "success",
       "/sign-up",
