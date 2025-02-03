@@ -54,11 +54,12 @@ export const signUpAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
-    const { data, error } = await resend.emails.send({
-      from: "OpenForge <onboarding@resend.dev>",
-      to: ["theodufort05@gmail.com"],
-      subject: "New OpenForge Signup",
-      text: `
+    try {
+      const { data, error } = await resend.emails.send({
+        from: "OpenForge <info@mybookquest.com>",
+        to: ["theodufort05@gmail.com"],
+        subject: "New OpenForge Signup",
+        text: `
 New signup details:
 - First Name: ${firstname}
 - Last Name: ${lastname}
@@ -68,8 +69,9 @@ New signup details:
 - Company Size: ${companySize}
 - Role: ${role}
 - Use Case: ${useCase}
-      `
-    });
+      `,
+      });
+    } catch (error) {}
     return encodedRedirect(
       "success",
       "/sign-up",

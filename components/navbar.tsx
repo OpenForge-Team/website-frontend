@@ -1,12 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { NavLinks } from "@/components/nav-links"
-import { Menu, X } from "lucide-react"
-import { CustomButton } from "@/components/ui/custom-button"
+import { useState } from "react";
+import { NavLinks } from "@/components/nav-links";
+import { Menu, X } from "lucide-react";
+import { CustomButton } from "@/components/ui/custom-button";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <nav className="fixed top-0 left-0 right-0 w-full bg-[#EEF2FF]/80 backdrop-blur-md z-50 py-2">
@@ -14,10 +16,25 @@ export function Navbar() {
         <div className="flex items-center gap-8 flex-grow">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <g clipPath="url(#bgblur_0_265_2159_clip_path)" data-figma-skip-parse="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+            >
+              <g
+                clipPath="url(#bgblur_0_265_2159_clip_path)"
+                data-figma-skip-parse="true"
+              >
                 <foreignObject x="0" y="0" width="0" height="0">
-                  <div style={{ backdropFilter: "blur(2px)", height: "100%", width: "100%" }}></div>
+                  <div
+                    style={{
+                      backdropFilter: "blur(2px)",
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  ></div>
                 </foreignObject>
               </g>
               <path
@@ -37,7 +54,9 @@ export function Navbar() {
                 </clipPath>
               </defs>
             </svg>
-            <span className="font-['Fragment_Mono'] text-xl font-medium text-[#4F46E5]">OpenForge</span>
+            <span className="font-['Fragment_Mono'] text-xl font-medium text-[#4F46E5]">
+              OpenForge
+            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -48,12 +67,22 @@ export function Navbar() {
 
         {/* Auth Buttons */}
         <div className="hidden lg:flex items-center gap-3">
-          <CustomButton variant="secondary">Log in</CustomButton>
-          <CustomButton>Get Early Access</CustomButton>
+          <CustomButton
+            onClick={() => router.push("/sign-in")}
+            variant="secondary"
+          >
+            Sign in
+          </CustomButton>
+          <CustomButton onClick={() => router.push("/sign-up")}>
+            Get Early Access
+          </CustomButton>
         </div>
 
         {/* Mobile Menu Button */}
-        <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <button
+          className="lg:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -63,14 +92,22 @@ export function Navbar() {
         <div className="lg:hidden bg-[#EEF2FF]/80 backdrop-blur-md px-4 py-6 shadow-lg">
           <NavLinks mobile />
           <div className="mt-6 flex flex-col gap-3">
-            <CustomButton variant="secondary" className="w-full">
-              Log in
+            <CustomButton
+              variant="secondary"
+              className="w-full"
+              onClick={() => router.push("/sign-in")}
+            >
+              Sign in
             </CustomButton>
-            <CustomButton className="w-full">Get Early Access</CustomButton>
+            <CustomButton
+              className="w-full"
+              onClick={() => router.push("/sign-up")}
+            >
+              Get Early Access
+            </CustomButton>
           </div>
         </div>
       )}
     </nav>
-  )
+  );
 }
-
