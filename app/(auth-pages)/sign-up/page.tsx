@@ -63,6 +63,8 @@ export default async function Signup(props: {
             <option value="designer">Designer</option>
             <option value="other">Other</option>
           </select>
+          <Label htmlFor="useCase">Use case</Label>
+          <Input name="useCase" placeholder="What are you building?" required />
           <Label htmlFor="email">Email</Label>
           <Input name="email" placeholder="you@example.com" required />
           <Label htmlFor="password">Password</Label>

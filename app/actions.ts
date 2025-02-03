@@ -26,7 +26,9 @@ export const signUpAction = async (formData: FormData) => {
   const companySize = formData.get("companySize")?.toString();
   const role = formData.get("role")?.toString();
 
-  if (!companyName || !companySector || !companySize || !role) {
+  const useCase = formData.get("useCase")?.toString();
+
+  if (!companyName || !companySector || !companySize || !role || !useCase) {
     return encodedRedirect(
       "error",
       "/sign-up",
@@ -46,6 +48,7 @@ export const signUpAction = async (formData: FormData) => {
         companySector,
         companySize,
         role,
+        useCase,
       },
     },
   });
