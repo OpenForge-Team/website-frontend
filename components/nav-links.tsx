@@ -9,14 +9,21 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
 
   const linkClass = `font-['Fragment_Mono'] text-[16px] leading-[22px] tracking-[-0.013em] text-[rgba(30,27,75,0.6)] hover:text-[rgba(30,27,75,0.8)]`
 
+  const useCases = [
+    "AI Executive Assistant",
+    "Automated Communications",
+    "Concierge & Customer Service",
+    "Cut Employee Onboarding Times",
+    "On-Demand Company Expert",
+    "Onboard Clients Before the First Call",
+  ]
+
   const links = [
     { href: "/", label: "Home" },
     { href: "/pricing", label: "Pricing" },
     { href: "/company", label: "Company" },
     { href: "/about", label: "About" },
   ]
-
-  const useCases = ["Project Management", "Task Delegation", "Strategy Planning", "Resource Management"]
 
   if (mobile) {
     return (
@@ -58,12 +65,14 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
           Use cases
           <ChevronDown className="w-4 h-4" />
         </button>
-        <div className="hidden group-hover:flex absolute top-[41px] left-1/2 -translate-x-1/2 w-[320px] flex-col justify-center items-center p-2 bg-white rounded-[16px] shadow-lg">
-          {useCases.map((useCase) => (
-            <div key={useCase} className="w-full p-2 hover:bg-gray-50 rounded-md">
-              <span className={linkClass}>{useCase}</span>
-            </div>
-          ))}
+        <div className="hidden group-hover:block absolute top-full left-1/2 -translate-x-1/2 w-[320px] bg-white rounded-[16px] shadow-lg z-10">
+          <div className="py-2">
+            {useCases.map((useCase) => (
+              <div key={useCase} className="px-4 py-2 hover:bg-gray-50">
+                <span className={linkClass}>{useCase}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
