@@ -72,25 +72,25 @@ export default function Home() {
                 icon={<Puzzle className="w-6 h-6 text-[#4F46E5]" />}
                 title="Seamless Information Movement"
                 description="Automated workflows ensure every process flows effortlessly within your business, eliminating bottlenecks and inefficiencies."
-                learnMoreHref="#"
+                learnMoreHref="/features/seamless-information-movement"
               />
               <FeatureCard
                 icon={<Link className="w-6 h-6 text-[#4F46E5]" />}
                 title="Effortless Connectivity"
                 description="Unified I/O channels automatically gather and distribute information across all tools, inside and outside your business, ensuring no insights are lost."
-                learnMoreHref="#"
+                learnMoreHref="/features/unified-io"
               />
               <FeatureCard
                 icon={<BookOpenCheck className="w-6 h-6 text-[#4F46E5]" />}
                 title="Self-Updating Knowledge Base"
                 description="A dynamic hub where all your business knowledge is connected to resources, departments, and operational arenas, providing consistent and up-to-date information."
-                learnMoreHref="#"
+                learnMoreHref="/features/knowledge-base"
               />
               <FeatureCard
                 icon={<Workflow className="w-6 h-6 text-[#4F46E5]" />}
                 title="Custom Business Blueprint"
-                description="A flexible system designed to adapt to your unique business structure, allowing you to model your entities and workflows exactly the way you operate, without the need to conform to rigid systems."
-                learnMoreHref="#"
+                description="A flexible system designed to adapt to your unique business structure. We enable you to model your entities and workflows, in natural language, exactly the way you operate, without the need to conform to rigid systems."
+                learnMoreHref="/features/custom-business-blueprint"
               />
             </div>
           </div>
@@ -138,42 +138,42 @@ export default function Home() {
                 title="AI Executive Assistant"
                 description="An Executive Secretary That Never Sleeps—Helping You Schedule, Summarize, and Streamline. The Smartest Assistant You've Never Hired."
                 ctaText="Learn More"
-                ctaHref="#"
+                ctaHref="use-cases/ai-ea"
               />
               <UseCaseCard
                 icon={<MessageSquare className="w-6 h-6 text-[#4F46E5]" />}
                 title="Automated Communications"
                 description="Stop wasting time on pointless meetings. Keep Your Team Aligned—Effortlessly."
                 ctaText="Explore Features"
-                ctaHref="#"
+                ctaHref="use-cases/automated-communications"
               />
               <UseCaseCard
                 icon={<HeadphonesIcon className="w-6 h-6 text-[#4F46E5]" />}
                 title="Concierge & Customer Service"
                 description="Give clients an on-demand, white-glove experience by provisioning access to knowledge and actions—seamless, personalized, and always available."
                 ctaText="Get Started"
-                ctaHref="#"
+                ctaHref="use-cases/concierge-customer-service"
               />
               <UseCaseCard
                 icon={<Rocket className="w-6 h-6 text-[#4F46E5]" />}
                 title="Cut Employee Onboarding Times"
                 description="Faster Start. Smoother Transitions. Better Results. Give every new hire an expert at their fingertips."
                 ctaText="Learn More"
-                ctaHref="#"
+                ctaHref="use-cases/employee-onboarding"
               />
               <UseCaseCard
                 icon={<BookOpen className="w-6 h-6 text-[#4F46E5]" />}
                 title="On-Demand Company Expert"
                 description="Empower your team with an always-on research assistant that instantly retrieves, organizes, and delivers the knowledge they need."
                 ctaText="Explore Features"
-                ctaHref="#"
+                ctaHref="use-cases/on-demand-expert"
               />
               <UseCaseCard
                 icon={<Briefcase className="w-6 h-6 text-[#4F46E5]" />}
                 title="Onboard Clients Before the First Call"
                 description="Show up prepared with work in hand and a deep understanding of their needs—ensuring every client starts with complete confidence."
                 ctaText="Get Started"
-                ctaHref="#"
+                ctaHref="use-cases/client-onboarding"
               />
             </div>
           </div>
