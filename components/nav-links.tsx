@@ -10,12 +10,12 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
   const linkClass = `font-['Fragment_Mono'] text-[16px] leading-[22px] tracking-[-0.013em] text-[rgba(30,27,75,0.6)] hover:text-[rgba(30,27,75,0.8)]`
 
   const useCases = [
-    "AI Executive Assistant",
-    "Automated Communications",
-    "Concierge & Customer Service",
-    "Cut Employee Onboarding Times",
-    "On-Demand Company Expert",
-    "Onboard Clients Before the First Call",
+    { title: "AI Executive Assistant", link: "/use-cases/ai-executive-assistant" },
+    { title: "Automated Communications", link: "/use-cases/automated-communications" },
+    { title: "Concierge & Customer Service", link: "/use-cases/concierge-customer-service" },
+    { title: "Cut Employee Onboarding Times", link: "/use-cases/employee-onboarding" },
+    { title: "On-Demand Company Expert", link: "/use-cases/on-demand-expert" },
+    { title: "Onboard Clients Before the First Call", link: "/use-cases/client-onboarding" },
   ]
 
   const links = [
@@ -43,9 +43,9 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
         {isUseCasesOpen && (
           <div className="pl-4 flex flex-col gap-2">
             {useCases.map((useCase) => (
-              <span key={useCase} className={linkClass}>
-                {useCase}
-              </span>
+              <Link key={useCase.title} href={useCase.link} className={linkClass}>
+                {useCase.title}
+              </Link>
             ))}
           </div>
         )}
@@ -61,16 +61,22 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
         </Link>
       ))}
       <div className="relative group">
-        <button className={`${linkClass} flex items-center gap-1`}>
+        <button
+          className={`${linkClass} flex items-center gap-1 p-2 rounded-lg hover:bg-gray-50 transition-all duration-200 ease-in-out`}
+        >
           Use cases
           <ChevronDown className="w-4 h-4" />
         </button>
-        <div className="hidden group-hover:block absolute top-full left-1/2 -translate-x-1/2 w-[320px] bg-white rounded-[16px] shadow-lg z-10">
-          <div className="py-2">
+        <div className="hidden group-hover:block absolute top-full left-1/2 -translate-x-1/2 w-[320px] bg-white rounded-[16px] shadow-lg z-10 overflow-hidden">
+          <div className="py-2 space-y-1">
             {useCases.map((useCase) => (
-              <div key={useCase} className="px-4 py-2 hover:bg-gray-50">
-                <span className={linkClass}>{useCase}</span>
-              </div>
+              <Link
+                key={useCase.title}
+                href={useCase.link}
+                className="block px-4 py-3 hover:bg-gray-50 transition-all duration-200 ease-in-out rounded-lg mx-2 hover:shadow-md"
+              >
+                <span className={`${linkClass} block`}>{useCase.title}</span>
+              </Link>
             ))}
           </div>
         </div>

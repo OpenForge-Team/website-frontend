@@ -31,7 +31,7 @@ export default function Home() {
             <BadgeGroup
               version="v0.1"
               label="Knowledge Base Early Access"
-              className="flex h-[32px] justify-center items-center"
+              className="flex h-[32px] justify-center items-center hover:cursor-pointer"
             />
             <div className="flex flex-col items-center sm:items-start gap-6 self-stretch">
               <h1 className="text-[#1E1B4B] font-['Fragment_Mono'] text-3xl sm:text-4xl md:text-5xl lg:text-[48px] leading-tight sm:leading-tight md:leading-[54px] tracking-tight sm:tracking-tighter md:tracking-[-1.056px] text-center sm:text-left">
@@ -144,14 +144,14 @@ export default function Home() {
                 icon={<MessageSquare className="w-6 h-6 text-[#4F46E5]" />}
                 title="Automated Communications"
                 description="Stop wasting time on pointless meetings. Keep Your Team Aligned—Effortlessly."
-                ctaText="Explore Features"
+                ctaText="Learn More"
                 ctaHref="use-cases/automated-communications"
               />
               <UseCaseCard
                 icon={<HeadphonesIcon className="w-6 h-6 text-[#4F46E5]" />}
                 title="Concierge & Customer Service"
                 description="Give clients an on-demand, white-glove experience by provisioning access to knowledge and actions—seamless, personalized, and always available."
-                ctaText="Get Started"
+                ctaText="Learn More"
                 ctaHref="use-cases/concierge-customer-service"
               />
               <UseCaseCard
@@ -165,14 +165,14 @@ export default function Home() {
                 icon={<BookOpen className="w-6 h-6 text-[#4F46E5]" />}
                 title="On-Demand Company Expert"
                 description="Empower your team with an always-on research assistant that instantly retrieves, organizes, and delivers the knowledge they need."
-                ctaText="Explore Features"
+                ctaText="Learn More"
                 ctaHref="use-cases/on-demand-expert"
               />
               <UseCaseCard
                 icon={<Briefcase className="w-6 h-6 text-[#4F46E5]" />}
                 title="Onboard Clients Before the First Call"
                 description="Show up prepared with work in hand and a deep understanding of their needs—ensuring every client starts with complete confidence."
-                ctaText="Get Started"
+                ctaText="Learn More"
                 ctaHref="use-cases/client-onboarding"
               />
             </div>
@@ -190,7 +190,7 @@ export default function Home() {
             providing a seamless experience that enhances productivity and
             collaboration.
           </p>
-          <CustomButton size="lg">Get Started</CustomButton>
+          <CustomButton className="w-full sm:w-auto">Get Started</CustomButton>
         </div>
       </section>
     </div>
