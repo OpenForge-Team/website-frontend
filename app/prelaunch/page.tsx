@@ -24,11 +24,6 @@ export default function PrelaunchPage() {
             Thank you for your interest! We will email you within 24 business
             hours with details about prelaunch access.
           </p>
-          <div className="mt-6 flex justify-center">
-            <Button variant="outline" onClick={handleSignOut}>
-              Sign out
-            </Button>
-          </div>
         </CardContent>
       </Card>
     </div>
