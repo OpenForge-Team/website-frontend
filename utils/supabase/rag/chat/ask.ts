@@ -90,11 +90,8 @@ If the context doesn't contain relevant information, respond with "I don't have 
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
     });
-    console.log("Notes Context:", notesContext.length);
-    console.log("Documents Context:", documentsContext.length);
 
     const context = [...notesContext, ...documentsContext];
-    console.log("Combined Context:", context.length);
 
     if (!context || context.length === 0) {
       console.warn("No context found for query:", message);
@@ -137,13 +134,11 @@ If the context doesn't contain relevant information, respond with "I don't have 
     sourcesWithTitles.forEach((src) => {
       source += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
     });
-    console.log("before");
     // Stream the response
     const responseStream = await documentChain.stream({
       messages: [new HumanMessage(message)],
       context: context,
     });
-    console.log("after");
     let finalResponse = "";
 
     try {
@@ -168,11 +163,6 @@ If the context doesn't contain relevant information, respond with "I don't have 
     finalResponse += `\n\n${source}`;
 
     return finalResponse;
-    // const response = await ollama.chat({
-    //   model: "llama3.1:8b-instruct-q6_K",
-    //   messages: messages,
-    //   stream: true,
-    // });
   } catch (error) {
     console.error("AI Response Error:", error);
     throw new Error(
