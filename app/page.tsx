@@ -19,6 +19,8 @@ import {
   Workflow,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { trackEvent } from "fathom-client";
+import React from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -31,11 +33,13 @@ export default function Home() {
       <section className="bg-white py-12 pb-24">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-8 md:px-16 lg:pl-[120px] lg:pr-8">
           <div className="flex flex-col items-center sm:items-start gap-8">
-            <BadgeGroup
-              version="v0.1"
-              label="Knowledge Base Early Access"
-              className="flex h-[32px] justify-center items-center hover:cursor-pointer"
-            />
+            <a href="/sign-up" onClick={() => trackEvent("ctaClick", {_value: 2})}>
+              <BadgeGroup
+                version="v0.1"
+                label="Knowledge Base Early Access"
+                className="flex h-[32px] justify-center items-center hover:cursor-pointer"
+              />
+            </a>
             <div className="flex flex-col items-center sm:items-start gap-6 self-stretch">
               <h1 className="text-[#1E1B4B] font-['Fragment_Mono'] text-3xl sm:text-4xl md:text-5xl lg:text-[48px] leading-tight sm:leading-tight md:leading-[54px] tracking-tight sm:tracking-tighter md:tracking-[-1.056px] text-center sm:text-left">
                 The Ultimate OS for Business Owners
@@ -48,7 +52,12 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 self-stretch">
                 <CustomButton
-                  onClick={() => router.push("/sign-up")}
+                  onClick={() => {
+                    trackEvent("ctaClick", {
+                      _value: 1
+                    });
+                    router.push("/sign-up");
+                  }}
                   className="w-full sm:w-auto"
                 >
                   Ready to scale? Book a Call
@@ -209,7 +218,10 @@ export default function Home() {
             collaboration.
           </p>
           <CustomButton
-            onClick={() => router.push("/sign-up")}
+            onClick={() => {
+              trackEvent("ctaClick", {_value: 3})
+              return router.push("/sign-up")
+            }}
             className="w-full sm:w-auto"
           >
             Get Started

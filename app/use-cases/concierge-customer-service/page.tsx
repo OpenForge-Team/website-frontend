@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { CustomButton } from "@/components/ui/custom-button"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 export const metadata: Metadata = {
   title: "Scale Your Concierge & Customer Service Effortlessly | OpenForge",
@@ -68,7 +70,7 @@ export default function ConciergeCustomerServicePage() {
 
         <div className="mt-16 text-center">
           <CustomButton size="lg" asChild>
-            <a href={conciergeCustomerServiceUseCase.ctaLink}>{conciergeCustomerServiceUseCase.ctaText}</a>
+            <a onClick={()=> {trackEvent(`ctaClick_${conciergeCustomerServiceUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={conciergeCustomerServiceUseCase.ctaLink}>{conciergeCustomerServiceUseCase.ctaText}</a>
           </CustomButton>
         </div>
       </main>

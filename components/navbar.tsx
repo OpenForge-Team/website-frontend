@@ -5,6 +5,7 @@ import { NavLinks } from "@/components/nav-links";
 import { Menu, X } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button";
 import { useRouter } from "next/navigation";
+import { trackEvent } from 'fathom-client';
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,7 +74,12 @@ export function Navbar() {
           >
             Sign in
           </CustomButton>
-          <CustomButton onClick={() => router.push("/sign-up")}>
+          <CustomButton onClick={() => {
+            trackEvent("ctaClick", {
+              _value: 0
+            })
+            router.push("/sign-up")
+          }}>
             Get Early Access
           </CustomButton>
         </div>
@@ -101,7 +107,12 @@ export function Navbar() {
             </CustomButton>
             <CustomButton
               className="w-full"
-              onClick={() => router.push("/sign-up")}
+              onClick={() => {
+                trackEvent("ctaClick", {
+                  _value: 0
+                })
+                return router.push("/sign-up")
+              }}
             >
               Get Early Access
             </CustomButton>

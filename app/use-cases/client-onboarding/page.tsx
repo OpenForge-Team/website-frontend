@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { CustomButton } from "@/components/ui/custom-button"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 export const metadata: Metadata = {
   title: "Onboard Clients Before the First Call | OpenForge",
@@ -68,7 +70,7 @@ export default function ClientOnboardingPage() {
 
         <div className="mt-16 text-center">
           <CustomButton size="lg" asChild>
-            <a href={clientOnboardingUseCase.ctaLink}>{clientOnboardingUseCase.ctaText}</a>
+            <a onClick={()=> {trackEvent(`ctaClick_${clientOnboardingUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={clientOnboardingUseCase.ctaLink}>{clientOnboardingUseCase.ctaText}</a>
           </CustomButton>
         </div>
       </main>
