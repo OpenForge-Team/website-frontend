@@ -19,8 +19,8 @@ export const retrieveDocumentContentChunks = async ({
   const supabase = await createClient();
   const retriever = new SupabaseHybridSearch(embeddings, {
     client: supabase,
-    similarityK: 2,
-    keywordK: 2,
+    similarityK: 5,
+    keywordK: 5,
     tableName: "document_content_embeddings",
     similarityQueryName: "match_document_content_embeddings",
     keywordQueryName: "kw_match_document_content_embeddings",

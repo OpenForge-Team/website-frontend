@@ -21,8 +21,8 @@ export const retrieveTitleChunks = async ({
   const supabase = await createClient();
   const retriever = new SupabaseHybridSearch(embeddings, {
     client: supabase,
-    similarityK: 2,
-    keywordK: 2,
+    similarityK: 5,
+    keywordK: 5,
     tableName: "note_title_embeddings",
     similarityQueryName: "match_note_title_embeddings",
     keywordQueryName: "kw_match_note_title_embeddings",

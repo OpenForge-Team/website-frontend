@@ -21,13 +21,13 @@ export const retrieveContentChunks = async ({
   const supabase = await createClient();
   const retriever = new SupabaseHybridSearch(embeddings, {
     client: supabase,
-    similarityK: 2,
-    keywordK: 2,
+    similarityK: 5,
+    keywordK: 5,
     tableName: "note_content_embeddings",
     similarityQueryName: "match_note_content_embeddings",
     keywordQueryName: "kw_match_note_content_embeddings",
   });
   const results = await retriever.invoke(query);
-
+  console.log(results);
   return results;
 };
