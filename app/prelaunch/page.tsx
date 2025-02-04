@@ -1,3 +1,4 @@
+"use client";
 import Header from "@/components/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,8 @@ export default function PrelaunchPage() {
         </CardHeader>
         <CardContent>
           <p className="text-center text-muted-foreground">
-            Thank you for your interest! We will email you within 24 business hours with details about prelaunch access.
+            Thank you for your interest! We will email you within 24 business
+            hours with details about prelaunch access.
           </p>
           <div className="mt-6 flex justify-center">
             <Button variant="outline" onClick={handleSignOut}>
