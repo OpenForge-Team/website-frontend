@@ -46,7 +46,7 @@ export default async function Signup(props: {
           <Input name="companyName" placeholder="Acme Inc." required />
           <Label htmlFor="companySector">Company sector</Label>
           <Select name="companySector" required>
-            <SelectTrigger>
+            <SelectTrigger className="text-foreground">
               <SelectValue placeholder="Select a sector" />
             </SelectTrigger>
             <SelectContent>
@@ -60,7 +60,7 @@ export default async function Signup(props: {
           </Select>
           <Label htmlFor="companySize">Company size</Label>
           <Select name="companySize" required>
-            <SelectTrigger>
+            <SelectTrigger className="text-foreground">
               <SelectValue placeholder="Select company size" />
             </SelectTrigger>
             <SelectContent>
@@ -73,7 +73,7 @@ export default async function Signup(props: {
           </Select>
           <Label htmlFor="role">Role</Label>
           <Select name="role" required>
-            <SelectTrigger>
+            <SelectTrigger className="text-foreground">
               <SelectValue placeholder="Select your role" />
             </SelectTrigger>
             <SelectContent>
