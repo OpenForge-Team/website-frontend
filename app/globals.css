@@ -78,6 +78,7 @@
 @layer base {
   * {
     @apply border-border;
+    font-family: var(--font-fragment-mono)
   }
   body {
     @apply bg-background text-foreground;

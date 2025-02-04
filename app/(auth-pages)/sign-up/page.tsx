@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -46,43 +47,52 @@ export default async function Signup(props: {
           <Input name="companyName" placeholder="Acme Inc." required />
           <Label htmlFor="companySector">Company sector</Label>
           <Select name="companySector" required>
-            <SelectTrigger className="text-foreground placeholder:text-muted-foreground">
-              <SelectValue placeholder="Select a sector" className="text-muted-foreground" />
+            <SelectTrigger>
+              <SelectValue
+                className="text-black"
+                placeholder="Select a sector"
+              />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="technology">Technology</SelectItem>
-              <SelectItem value="finance">Finance</SelectItem>
-              <SelectItem value="healthcare">Healthcare</SelectItem>
-              <SelectItem value="retail">Retail</SelectItem>
-              <SelectItem value="manufacturing">Manufacturing</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              <SelectGroup>
+                <SelectItem value="technology">Technology</SelectItem>
+                <SelectItem value="finance">Finance</SelectItem>
+                <SelectItem value="healthcare">Healthcare</SelectItem>
+                <SelectItem value="retail">Retail</SelectItem>
+                <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
           <Label htmlFor="companySize">Company size</Label>
           <Select name="companySize" required>
-            <SelectTrigger className="text-foreground placeholder:text-muted-foreground">
-              <SelectValue placeholder="Select company size" className="text-muted-foreground" />
+            <SelectTrigger>
+              <SelectValue placeholder="Select company size" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1-10">1-10 employees</SelectItem>
-              <SelectItem value="11-50">11-50 employees</SelectItem>
-              <SelectItem value="51-200">51-200 employees</SelectItem>
-              <SelectItem value="201-500">201-500 employees</SelectItem>
-              <SelectItem value="501+">501+ employees</SelectItem>
+              <SelectGroup>
+                <SelectItem value="1-10">1-10 employees</SelectItem>
+                <SelectItem value="11-50">11-50 employees</SelectItem>
+                <SelectItem value="51-200">51-200 employees</SelectItem>
+                <SelectItem value="201-500">201-500 employees</SelectItem>
+                <SelectItem value="501+">501+ employees</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
           <Label htmlFor="role">Role</Label>
           <Select name="role" required>
-            <SelectTrigger className="text-foreground placeholder:text-muted-foreground">
-              <SelectValue placeholder="Select your role" className="text-muted-foreground" />
+            <SelectTrigger>
+              <SelectValue placeholder="Select your role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ceo">CEO</SelectItem>
-              <SelectItem value="cto">CTO</SelectItem>
-              <SelectItem value="manager">Manager</SelectItem>
-              <SelectItem value="developer">Developer</SelectItem>
-              <SelectItem value="designer">Designer</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              <SelectGroup>
+                <SelectItem value="ceo">CEO</SelectItem>
+                <SelectItem value="cto">CTO</SelectItem>
+                <SelectItem value="manager">Manager</SelectItem>
+                <SelectItem value="developer">Developer</SelectItem>
+                <SelectItem value="designer">Designer</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
           <Label htmlFor="useCase">Use case</Label>
