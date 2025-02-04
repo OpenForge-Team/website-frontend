@@ -50,6 +50,19 @@ interface Ask {
   message: string;
 }
 export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
+  const startTime = performance.now();
+  let lastTime = startTime;
+
+  const logTiming = (step: string) => {
+    const currentTime = performance.now();
+    const stepDuration = currentTime - lastTime;
+    const totalDuration = currentTime - startTime;
+    console.log(`[Timing] ${step}:`);
+    console.log(`  Step duration: ${stepDuration.toFixed(2)}ms`);
+    console.log(`  Total elapsed: ${totalDuration.toFixed(2)}ms`);
+    lastTime = currentTime;
+  };
+
   if (!message) {
     throw new Error('Missing "message" in request body.');
   }
@@ -86,10 +99,14 @@ If the context doesn't contain relevant information, respond with "I don't have 
       llm,
       prompt: questionAnsweringPrompt,
     });
+    logTiming('Chain creation');
     const notesContext = await retrieveContentChunks({ query: message });
+    logTiming('Notes context retrieval');
+    
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
     });
+    logTiming('Documents context retrieval');
 
     const context = [...notesContext, ...documentsContext];
 
@@ -129,11 +146,13 @@ If the context doesn't contain relevant information, respond with "I don't have 
     });
 
     const sourcesWithTitles = await Promise.all(titlePromises);
+    logTiming('Title fetching');
 
     // Build the source list with actual titles
     sourcesWithTitles.forEach((src) => {
       source += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
     });
+    logTiming('Pre-stream preparation');
     // Stream the response
     const responseStream = await documentChain.stream({
       messages: [new HumanMessage(message)],
@@ -161,6 +180,10 @@ If the context doesn't contain relevant information, respond with "I don't have 
     }));
 
     finalResponse += `\n\n${source}`;
+    
+    logTiming('Response streaming and formatting');
+    const totalTime = performance.now() - startTime;
+    console.log(`\n[Timing] Total execution time: ${totalTime.toFixed(2)}ms`);
 
     return finalResponse;
   } catch (error) {
