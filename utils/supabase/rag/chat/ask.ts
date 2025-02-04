@@ -31,15 +31,20 @@ import { retrieveContentChunks } from "../retrieve-content-embeddings";
 import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
 import { ChatOpenAI, OpenAI } from "@langchain/openai";
 import { DeepInfraLLM } from "@langchain/community/llms/deepinfra";
+import { ChatGroq } from "@langchain/groq";
 // const llm = new Ollama({
 //   numGpu: 2,
 //   numCtx: 16384,
 //   baseUrl: process.env.OLLAMA_BASEURL,
 //   model: "phi4:14b-q4_K_M",
 // });
-const llm = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  model: "o3-mini",
+// const llm = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+//   model: "o1-mini",
+// });
+const llm = new ChatGroq({
+  apiKey: process.env.GROQ_API_KEY,
+  model: "llama-3.1-8b-instant",
 });
 // const llm = new DeepInfraLLM({
 //   apiKey: process.env.DEEPINFRA_API_KEY,
