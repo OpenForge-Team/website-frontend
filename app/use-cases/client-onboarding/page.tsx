@@ -1,13 +1,15 @@
-import type { Metadata } from "next"
-import { CustomButton } from "@/components/ui/custom-button"
-import { trackEvent } from "fathom-client"
-import React from "react"
+"use client";
+
+import type { Metadata } from "next";
+import { CustomButton } from "@/components/ui/custom-button";
+import { trackEvent } from "fathom-client";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Onboard Clients Before the First Call | OpenForge",
   description:
     "Show up prepared with work in hand and a deep understanding of their needs—ensuring every client starts with complete confidence.",
-}
+};
 
 export default function ClientOnboardingPage() {
   const clientOnboardingUseCase = {
@@ -44,7 +46,7 @@ export default function ClientOnboardingPage() {
     ],
     ctaText: "Upgrade Your Client Onboarding",
     ctaLink: "sign-up",
-  }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -62,18 +64,32 @@ export default function ClientOnboardingPage() {
         <div className="mt-16 space-y-16">
           {clientOnboardingUseCase.sections.map((section, index) => (
             <div key={index} className="border-t border-gray-200 pt-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">{section.title}</h2>
-              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">{section.content}</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">
+                {section.title}
+              </h2>
+              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">
+                {section.content}
+              </p>
             </div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
           <CustomButton size="lg" asChild>
-            <a onClick={()=> {trackEvent(`ctaClick_${clientOnboardingUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={clientOnboardingUseCase.ctaLink}>{clientOnboardingUseCase.ctaText}</a>
+            <a
+              onClick={() => {
+                trackEvent(
+                  `ctaClick_${clientOnboardingUseCase.ctaLink.split("/").pop()}`,
+                  { _value: 4 }
+                );
+              }}
+              href={clientOnboardingUseCase.ctaLink}
+            >
+              {clientOnboardingUseCase.ctaText}
+            </a>
           </CustomButton>
         </div>
       </main>
     </div>
-  )
+  );
 }
