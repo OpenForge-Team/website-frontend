@@ -1,3 +1,4 @@
+"use client";
 import { CustomButton } from "@/components/ui/custom-button";
 import { trackEvent } from "fathom-client";
 
