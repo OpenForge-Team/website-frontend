@@ -1,14 +1,13 @@
-"use client";
-import type { Metadata } from "next";
-import { CustomButton } from "@/components/ui/custom-button";
-import { trackEvent } from "fathom-client";
-import React from "react";
+import type { Metadata } from "next"
+import { CustomButton } from "@/components/ui/custom-button"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 export const metadata: Metadata = {
   title: "On-Demand Expert for Every Employee | OpenForge",
   description:
     "Empower your team with an always-on research assistant that instantly retrieves, organizes, and delivers the knowledge they need—eliminating guesswork and turning every employee into an expert.",
-};
+}
 
 export default function OnDemandExpertPage() {
   const onDemandExpertUseCase = {
@@ -45,7 +44,7 @@ export default function OnDemandExpertPage() {
     ],
     ctaText: "Empower Your Team with Instant Expertise",
     ctaLink: "sign-up",
-  };
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -63,32 +62,18 @@ export default function OnDemandExpertPage() {
         <div className="mt-16 space-y-16">
           {onDemandExpertUseCase.sections.map((section, index) => (
             <div key={index} className="border-t border-gray-200 pt-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">
-                {section.title}
-              </h2>
-              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">
-                {section.content}
-              </p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">{section.title}</h2>
+              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">{section.content}</p>
             </div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
           <CustomButton size="lg" asChild>
-            <a
-              onClick={() => {
-                trackEvent(
-                  `ctaClick_${onDemandExpertUseCase.ctaLink.split("/").pop()}`,
-                  { _value: 4 }
-                );
-              }}
-              href={onDemandExpertUseCase.ctaLink}
-            >
-              {onDemandExpertUseCase.ctaText}
-            </a>
+            <a onClick={()=> {trackEvent(`ctaClick_${onDemandExpertUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={onDemandExpertUseCase.ctaLink}>{onDemandExpertUseCase.ctaText}</a>
           </CustomButton>
         </div>
       </main>
     </div>
-  );
+  )
 }
