@@ -3,6 +3,7 @@ import "./globals.css";
 import QueryProviders from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Fragment_Mono } from "next/font/google";
+import Fathom from "@/components/Fathom";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={fragmentMono.variable} suppressHydrationWarning>
       <body className="bg-background text-foreground">
+        <Fathom />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
