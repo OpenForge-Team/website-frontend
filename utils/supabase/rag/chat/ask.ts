@@ -29,13 +29,17 @@ const getDocumentTitle = async (documentId: string) => {
 import { Ollama } from "@langchain/ollama";
 import { retrieveContentChunks } from "../retrieve-content-embeddings";
 import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatOpenAI, OpenAI } from "@langchain/openai";
 import { DeepInfraLLM } from "@langchain/community/llms/deepinfra";
-const llm = new Ollama({
-  numGpu: 2,
-  numCtx: 16384,
-  baseUrl: process.env.OLLAMA_BASEURL,
-  model: "phi4:14b-q4_K_M",
+// const llm = new Ollama({
+//   numGpu: 2,
+//   numCtx: 16384,
+//   baseUrl: process.env.OLLAMA_BASEURL,
+//   model: "phi4:14b-q4_K_M",
+// });
+const llm = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: "o3-mini",
 });
 // const llm = new DeepInfraLLM({
 //   apiKey: process.env.DEEPINFRA_API_KEY,
@@ -99,14 +103,14 @@ If the context doesn't contain relevant information, respond with "I don't have 
       llm,
       prompt: questionAnsweringPrompt,
     });
-    logTiming('Chain creation');
+    logTiming("Chain creation");
     const notesContext = await retrieveContentChunks({ query: message });
-    logTiming('Notes context retrieval');
-    
+    logTiming("Notes context retrieval");
+
     const documentsContext = await retrieveDocumentContentChunks({
       query: message,
     });
-    logTiming('Documents context retrieval');
+    logTiming("Documents context retrieval");
 
     const context = [...notesContext, ...documentsContext];
 
@@ -146,13 +150,13 @@ If the context doesn't contain relevant information, respond with "I don't have 
     });
 
     const sourcesWithTitles = await Promise.all(titlePromises);
-    logTiming('Title fetching');
+    logTiming("Title fetching");
 
     // Build the source list with actual titles
     sourcesWithTitles.forEach((src) => {
       source += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
     });
-    logTiming('Pre-stream preparation');
+    logTiming("Pre-stream preparation");
     // Stream the response
     const responseStream = await documentChain.stream({
       messages: [new HumanMessage(message)],
@@ -180,8 +184,8 @@ If the context doesn't contain relevant information, respond with "I don't have 
     }));
 
     finalResponse += `\n\n${source}`;
-    
-    logTiming('Response streaming and formatting');
+
+    logTiming("Response streaming and formatting");
     const totalTime = performance.now() - startTime;
     console.log(`\n[Timing] Total execution time: ${totalTime.toFixed(2)}ms`);
 

@@ -238,7 +238,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   return (
     <Card className="w-full mx-auto min-h-[700px] md:min-h-[800px] flex flex-col bg-background border-border">
       <CardHeader className="border-b border-border">
-        <CardTitle className="text-foreground">Forge AI</CardTitle>
+        <CardTitle className="text-primary">Forge AI</CardTitle>
       </CardHeader>
 
       <CardContent className="flex-1 overflow-hidden p-4">
