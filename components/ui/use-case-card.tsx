@@ -1,9 +1,7 @@
 import type { FC } from "react"
 import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
-import type React from "react"
 import { trackEvent } from "fathom-client"
-import React from "react"
 
 interface UseCaseCardProps {
   icon: React.ReactNode
