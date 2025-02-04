@@ -139,7 +139,9 @@ export default function DocumentPage() {
 
   return (
     <div className="mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Document Management</h1>
+      <h1 className="text-primary text-2xl font-bold mb-6">
+        Document Management
+      </h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -233,7 +235,9 @@ export default function DocumentPage() {
       </Form>
 
       <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Your Documents</h2>
+        <h2 className="text-primary text-xl font-semibold mb-4">
+          Your Documents
+        </h2>
         <DocumentList userId={user?.id} />
       </div>
     </div>

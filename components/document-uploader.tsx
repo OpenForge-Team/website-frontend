@@ -24,10 +24,13 @@ export function DocumentUploader({ onFilesSelected }: DocumentUploaderProps) {
       "text/markdown": [".md"],
       "text/plain": [".txt"],
       "application/pdf": [".pdf"],
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
       "application/vnd.ms-excel": [".xls"],
       "application/msword": [".doc"],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"]
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [".docx"],
     },
     multiple: true,
   });
@@ -47,9 +50,11 @@ export function DocumentUploader({ onFilesSelected }: DocumentUploaderProps) {
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <p className="text-secondary">Drop the files here ...</p>
         ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <p className="text-secondary">
+            Drag 'n' drop some files here, or click to select files
+          </p>
         )}
         <Button type="button" className="mt-2">
           Select Files
@@ -62,7 +67,7 @@ export function DocumentUploader({ onFilesSelected }: DocumentUploaderProps) {
               key={index}
               className="flex items-center justify-between bg-gray-100 p-2 rounded"
             >
-              <span>{file.name}</span>
+              <span className="text-primary">{file.name}</span>
               <Button
                 type="button"
                 variant="ghost"

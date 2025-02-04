@@ -1,3 +1,4 @@
+"use client";
 import Listicle from "@/components/listicle";
 import { Navbar } from "@/components/navbar";
 import { BadgeGroup } from "@/components/ui/badge-group";
@@ -16,9 +17,11 @@ import {
   Link,
   BookOpenCheck,
   Workflow,
-} from "lucide-react"
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-[#ffffff] relative pt-20">
       {/* Navbar */}
@@ -38,13 +41,23 @@ export default function Home() {
                 The Ultimate OS for Business Owners
               </h1>
               <p className="text-[#1E1B4B]/60 font-['Fragment_Mono'] text-sm sm:text-base md:text-lg leading-relaxed sm:leading-relaxed md:leading-[22px] tracking-tight sm:tracking-tighter md:tracking-[-0.208px] text-center sm:text-left">
-                Scale your operations without scaling team. <strong>Now accepting applications for our limited beta!</strong>
+                Scale your operations without scaling team.{" "}
+                <strong>
+                  Now accepting applications for our limited beta!
+                </strong>
               </p>
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 self-stretch">
-                <CustomButton className="w-full sm:w-auto">
+                <CustomButton
+                  onClick={() => router.push("/sign-up")}
+                  className="w-full sm:w-auto"
+                >
                   Ready to scale? Book a Call
                 </CustomButton>
-                <CustomButton variant="secondary" className="w-full sm:w-auto">
+                <CustomButton
+                  onClick={() => router.push("/sign-up")}
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Join the waitlist
                 </CustomButton>
               </div>
@@ -53,8 +66,11 @@ export default function Home() {
         </div>
       </section>
 
-            {/* Feature Section */}
-            <section id="featureSection" className="bg-[#EEF2FF] py-16 sm:py-20 md:py-24">
+      {/* Feature Section */}
+      <section
+        id="featureSection"
+        className="bg-[#EEF2FF] py-16 sm:py-20 md:py-24"
+      >
         <div className="max-w-[1140px] mx-auto px-4 sm:px-8 md:px-16 lg:pl-[120px] lg:pr-8">
           <div className="flex flex-col items-center sm:items-start gap-16 sm:gap-20 md:gap-24 lg:gap-32">
             <div className="flex flex-col items-center sm:items-start gap-4 sm:gap-5 md:gap-6 self-stretch">
@@ -62,9 +78,11 @@ export default function Home() {
                 Why OpenForge?
               </h2>
               <p className="text-[rgba(49,46,129,0.60)] font-['Fragment_Mono'] text-sm sm:text-base md:text-lg leading-relaxed sm:leading-relaxed md:leading-[24px] tracking-tight sm:tracking-tighter md:tracking-[-0.252px] text-center sm:text-left">
-                Open Forge offers a unified, automated, and fully customizable work management system designed to help
-                organizations streamline operations, reduce costs, and scale efficiently without the typical growing
-                pains. Unlike generic solutions, Open Forge provides:
+                Open Forge offers a unified, automated, and fully customizable
+                work management system designed to help organizations streamline
+                operations, reduce costs, and scale efficiently without the
+                typical growing pains. Unlike generic solutions, Open Forge
+                provides:
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-12 self-stretch">
@@ -119,9 +137,8 @@ export default function Home() {
         <CategoryCarousel />
       </section>
 
-
- {/* Use Cases Section */}
- <section className="bg-white py-16 sm:py-20 md:py-24">
+      {/* Use Cases Section */}
+      <section className="bg-white py-16 sm:py-20 md:py-24">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-8 md:px-16 lg:pl-[120px] lg:pr-8">
           <div className="flex flex-col items-center sm:items-start gap-12 sm:gap-16">
             <div className="flex flex-col items-center sm:items-start gap-4 self-stretch">
@@ -129,7 +146,8 @@ export default function Home() {
                 Explore Use Cases
               </h2>
               <p className="text-[rgba(49,46,129,0.60)] font-['Fragment_Mono'] text-sm sm:text-base md:text-lg leading-relaxed tracking-tight text-center sm:text-left max-w-2xl">
-                Discover how Open Forge can transform various aspects of your business operations.
+                Discover how Open Forge can transform various aspects of your
+                business operations.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
@@ -190,7 +208,12 @@ export default function Home() {
             providing a seamless experience that enhances productivity and
             collaboration.
           </p>
-          <CustomButton className="w-full sm:w-auto">Get Started</CustomButton>
+          <CustomButton
+            onClick={() => router.push("/sign-up")}
+            className="w-full sm:w-auto"
+          >
+            Get Started
+          </CustomButton>
         </div>
       </section>
     </div>

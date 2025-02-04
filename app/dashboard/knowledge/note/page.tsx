@@ -152,7 +152,7 @@ export default function NotePage() {
 
   return (
     <div className="mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Create New Note</h1>
+      <h1 className="text-primary text-2xl font-bold mb-6">Create New Note</h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

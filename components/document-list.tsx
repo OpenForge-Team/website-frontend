@@ -62,12 +62,12 @@ export function DocumentList({ userId }: DocumentListProps) {
           >
             <div className="flex items-center space-x-3 mb-4">
               <FileText className="h-8 w-8 text-muted-foreground" />
-              <h3 className="font-semibold text-base text-foreground truncate flex-1">
+              <h3 className="font-semibold text-base text-primary truncate flex-1">
                 {doc.name}
               </h3>
             </div>
             <div className="flex flex-col space-y-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-secondary">
                 Uploaded:{" "}
                 {formatDate(doc.added_at, {
                   year: "numeric",
