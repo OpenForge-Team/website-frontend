@@ -1,6 +1,5 @@
 import { CustomButton } from "@/components/ui/custom-button";
 import { trackEvent } from "fathom-client";
-import React from "react";
 
 interface Section {
   title: string;

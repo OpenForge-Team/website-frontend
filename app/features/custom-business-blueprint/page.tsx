@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default function CustomBusinessBlueprintPage() {
+
   const customBlueprintFeature = {
     title: "Custom Business Blueprint",
     description:
@@ -40,8 +41,8 @@ export default function CustomBusinessBlueprintPage() {
           "Traditional ERPs force businesses into predefined structures. Our solution gives you the freedom to shape your business architecture without limitations or unnecessary complexity.",
       },
     ],
-    ctaText: "Design Your Custom Blueprint",
-    ctaLink: "/features/custom-business-blueprint",
+    ctaText: "Book a Call",
+    ctaLink: "/sign-up",
   }
 
   return <FeaturePageTemplate feature={customBlueprintFeature} />

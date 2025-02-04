@@ -35,8 +35,8 @@ export default function SeamlessInformationMovementPage() {
           "Seamlessly connect with your existing tools and platforms. Our feature adapts to your unique business ecosystem, ensuring that information flows smoothly across all your systems without disrupting your established processes.",
       },
     ],
-    ctaText: "See It In Action",
-    ctaLink: "/demo",
+    ctaText: "Book a Call",
+    ctaLink: "/sign-up",
   }
 
   return (

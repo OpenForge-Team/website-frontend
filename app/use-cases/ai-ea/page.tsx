@@ -29,8 +29,8 @@ export default function AIExecutiveAssistantPage() {
             "Delegate tasks with ease and never worry about forgetting follow-ups. The AI Assistant keeps track of assigned tasks, sends reminders, and provides you with regular status updates, ensuring nothing falls through the cracks.",
         }
     ],
-    ctaText: "Start Your Free Trial",
-    ctaLink: "/signup",
+    ctaText: "Sign Up",
+    ctaLink: "/sign-up",
   }
 
   return (

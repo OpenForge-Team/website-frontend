@@ -43,7 +43,7 @@ export default function OnDemandExpertPage() {
       },
     ],
     ctaText: "Empower Your Team with Instant Expertise",
-    ctaLink: "/use-cases/on-demand-expert",
+    ctaLink: "sign-up",
   }
 
   return (
