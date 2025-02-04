@@ -2,6 +2,8 @@ import type { FC } from "react"
 import { Card } from "@/components/ui/card"
 import { CustomButton } from "@/components/ui/custom-button"
 import type React from "react"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 interface UseCaseCardProps {
   icon: React.ReactNode
@@ -24,7 +26,7 @@ export const UseCaseCard: FC<UseCaseCardProps> = ({ icon, title, description, ct
         </p>
       </div>
       <CustomButton variant="secondary" asChild className="mt-auto w-full">
-        <a href={ctaHref}>{ctaText}</a>
+        <a href={ctaHref} onClick={()=> {trackEvent(`viewUseCase_${ctaHref.split('/').pop()}`)}}>{ctaText}</a>
       </CustomButton>
     </Card>
   )

@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { CustomButton } from "@/components/ui/custom-button"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 export const metadata: Metadata = {
   title: "Automated Communications | OpenForge",
@@ -68,7 +70,7 @@ export default function AutomatedCommunicationsPage() {
 
         <div className="mt-16 text-center">
           <CustomButton size="lg" asChild>
-            <a href={automatedCommsUseCase.ctaLink}>{automatedCommsUseCase.ctaText}</a>
+            <a onClick={()=> {trackEvent(`ctaClick_${automatedCommsUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={automatedCommsUseCase.ctaLink}>{automatedCommsUseCase.ctaText}</a>
           </CustomButton>
         </div>
       </main>

@@ -1,5 +1,7 @@
 import type React from "react"
 import { CustomButton } from "@/components/ui/custom-button"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 interface Section {
   title: string
@@ -39,7 +41,7 @@ export const FeaturePageTemplate: React.FC<FeaturePageProps> = ({ feature }) => 
 
       <div className="mt-16 text-center">
         <CustomButton size="lg" asChild>
-          <a href={feature.ctaLink}>{feature.ctaText}</a>
+          <a onClick={()=> {trackEvent(`ctaClick_${feature.ctaLink.split('/').pop()}`, {_value: 5})}} href={feature.ctaLink}>{feature.ctaText}</a>
         </CustomButton>
       </div>
     </main>

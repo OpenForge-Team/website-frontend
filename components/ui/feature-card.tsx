@@ -4,6 +4,7 @@ import type { FC } from "react"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import type React from "react"
+import { trackEvent } from "fathom-client"
 
 interface FeatureCardProps {
   icon: React.ReactNode
@@ -32,7 +33,9 @@ export const FeatureCard: FC<FeatureCardProps> = ({ icon, title, description, le
         href={learnMoreHref}
         className="text-[#4F46E5] font-['Fragment_Mono'] text-sm sm:text-base leading-5 sm:leading-6 tracking-tight sm:tracking-[-0.208px] hover:underline"
       >
-        Learn more
+        <button onClick={()=> {trackEvent(`viewFeature_${learnMoreHref.split('/').pop()}`)}}>
+          Learn more
+        </button>
       </Link>
     </Card>
   )

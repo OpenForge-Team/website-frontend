@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import { CustomButton } from "@/components/ui/custom-button"
+import { trackEvent } from "fathom-client"
+import React from "react"
 
 export const metadata: Metadata = {
   title: "On-Demand Expert for Every Employee | OpenForge",
@@ -68,7 +70,7 @@ export default function OnDemandExpertPage() {
 
         <div className="mt-16 text-center">
           <CustomButton size="lg" asChild>
-            <a href={onDemandExpertUseCase.ctaLink}>{onDemandExpertUseCase.ctaText}</a>
+            <a onClick={()=> {trackEvent(`ctaClick_${onDemandExpertUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={onDemandExpertUseCase.ctaLink}>{onDemandExpertUseCase.ctaText}</a>
           </CustomButton>
         </div>
       </main>
