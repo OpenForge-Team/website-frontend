@@ -42,8 +42,8 @@ export default function AutomatedCommunicationsPage() {
           "Automated messages aren't just for visibility—they drive action. Updates can trigger workflows, assign tasks, or notify teams of dependencies, ensuring seamless execution.",
       },
     ],
-    ctaText: "Streamline Your Communications",
-    ctaLink: "/use-cases/automated-communications",
+    ctaText: "Sign Up",
+    ctaLink: "/sign-up",
   }
 
   return (

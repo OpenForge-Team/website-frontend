@@ -40,8 +40,8 @@ export default function KnowledgeBasePage() {
           "Ensure the right people see the right information at the right time. Set granular permissions for departments, teams, or individuals to control how knowledge is shared and updated.",
       },
     ],
-    ctaText: "See the Knowledge Base in Action",
-    ctaLink: "/features/knowledge-base",
+    ctaText: "Book a Call",
+    ctaLink: "/sign-up",
   }
 
   return <FeaturePageTemplate feature={knowledgeBaseFeature} />

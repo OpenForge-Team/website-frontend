@@ -43,7 +43,7 @@ export default function ClientOnboardingPage() {
       },
     ],
     ctaText: "Upgrade Your Client Onboarding",
-    ctaLink: "/use-cases/client-onboarding",
+    ctaLink: "sign-up",
   }
 
   return (

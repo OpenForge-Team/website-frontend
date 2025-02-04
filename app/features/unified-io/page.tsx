@@ -41,7 +41,7 @@ export default function UnifiedIOPage() {
       },
     ],
     ctaText: "Experience Unified I/O",
-    ctaLink: "/features/unified-io",
+    ctaLink: "/sign-up",
   }
 
   return <FeaturePageTemplate feature={unifiedIOFeature} />

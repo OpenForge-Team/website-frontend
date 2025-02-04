@@ -43,7 +43,7 @@ export default function EmployeeOnboardingPage() {
       },
     ],
     ctaText: "Accelerate Your Onboarding Process",
-    ctaLink: "/use-cases/employee-onboarding",
+    ctaLink: "/sign-up",
   }
 
   return (

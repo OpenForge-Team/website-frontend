@@ -43,7 +43,7 @@ export default function ConciergeCustomerServicePage() {
       },
     ],
     ctaText: "Automate & Scale Your Concierge Service",
-    ctaLink: "/use-cases/concierge-customer-service",
+    ctaLink: "/sign-up",
   }
 
   return (
