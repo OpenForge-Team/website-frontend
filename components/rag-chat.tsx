@@ -303,7 +303,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
                   </div>
                 </div>
               </div>
-              {chatLoading && index === chatMessages.length - 1 && message.role === "ai" && (
+              {chatLoading && index === chatMessages.length - 1 && message.role === "user" && (
                 <div className="flex justify-start mt-2">
                   <div className="rounded-lg px-4 py-2 bg-muted/50 border border-border">
                     <div className="flex gap-2">
