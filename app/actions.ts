@@ -4,7 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { trackEvent } from "fathom-client";
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const signUpAction = async (formData: FormData) => {
@@ -14,8 +14,6 @@ export const signUpAction = async (formData: FormData) => {
   const password = formData.get("password")?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
-
-  trackEvent("signUpSubmit")
 
   if (!email || !password || !firstname || !lastname) {
     return encodedRedirect(
