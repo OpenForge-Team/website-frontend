@@ -63,7 +63,12 @@ export default async function Signup(props: {
           </div>
         </div>
 
-        <form className="space-y-6">
+        <form 
+          className="space-y-6"
+          onSubmit={() => {
+            trackEvent("signUpSubmit");
+          }}
+        >
           <div className="space-y-2">
             <Label htmlFor="email" className="font-fragment-mono text-sm">
               Email
