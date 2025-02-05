@@ -193,19 +193,20 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
     if (!user) return;
     try {
       const note = await getNotebyId(user.id, note_id);
-      console.log(note);
-      return;
-      setDialogSourceContent(note);
-    } catch (error) {}
+      setDialogSourceContent({...note, type: 'note'});
+    } catch (error) {
+      console.error("Error fetching note:", error);
+    }
   };
+  
   const handleGetDocumentSource = async (document_id: string) => {
     if (!user) return;
     try {
       const document = await getDocumentById(document_id);
-      console.log(document);
-      return;
-      setDialogSourceContent(document);
-    } catch (error) {}
+      setDialogSourceContent({...document, type: 'document'});
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
   };
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     const href = event.currentTarget.getAttribute("href");
@@ -344,14 +345,25 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
         <Dialog open={true}>
           <DialogContent className="max-w-xl min-h-[50%]">
             <DialogHeader>
-              <DialogTitle>From Note: {dialogSourceContent.title}</DialogTitle>
+              <DialogTitle>
+                {dialogSourceContent.type === 'note' 
+                  ? `From Note: ${dialogSourceContent.title}`
+                  : `From Document: ${dialogSourceContent.name}`
+                }
+              </DialogTitle>
               <DialogDescription>
-                From Subject: {dialogSourceContent.subjects.name}
+                {dialogSourceContent.type === 'note' && dialogSourceContent.subjects
+                  ? `From Subject: ${dialogSourceContent.subjects.name}`
+                  : null
+                }
               </DialogDescription>
             </DialogHeader>
             <Textarea
               className="h-full flex"
-              value={dialogSourceContent.content}
+              value={dialogSourceContent.type === 'note' 
+                ? dialogSourceContent.content
+                : dialogSourceContent.text || 'Document content not available'
+              }
               disabled
             />
             <DialogFooter className="mt-auto max-h-min">
