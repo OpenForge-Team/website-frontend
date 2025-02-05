@@ -244,13 +244,13 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   }, [chatMessages]);
 
   return (
-    <Card className="w-full mx-auto min-h-[700px] md:min-h-[800px] flex flex-col bg-background border-border">
+    <Card className="w-full mx-auto h-[calc(100vh-12rem)] flex flex-col bg-background border-border">
       <CardHeader className="border-b border-border">
         <CardTitle className="text-primary">Forge AI</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex-1 overflow-hidden p-4">
-        <ScrollArea className="h-full pr-4">
+      <CardContent className="flex-1 overflow-hidden p-4 relative">
+        <ScrollArea className="h-[calc(100%-1rem)] absolute inset-4 pr-4">
           <div className="flex flex-col gap-4">
             {chatMessages.map((message, index) => (
               <>
