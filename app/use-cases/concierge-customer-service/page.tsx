@@ -1,13 +1,14 @@
-import type { Metadata } from "next"
-import { CustomButton } from "@/components/ui/custom-button"
-import { trackEvent } from "fathom-client"
-import React from "react"
+import type { Metadata } from "next";
+import { CustomButton } from "@/components/ui/custom-button";
+import { trackEvent } from "fathom-client";
+import React from "react";
+import { TrackedButton } from "@/components/tracked-button";
 
 export const metadata: Metadata = {
   title: "Scale Your Concierge & Customer Service Effortlessly | OpenForge",
   description:
     "Give clients an on-demand, white-glove experience by provisioning access to knowledge and actions—seamless, personalized, and always available.",
-}
+};
 
 export default function ConciergeCustomerServicePage() {
   const conciergeCustomerServiceUseCase = {
@@ -44,13 +45,15 @@ export default function ConciergeCustomerServicePage() {
     ],
     ctaText: "Automate & Scale Your Concierge Service",
     ctaLink: "/sign-up",
-  }
+  };
 
   return (
     <div className="min-h-screen bg-white">
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center mb-16">
-          <div className="text-6xl mb-4">{conciergeCustomerServiceUseCase.icon}</div>
+          <div className="text-6xl mb-4">
+            {conciergeCustomerServiceUseCase.icon}
+          </div>
           <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl mb-4 font-['Fragment_Mono']">
             {conciergeCustomerServiceUseCase.title}
           </h1>
@@ -62,19 +65,23 @@ export default function ConciergeCustomerServicePage() {
         <div className="mt-16 space-y-16">
           {conciergeCustomerServiceUseCase.sections.map((section, index) => (
             <div key={index} className="border-t border-gray-200 pt-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">{section.title}</h2>
-              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">{section.content}</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">
+                {section.title}
+              </h2>
+              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">
+                {section.content}
+              </p>
             </div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
-          <CustomButton size="lg" asChild>
-            <a onClick={()=> {trackEvent(`ctaClick_${conciergeCustomerServiceUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={conciergeCustomerServiceUseCase.ctaLink}>{conciergeCustomerServiceUseCase.ctaText}</a>
-          </CustomButton>
+          <TrackedButton
+            href={conciergeCustomerServiceUseCase.ctaLink}
+            label={conciergeCustomerServiceUseCase.ctaText}
+          />
         </div>
       </main>
     </div>
-  )
+  );
 }
-

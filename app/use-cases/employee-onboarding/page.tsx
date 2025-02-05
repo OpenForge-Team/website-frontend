@@ -1,13 +1,14 @@
-import type { Metadata } from "next"
-import { CustomButton } from "@/components/ui/custom-button"
-import { trackEvent } from "fathom-client"
-import React from "react"
+import type { Metadata } from "next";
+import { CustomButton } from "@/components/ui/custom-button";
+import { trackEvent } from "fathom-client";
+import React from "react";
+import { TrackedButton } from "@/components/tracked-button";
 
 export const metadata: Metadata = {
   title: "Cut Employee Onboarding Times | OpenForge",
   description:
     "Give every new hire an expert at their fingertips—guiding them through every task, process, and expectation. Onboarding so seamless, even a 12-year-old could master it.",
-}
+};
 
 export default function EmployeeOnboardingPage() {
   const employeeOnboardingUseCase = {
@@ -44,7 +45,7 @@ export default function EmployeeOnboardingPage() {
     ],
     ctaText: "Accelerate Your Onboarding Process",
     ctaLink: "/sign-up",
-  }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -62,18 +63,23 @@ export default function EmployeeOnboardingPage() {
         <div className="mt-16 space-y-16">
           {employeeOnboardingUseCase.sections.map((section, index) => (
             <div key={index} className="border-t border-gray-200 pt-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">{section.title}</h2>
-              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">{section.content}</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 font-['Fragment_Mono']">
+                {section.title}
+              </h2>
+              <p className="mt-2 text-gray-600 font-['Fragment_Mono']">
+                {section.content}
+              </p>
             </div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
-          <CustomButton size="lg" asChild>
-            <a onClick={()=> {trackEvent(`ctaClick_${employeeOnboardingUseCase.ctaLink.split('/').pop()}`, {_value: 4})}} href={employeeOnboardingUseCase.ctaLink}>{employeeOnboardingUseCase.ctaText}</a>
-          </CustomButton>
+          <TrackedButton
+            href={employeeOnboardingUseCase.ctaLink}
+            label={employeeOnboardingUseCase.ctaText}
+          />
         </div>
       </main>
     </div>
-  )
+  );
 }
