@@ -330,6 +330,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
               </div>
             )}
           </div>
+        </div>
       </CardContent>
       <CardFooter className="space-x-2">
         <Input
