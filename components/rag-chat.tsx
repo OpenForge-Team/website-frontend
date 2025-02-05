@@ -249,8 +249,8 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
         <CardTitle className="text-primary">Forge AI</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex-1 overflow-hidden p-4 relative">
-        <ScrollArea className="h-[calc(100%-1rem)] absolute inset-4 pr-4">
+      <CardContent className="flex-1 overflow-y-auto p-4">
+        <div className="space-y-4">
           <div className="flex flex-col gap-4">
             {chatMessages.map((message, index) => (
               <>
@@ -330,7 +330,6 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
               </div>
             )}
           </div>
-        </ScrollArea>
       </CardContent>
       <CardFooter className="space-x-2">
         <Input
