@@ -32,6 +32,7 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { getNotebyId } from "@/utils/supabase/notes";
 import { Textarea } from "./ui/textarea";
 import { getDocumentById } from "@/utils/supabase/documents";
+import { DocumentViewer } from "./document-viewer";
 interface Props {
   editable: boolean;
   mode: "chat" | "view";
@@ -47,6 +48,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   const supabase = createClient();
   const { toast } = useToast();
   const [dialogSourceContent, setDialogSourceContent] = useState<any>(null);
+  const [documentViewerContent, setDocumentViewerContent] = useState<any>(null);
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
@@ -203,7 +205,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
     if (!user) return;
     try {
       const document = await getDocumentById(document_id);
-      setDialogSourceContent({...document, type: 'document'});
+      setDocumentViewerContent(document);
     } catch (error) {
       console.error("Error fetching document:", error);
     }
@@ -341,18 +343,15 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
           <span className="sr-only">Send message</span>
         </Button>
       </CardFooter>
-      {dialogSourceContent ? (
+      {dialogSourceContent?.type === 'note' ? (
         <Dialog open={true}>
           <DialogContent className="max-w-xl min-h-[50%]">
             <DialogHeader>
               <DialogTitle>
-                {dialogSourceContent.type === 'note' 
-                  ? `From Note: ${dialogSourceContent.title}`
-                  : `From Document: ${dialogSourceContent.name}`
-                }
+                From Note: {dialogSourceContent.title}
               </DialogTitle>
               <DialogDescription>
-                {dialogSourceContent.type === 'note' && dialogSourceContent.subjects
+                {dialogSourceContent.subjects
                   ? `From Subject: ${dialogSourceContent.subjects.name}`
                   : null
                 }
@@ -360,10 +359,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
             </DialogHeader>
             <Textarea
               className="h-full flex"
-              value={dialogSourceContent.type === 'note' 
-                ? dialogSourceContent.content
-                : dialogSourceContent.text || 'Document content not available'
-              }
+              value={dialogSourceContent.content}
               disabled
             />
             <DialogFooter className="mt-auto max-h-min">
@@ -377,6 +373,13 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      ) : null}
+      {documentViewerContent ? (
+        <DocumentViewer
+          fileName={documentViewerContent.name}
+          fileType={documentViewerContent.type}
+          onClose={() => setDocumentViewerContent(null)}
+        />
       ) : null}
     </Card>
   );
