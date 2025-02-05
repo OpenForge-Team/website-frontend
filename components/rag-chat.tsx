@@ -254,66 +254,68 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
           <div className="flex flex-col gap-4">
             {chatMessages.map((message, index) => (
               <>
-              <div
-                key={index}
-                className={`flex ${
-                  message.role === "ai" ? "justify-start" : "justify-end"
-                } mb-4`}
-              >
                 <div
+                  key={index}
                   className={`flex ${
-                    message.role === "ai" ? "flex-row" : "flex-row-reverse"
-                  } items-start max-w-[80%] gap-2`}
+                    message.role === "ai" ? "justify-start" : "justify-end"
+                  } mb-4`}
                 >
-                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                    <img
-                      alt="Avatar"
-                      className="w-full h-full object-cover"
-                      src={
-                        message.role === "ai"
-                          ? "https://img.icons8.com/fluency/48/000000/bot.png"
-                          : "https://img.icons8.com/fluency/48/000000/user-male-circle.png"
-                      }
-                    />
-                  </div>
                   <div
-                    className={`px-4 py-2 rounded-lg relative  ${
-                      message.role === "ai"
-                        ? "bg-muted/50 text-foreground prose prose-a:text-blue-500 prose-headings:text-white prose-strong:text-white text-white"
-                        : "bg-primary text-primary-foreground"
-                    }`}
+                    className={`flex ${
+                      message.role === "ai" ? "flex-row" : "flex-row-reverse"
+                    } items-start max-w-[80%] gap-2`}
                   >
-                    <ReactMarkdown
-                      rehypePlugins={[rehypeRaw]}
-                      remarkPlugins={[remarkGfm]}
-                      components={{
-                        a: ({ href, children }) => (
-                          <a
-                            href={href}
-                            onClick={(e) => handleLinkClick(e)}
-                            className="text-blue-500 underline"
-                          >
-                            {children}
-                          </a>
-                        ),
-                      }}
+                    <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                      <img
+                        alt="Avatar"
+                        className="w-full h-full object-cover"
+                        src={
+                          message.role === "ai"
+                            ? "https://img.icons8.com/fluency/48/000000/bot.png"
+                            : "https://img.icons8.com/fluency/48/000000/user-male-circle.png"
+                        }
+                      />
+                    </div>
+                    <div
+                      className={`px-4 py-2 rounded-lg relative bg-primary  ${
+                        message.role === "ai"
+                          ? "bg-muted/50 text-foreground prose prose-a:text-blue-500 prose-headings:text-white prose-strong:text-white text-white"
+                          : "bg-primary text-primary-foreground"
+                      }`}
                     >
-                      {message.messageContent}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              </div>
-              {chatLoading && index === chatMessages.length - 1 && message.role === "user" && (
-                <div className="flex justify-start mt-2">
-                  <div className="rounded-lg px-4 py-2 bg-muted/50 border border-border">
-                    <div className="flex gap-2">
-                      <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce" />
-                      <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce [animation-delay:0.2s]" />
-                      <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce [animation-delay:0.4s]" />
+                      <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({ href, children }) => (
+                            <a
+                              href={href}
+                              onClick={(e) => handleLinkClick(e)}
+                              className="text-blue-500 underline"
+                            >
+                              {children}
+                            </a>
+                          ),
+                        }}
+                      >
+                        {message.messageContent}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 </div>
-              )}
+                {chatLoading &&
+                  index === chatMessages.length - 1 &&
+                  message.role === "user" && (
+                    <div className="flex justify-start mt-2">
+                      <div className="rounded-lg px-4 py-2 bg-muted/50 border border-border">
+                        <div className="flex gap-2">
+                          <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce" />
+                          <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce [animation-delay:0.2s]" />
+                          <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce [animation-delay:0.4s]" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
               </>
             ))}
             {isLoading && (
