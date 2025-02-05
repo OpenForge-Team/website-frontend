@@ -1,3 +1,4 @@
+"use client";
 import { signUpAction } from "@/app/actions";
 import { FormMessage, type Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
@@ -14,11 +15,7 @@ import {
 import { trackEvent } from "fathom-client";
 import Link from "next/link";
 
-'use client';
-
-export default function Signup(props: {
-  searchParams: Promise<Message>;
-}) {
+export default function Signup(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
   if ("message" in searchParams) {
     return (
@@ -65,7 +62,7 @@ export default function Signup(props: {
           </div>
         </div>
 
-        <form 
+        <form
           className="space-y-6"
           onSubmit={(e) => {
             e.preventDefault();
