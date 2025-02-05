@@ -29,41 +29,42 @@ export default async function Signup(props: {
   return (
     <div className="flex justify-start py-12 px-4 sm:px-6 lg:px-8 mt-16">
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-4xl font-fragment-mono text-indigo-600 font-medium">
-              Sign up
-            </h1>
-            <p className="mt-2 text-sm text-gray-500">
-              Already have an account?{" "}
-              <Link
-                className="text-indigo-600 hover:text-indigo-500 font-medium underline"
-                href="/sign-in"
-              >
-                Sign in
-              </Link>
-            </p>
+        <form className="space-y-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-6">
             <div>
-              <p className="text-secondary">
-                Upon signing up you will be waitlisted for our limited beta.
+              <h1 className="text-4xl font-fragment-mono text-indigo-600 font-medium">
+                Sign up
+              </h1>
+              <p className="mt-2 text-sm text-gray-500">
+                Already have an account?{" "}
+                <Link
+                  className="text-indigo-600 hover:text-indigo-500 font-medium underline"
+                  href="/sign-in"
+                >
+                  Sign in
+                </Link>
               </p>
+              <div>
+                <p className="text-secondary">
+                  Upon signing up you will be waitlisted for our limited beta.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="useCase" className="font-fragment-mono text-sm">
+                Use case
+              </Label>
+              <textarea
+                name="useCase"
+                placeholder="What problem are you looking to solve?"
+                required
+                className="w-full h-32 px-3 py-2 resize-none border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="useCase" className="font-fragment-mono text-sm">
-              Use case
-            </Label>
-            <textarea
-              name="useCase"
-              placeholder="What problem are you looking to solve?"
-              required
-              className="w-full h-32 px-3 py-2 resize-none border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-        </div>
-
-        <form className="space-y-6">
+          <div className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email" className="font-fragment-mono text-sm">
               Email
@@ -202,6 +203,7 @@ export default async function Signup(props: {
           </SubmitButton>
 
           <FormMessage message={searchParams} />
+          </div>
         </form>
       </div>
     </div>
