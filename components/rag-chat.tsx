@@ -253,6 +253,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
         <ScrollArea className="h-full pr-4">
           <div className="flex flex-col gap-4">
             {chatMessages.map((message, index) => (
+              <>
               <div
                 key={index}
                 className={`flex ${
@@ -302,6 +303,18 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
                   </div>
                 </div>
               </div>
+              {chatLoading && index === chatMessages.length - 1 && message.role === "ai" && (
+                <div className="flex justify-start mt-2">
+                  <div className="rounded-lg px-4 py-2 bg-muted/50 border border-border">
+                    <div className="flex gap-2">
+                      <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce" />
+                      <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce [animation-delay:0.2s]" />
+                      <div className="w-2 h-2 rounded-full bg-foreground/50 animate-bounce [animation-delay:0.4s]" />
+                    </div>
+                  </div>
+                </div>
+              )}
+              </>
             ))}
             {isLoading && (
               <div className="flex justify-start">
