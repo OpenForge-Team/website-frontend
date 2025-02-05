@@ -47,7 +47,6 @@ export default async function Signup(props: {
               placeholder="What problem are you looking to solve?"
               required
               className="w-full h-32 px-3 py-2 resize-none border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              onClick={() => trackEvent("signUpInteraction", {_value: 1})}
             />
           </div>
         </div>
@@ -57,7 +56,7 @@ export default async function Signup(props: {
             <Label htmlFor="email" className="font-fragment-mono text-sm">
               Email
             </Label>
-            <Input onClick={() => trackEvent("signUpInteraction", {_value: 2})} name="email" type="email" placeholder="you@example.com" required />
+            <Input name="email" type="email" placeholder="you@example.com" required />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -65,13 +64,13 @@ export default async function Signup(props: {
               <Label htmlFor="firstname" className="font-fragment-mono text-sm">
                 First name
               </Label>
-              <Input onClick={() => trackEvent("signUpInteraction", {_value: 3})} id="firstname" name="firstname" placeholder="John" required className="w-full" />
+              <Input id="firstname" name="firstname" placeholder="John" required className="w-full" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="lastname" className="font-fragment-mono text-sm">
                 Last name
               </Label>
-              <Input onClick={() => trackEvent("signUpInteraction", {_value: 4})} id="lastname" name="lastname" placeholder="Doe" required className="w-full" />
+              <Input id="lastname" name="lastname" placeholder="Doe" required className="w-full" />
             </div>
           </div>
 
@@ -79,7 +78,7 @@ export default async function Signup(props: {
             <Label htmlFor="companyName" className="font-fragment-mono text-sm">
               Company name
             </Label>
-            <Input onClick={() => trackEvent("signUpInteraction", {_value: 5})} name="companyName" placeholder="Acme Inc." required />
+            <Input name="companyName" placeholder="Acme Inc." required />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -87,7 +86,7 @@ export default async function Signup(props: {
               <Label htmlFor="companySector" className="font-fragment-mono text-sm">
                 Company sector
               </Label>
-              <Select onValueChange={() => trackEvent("signUpInteraction", {_value: 6})} name="companySector" required>
+              <Select name="companySector" required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select a sector" />
                 </SelectTrigger>
@@ -108,7 +107,7 @@ export default async function Signup(props: {
               <Label htmlFor="companySize" className="font-fragment-mono text-sm">
                 Company size
               </Label>
-              <Select onValueChange={() => trackEvent("signUpInteraction", {_value: 7})} name="companySize" required>
+              <Select name="companySize" required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select company size" />
                 </SelectTrigger>
@@ -129,7 +128,7 @@ export default async function Signup(props: {
             <Label htmlFor="role" className="font-fragment-mono text-sm">
               Role
             </Label>
-            <Select onValueChange={() => trackEvent("signUpInteraction", {_value: 8})} name="role" required>
+            <Select name="role" required>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your role" />
               </SelectTrigger>
@@ -150,7 +149,7 @@ export default async function Signup(props: {
             <Label htmlFor="password" className="font-fragment-mono text-sm">
               Password
             </Label>
-            <Input onClick={() => trackEvent("signUpInteraction", {_value: 1})} type="password" name="password" placeholder="Your password" minLength={6} required />
+            <Input type="password" name="password" placeholder="Your password" minLength={6} required />
           </div>
 
           <SubmitButton
