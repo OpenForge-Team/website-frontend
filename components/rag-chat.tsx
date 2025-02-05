@@ -237,11 +237,21 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   }, [mode, conversationId, savedConversationId]);
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [chatMessages]);
+    const scrollToBottom = () => {
+      const content = document.querySelector('.chat-content');
+      if (content) {
+        content.scrollTop = content.scrollHeight;
+      }
+    };
+
+    // Scroll on new messages
+    scrollToBottom();
+
+    // Also scroll after a short delay to handle dynamic content updates
+    const timeoutId = setTimeout(scrollToBottom, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [chatMessages, chatLoading]);
 
   return (
     <Card className="w-full mx-auto h-[calc(100vh-12rem)] flex flex-col bg-background border-border">
@@ -249,7 +259,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
         <CardTitle className="text-primary">Forge AI</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex-1 overflow-y-auto p-4">
+      <CardContent className="flex-1 overflow-y-auto p-4 chat-content">
         <div className="space-y-4">
           <div className="flex flex-col gap-4">
             {chatMessages.map((message, index) => (
