@@ -238,7 +238,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
 
   useEffect(() => {
     const scrollToBottom = () => {
-      const content = document.querySelector('.chat-content');
+      const content = document.querySelector(".chat-content");
       if (content) {
         content.scrollTop = content.scrollHeight;
       }
@@ -254,7 +254,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   }, [chatMessages, chatLoading]);
 
   return (
-    <Card className="w-full mx-auto h-[calc(100vh-12rem)] flex flex-col bg-background border-border">
+    <Card className="w-full mx-auto h-[calc(100vh-6rem)] flex flex-col bg-background border-border">
       <CardHeader className="border-b border-border">
         <CardTitle className="text-primary">Forge AI</CardTitle>
       </CardHeader>
