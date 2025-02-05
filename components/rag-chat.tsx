@@ -263,9 +263,8 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
         <div className="space-y-4">
           <div className="flex flex-col gap-4">
             {chatMessages.map((message, index) => (
-              <>
+              <div key={`message-${index}`}>
                 <div
-                  key={index}
                   className={`flex ${
                     message.role === "ai" ? "justify-start" : "justify-end"
                   } mb-4`}
@@ -326,7 +325,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
                       </div>
                     </div>
                   )}
-              </>
+              </div>
             ))}
             {isLoading && (
               <div className="flex justify-start">
