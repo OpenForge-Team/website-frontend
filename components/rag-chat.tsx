@@ -43,6 +43,7 @@ interface ChatMessage {
   role: "ai" | "user";
   messageContent: string;
 }
+const mime = require("mime-types");
 export default function RagChat({ editable, mode, conversationId }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
@@ -166,12 +167,12 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
         userMessage,
         { role: "ai", messageContent: aiResponse },
       ];
-      const updatedConversationId = await saveConversation(
-        newConversation,
-        savedConversationId || conversationId
-      );
-      setSavedConversationId(updatedConversationId);
-      setIsConversationSaved(true);
+      // const updatedConversationId = await saveConversation(
+      //   newConversation,
+      //   savedConversationId || conversationId
+      // );
+      // setSavedConversationId(updatedConversationId);
+      // setIsConversationSaved(true);
       setChatLoading(false);
     } catch (error) {
       console.error("Error fetching AI response:", error);
@@ -195,12 +196,12 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
     if (!user) return;
     try {
       const note = await getNotebyId(user.id, note_id);
-      setDialogSourceContent({...note, type: 'note'});
+      setDialogSourceContent({ ...note, type: "note" });
     } catch (error) {
       console.error("Error fetching note:", error);
     }
   };
-  
+
   const handleGetDocumentSource = async (document_id: string) => {
     if (!user) return;
     try {
@@ -343,18 +344,15 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
           <span className="sr-only">Send message</span>
         </Button>
       </CardFooter>
-      {dialogSourceContent?.type === 'note' ? (
+      {dialogSourceContent?.type === "note" ? (
         <Dialog open={true}>
           <DialogContent className="max-w-xl min-h-[50%]">
             <DialogHeader>
-              <DialogTitle>
-                From Note: {dialogSourceContent.title}
-              </DialogTitle>
+              <DialogTitle>From Note: {dialogSourceContent.title}</DialogTitle>
               <DialogDescription>
                 {dialogSourceContent.subjects
                   ? `From Subject: ${dialogSourceContent.subjects.name}`
-                  : null
-                }
+                  : null}
               </DialogDescription>
             </DialogHeader>
             <Textarea
@@ -376,8 +374,11 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
       ) : null}
       {documentViewerContent ? (
         <DocumentViewer
-          fileName={documentViewerContent.name}
-          fileType={documentViewerContent.type}
+          fileName={documentViewerContent.file_name}
+          fileType={
+            mime.lookup(documentViewerContent.file_name) ||
+            "application/octet-stream"
+          }
           onClose={() => setDocumentViewerContent(null)}
         />
       ) : null}
