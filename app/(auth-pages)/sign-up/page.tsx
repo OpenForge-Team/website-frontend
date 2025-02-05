@@ -14,7 +14,9 @@ import {
 import { trackEvent } from "fathom-client";
 import Link from "next/link";
 
-export default async function Signup(props: {
+'use client';
+
+export default function Signup(props: {
   searchParams: Promise<Message>;
 }) {
   const searchParams = await props.searchParams;
@@ -65,8 +67,11 @@ export default async function Signup(props: {
 
         <form 
           className="space-y-6"
-          onSubmit={() => {
+          onSubmit={(e) => {
+            e.preventDefault();
             trackEvent("signUpSubmit");
+            const form = e.target as HTMLFormElement;
+            form.submit();
           }}
         >
           <div className="space-y-2">
