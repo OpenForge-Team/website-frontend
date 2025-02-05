@@ -5,33 +5,11 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
-import { createClient } from "@/utils/supabase/server";
-
-const getNoteTitle = async (noteId: string) => {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("notes")
-    .select("title")
-    .eq("id", noteId)
-    .single();
-  return data?.title || "Untitled Note";
-};
-
-const getDocumentTitle = async (documentId: string) => {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("documents")
-    .select("name")
-    .eq("id", documentId)
-    .single();
-  return data?.name || "Untitled Document";
-};
 import { Ollama } from "@langchain/ollama";
-import { retrieveContentChunks } from "../retrieve-content-embeddings";
-import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
 import { ChatOpenAI, OpenAI } from "@langchain/openai";
 import { DeepInfraLLM } from "@langchain/community/llms/deepinfra";
 import { ChatGroq } from "@langchain/groq";
+import { retrieveContext } from "./retrieve";
 // const llm = new Ollama({
 //   numGpu: 2,
 //   numCtx: 16384,
@@ -109,58 +87,13 @@ If the context doesn't contain relevant information, respond with "I don't have 
       prompt: questionAnsweringPrompt,
     });
     logTiming("Chain creation");
-    const notesContext = await retrieveContentChunks({ query: message });
-    logTiming("Notes context retrieval");
-
-    const documentsContext = await retrieveDocumentContentChunks({
-      query: message,
-    });
-    logTiming("Documents context retrieval");
-
-    const context = [...notesContext, ...documentsContext];
+    const { context, sourceList } = await retrieveContext(message);
+    logTiming("Context retrieval");
 
     if (!context || context.length === 0) {
       console.warn("No context found for query:", message);
       return "I couldn't find any relevant information to answer that question.";
     }
-    // Build source variable with metadata (avoiding duplicates)
-    let source = "## Information Sources\n\n";
-    const uniqueSourceIds = new Set();
-    const sourceDetails = [];
-
-    // First collect all source metadata
-    for (const doc of context) {
-      const sourceId = doc.metadata.note_id || doc.metadata.document_id;
-      if (sourceId && !uniqueSourceIds.has(sourceId)) {
-        uniqueSourceIds.add(sourceId);
-        sourceDetails.push({
-          id: sourceId,
-          type: doc.metadata.note_id ? "note" : "document",
-        });
-      }
-    }
-
-    // Then fetch titles in parallel
-    const titlePromises = sourceDetails.map(async (src) => {
-      if (src.type === "note") {
-        return {
-          ...src,
-          title: await getNoteTitle(src.id),
-        };
-      }
-      return {
-        ...src,
-        title: await getDocumentTitle(src.id),
-      };
-    });
-
-    const sourcesWithTitles = await Promise.all(titlePromises);
-    logTiming("Title fetching");
-
-    // Build the source list with actual titles
-    sourcesWithTitles.forEach((src) => {
-      source += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
-    });
     logTiming("Pre-stream preparation");
     // Stream the response
     const responseStream = await documentChain.stream({
@@ -188,7 +121,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
       type: doc.metadata.note_id ? "note" : "document",
     }));
 
-    finalResponse += `\n\n${source}`;
+    finalResponse += `\n\n${sourceList}`;
 
     logTiming("Response streaming and formatting");
     const totalTime = performance.now() - startTime;
