@@ -193,6 +193,8 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
     if (!user) return;
     try {
       const note = await getNotebyId(user.id, note_id);
+      console.log(note);
+      return;
       setDialogSourceContent(note);
     } catch (error) {}
   };
@@ -200,6 +202,8 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
     if (!user) return;
     try {
       const document = await getDocumentById(document_id);
+      console.log(document);
+      return;
       setDialogSourceContent(document);
     } catch (error) {}
   };
