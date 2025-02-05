@@ -29,7 +29,6 @@ export const signUpAction = async (formData: FormData) => {
   const role = formData.get("role")?.toString();
 
   const useCase = formData.get("useCase")?.toString();
-
   if (!companyName || !companySector || !companySize || !role || !useCase) {
     return encodedRedirect("error", "/sign-up", "All fields are required");
   }

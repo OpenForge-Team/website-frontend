@@ -28,7 +28,7 @@ export default async function Signup(props: {
 
   return (
     <div className="flex justify-start py-12 px-4 sm:px-6 lg:px-8 mt-16">
-      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="w-full max-w-6xl grid grid-cols-1 gap-8">
         <form className="space-y-6 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div>
@@ -65,71 +65,127 @@ export default async function Signup(props: {
           </div>
 
           <div className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="font-fragment-mono text-sm">
-              Email
-            </Label>
-            <Input
-              name="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstname" className="font-fragment-mono text-sm">
-                First name
+              <Label htmlFor="email" className="font-fragment-mono text-sm">
+                Email
               </Label>
               <Input
-                id="firstname"
-                name="firstname"
-                placeholder="John"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
                 required
-                className="w-full"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastname" className="font-fragment-mono text-sm">
-                Last name
-              </Label>
-              <Input
-                id="lastname"
-                name="lastname"
-                placeholder="Doe"
-                required
-                className="w-full"
-              />
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label
+                  htmlFor="firstname"
+                  className="font-fragment-mono text-sm"
+                >
+                  First name
+                </Label>
+                <Input
+                  id="firstname"
+                  name="firstname"
+                  placeholder="John"
+                  required
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="lastname"
+                  className="font-fragment-mono text-sm"
+                >
+                  Last name
+                </Label>
+                <Input
+                  id="lastname"
+                  name="lastname"
+                  placeholder="Doe"
+                  required
+                  className="w-full"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="companyName" className="font-fragment-mono text-sm">
-              Company name
-            </Label>
-            <Input name="companyName" placeholder="Acme Inc." required />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label
-                htmlFor="companySector"
+                htmlFor="companyName"
                 className="font-fragment-mono text-sm"
               >
-                Company sector
+                Company name
               </Label>
-              <Select name="companySector" required>
+              <Input name="companyName" placeholder="Acme Inc." required />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label
+                  htmlFor="companySector"
+                  className="font-fragment-mono text-sm"
+                >
+                  Company sector
+                </Label>
+                <Select name="companySector" required>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a sector" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="technology">Technology</SelectItem>
+                      <SelectItem value="finance">Finance</SelectItem>
+                      <SelectItem value="healthcare">Healthcare</SelectItem>
+                      <SelectItem value="retail">Retail</SelectItem>
+                      <SelectItem value="manufacturing">
+                        Manufacturing
+                      </SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label
+                  htmlFor="companySize"
+                  className="font-fragment-mono text-sm"
+                >
+                  Company size
+                </Label>
+                <Select name="companySize" required>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select company size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="1-10">1-10 employees</SelectItem>
+                      <SelectItem value="11-50">11-50 employees</SelectItem>
+                      <SelectItem value="51-200">51-200 employees</SelectItem>
+                      <SelectItem value="201-500">201-500 employees</SelectItem>
+                      <SelectItem value="501+">501+ employees</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="role" className="font-fragment-mono text-sm">
+                Role
+              </Label>
+              <Select name="role" required>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a sector" />
+                  <SelectValue placeholder="Select your role" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="retail">Retail</SelectItem>
-                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                    <SelectItem value="ceo">CEO</SelectItem>
+                    <SelectItem value="cto">CTO</SelectItem>
+                    <SelectItem value="manager">Manager</SelectItem>
+                    <SelectItem value="developer">Developer</SelectItem>
+                    <SelectItem value="designer">Designer</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
                   </SelectGroup>
                 </SelectContent>
@@ -137,72 +193,27 @@ export default async function Signup(props: {
             </div>
 
             <div className="space-y-2">
-              <Label
-                htmlFor="companySize"
-                className="font-fragment-mono text-sm"
-              >
-                Company size
+              <Label htmlFor="password" className="font-fragment-mono text-sm">
+                Password
               </Label>
-              <Select name="companySize" required>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select company size" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="1-10">1-10 employees</SelectItem>
-                    <SelectItem value="11-50">11-50 employees</SelectItem>
-                    <SelectItem value="51-200">51-200 employees</SelectItem>
-                    <SelectItem value="201-500">201-500 employees</SelectItem>
-                    <SelectItem value="501+">501+ employees</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <Input
+                type="password"
+                name="password"
+                placeholder="Your password"
+                minLength={6}
+                required
+              />
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="role" className="font-fragment-mono text-sm">
-              Role
-            </Label>
-            <Select name="role" required>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select your role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="ceo">CEO</SelectItem>
-                  <SelectItem value="cto">CTO</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="developer">Developer</SelectItem>
-                  <SelectItem value="designer">Designer</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+            <SubmitButton
+              formAction={signUpAction}
+              pendingText="Signing up..."
+              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-md"
+            >
+              Sign up
+            </SubmitButton>
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="font-fragment-mono text-sm">
-              Password
-            </Label>
-            <Input
-              type="password"
-              name="password"
-              placeholder="Your password"
-              minLength={6}
-              required
-            />
-          </div>
-
-          <SubmitButton
-            formAction={signUpAction}
-            pendingText="Signing up..."
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-md"
-          >
-            Sign up
-          </SubmitButton>
-
-          <FormMessage message={searchParams} />
+            <FormMessage message={searchParams} />
           </div>
         </form>
       </div>
