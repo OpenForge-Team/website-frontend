@@ -10,6 +10,8 @@ import { ChatOpenAI, OpenAI } from "@langchain/openai";
 import { DeepInfraLLM } from "@langchain/community/llms/deepinfra";
 import { ChatGroq } from "@langchain/groq";
 import { retrieveContext } from "./retrieve";
+import { LLMGraphTransformer } from "@langchain/community/experimental/graph_transformers/llm";
+
 // const llm = new Ollama({
 //   numGpu: 2,
 //   numCtx: 16384,
@@ -44,9 +46,6 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
     const currentTime = performance.now();
     const stepDuration = currentTime - lastTime;
     const totalDuration = currentTime - startTime;
-    console.log(`[Timing] ${step}:`);
-    console.log(`  Step duration: ${stepDuration.toFixed(2)}ms`);
-    console.log(`  Total elapsed: ${totalDuration.toFixed(2)}ms`);
     lastTime = currentTime;
   };
 
@@ -57,13 +56,6 @@ export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
   if (!process.env.OLLAMA_BASEURL) {
     throw new Error("Missing OLLAMA_BASEURL environment variable");
   }
-
-  console.log("AI Request:", {
-    user_id,
-    workspace_id,
-    message,
-    timestamp: new Date().toISOString(),
-  });
 
   try {
     const SYSTEM_TEMPLATE = `Answer the user's questions based on the below context. When referencing documents or notes:
@@ -88,6 +80,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
     });
     logTiming("Chain creation");
     const { context, sourceList } = await retrieveContext(message);
+
     logTiming("Context retrieval");
 
     if (!context || context.length === 0) {
@@ -125,7 +118,6 @@ If the context doesn't contain relevant information, respond with "I don't have 
 
     logTiming("Response streaming and formatting");
     const totalTime = performance.now() - startTime;
-    console.log(`\n[Timing] Total execution time: ${totalTime.toFixed(2)}ms`);
 
     return finalResponse;
   } catch (error) {

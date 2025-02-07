@@ -1,8 +1,9 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import { retrieveContentChunks } from "../retrieve-content-embeddings";
-import { retrieveDocumentContentChunks } from "../retrieve-document-content-embeddings";
-
+import { retrieveContentChunks } from "../../retrieve-content-embeddings";
+import { retrieveDocumentContentChunks } from "../../retrieve-document-content-embeddings";
+import { ChatGroq } from "@langchain/groq";
+import { LLMGraphTransformer } from "@langchain/community/experimental/graph_transformers/llm";
 const getNoteTitle = async (noteId: string) => {
   const supabase = await createClient();
   const { data } = await supabase
@@ -28,15 +29,19 @@ export interface RetrievedContext {
   sourceList: string;
 }
 
-export async function retrieveContext(message: string): Promise<RetrievedContext> {
+export async function retrieveContext(
+  message: string
+): Promise<RetrievedContext> {
   const notesContext = await retrieveContentChunks({ query: message });
-  const documentsContext = await retrieveDocumentContentChunks({ query: message });
+  const documentsContext = await retrieveDocumentContentChunks({
+    query: message,
+  });
   const context = [...notesContext, ...documentsContext];
 
   if (!context || context.length === 0) {
     return {
       context: [],
-      sourceList: ""
+      sourceList: "",
     };
   }
 
@@ -80,6 +85,6 @@ export async function retrieveContext(message: string): Promise<RetrievedContext
 
   return {
     context,
-    sourceList
+    sourceList,
   };
 }

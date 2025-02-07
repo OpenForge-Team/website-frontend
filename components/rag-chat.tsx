@@ -16,7 +16,7 @@ import { getUser } from "@/utils/queries";
 import { createClient } from "@/utils/supabase/client";
 import { useToast } from "./hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { AskAIChat } from "@/utils/supabase/rag/chat/ask";
+import { AskAIChat } from "@/utils/supabase/rag/chat/supabase-hybrid/ask";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
