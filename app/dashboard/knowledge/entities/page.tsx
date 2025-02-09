@@ -26,7 +26,7 @@ const EntityItem = ({
 
   return (
     <Draggable draggableId={item.id} index={index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <li
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -36,8 +36,8 @@ const EntityItem = ({
           <div
             className={cn(
               "flex items-start gap-2 rounded-lg p-2",
-              provided.isDragging && "bg-accent shadow-lg",
-              !provided.isDragging && "hover:bg-muted/50"
+              snapshot.isDragging && "bg-accent shadow-lg",
+              !snapshot.isDragging && "hover:bg-muted/50"
             )}
           >
             <button
