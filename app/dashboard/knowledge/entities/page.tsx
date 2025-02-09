@@ -54,13 +54,13 @@ const EntityItem = ({
           </div>
           {isExpanded && item.items && item.items.length > 0 && (
             <Droppable droppableId={item.id} type={`list-${level}`}>
-              {(provided) => (
+              {(provided, snapshot) => (
                 <ul
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   className={cn(
                     "pl-6 border-l border-muted min-h-[30px] rounded-lg",
-                    provided.isDraggingOver &&
+                    snapshot.isDraggingOver &&
                       "bg-accent/30 border-2 border-dashed border-primary/20"
                   )}
                 >
@@ -202,13 +202,13 @@ export default function EntitiesPage() {
       <div className="text-secondary bg-background">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="root" type="list-0">
-            {(provided) => (
+            {(provided, snapshot) => (
               <ul
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={cn(
                   "space-y-4 min-h-[50px] rounded-lg",
-                  provided.isDraggingOver &&
+                  snapshot.isDraggingOver &&
                     "border-2 border-dashed border-primary/20"
                 )}
               >
