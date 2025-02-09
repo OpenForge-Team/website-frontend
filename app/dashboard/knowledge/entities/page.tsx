@@ -33,11 +33,13 @@ const EntityItem = ({
           {...provided.dragHandleProps}
           className="space-y-2 rounded-lg p-2"
         >
-          <div className={cn(
-            "flex items-start gap-2 rounded-lg p-2",
-            provided.isDragging && "bg-accent shadow-lg",
-            !provided.isDragging && "hover:bg-muted/50"
-          )}>
+          <div
+            className={cn(
+              "flex items-start gap-2 rounded-lg p-2",
+              provided.isDragging && "bg-accent shadow-lg",
+              !provided.isDragging && "hover:bg-muted/50"
+            )}
+          >
             <button
               className="hover:bg-accent p-1 rounded-lg"
               onClick={toggleExpand}
@@ -58,7 +60,8 @@ const EntityItem = ({
                   ref={provided.innerRef}
                   className={cn(
                     "pl-6 border-l border-muted min-h-[30px] rounded-lg",
-                    provided.isDraggingOver && "bg-accent/30 border-2 border-dashed border-primary/20"
+                    provided.isDraggingOver &&
+                      "bg-accent/30 border-2 border-dashed border-primary/20"
                   )}
                 >
                   {item.items.map((childItem: Item, childIndex: number) => (
@@ -176,7 +179,7 @@ export default function EntitiesPage() {
       // Handle the move
       let newItems = [...items];
       newItems = removeItem(newItems);
-      
+
       if (sourceId === destId) {
         // Reorder within the same list
         if (sourceParent) {
@@ -205,7 +208,8 @@ export default function EntitiesPage() {
                 ref={provided.innerRef}
                 className={cn(
                   "space-y-4 min-h-[50px] rounded-lg",
-                  provided.isDraggingOver && "border-2 border-dashed border-primary/20"
+                  provided.isDraggingOver &&
+                    "border-2 border-dashed border-primary/20"
                 )}
               >
                 {items.map((item, index) => (
