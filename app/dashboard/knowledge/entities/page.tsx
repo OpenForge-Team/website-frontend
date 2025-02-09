@@ -2,8 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { cn } from "@/lib/utils";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 type Item = {
   id: string;
@@ -11,17 +25,25 @@ type Item = {
   items?: Item[];
 };
 
-const EntityItem = ({
-  item,
-  index,
-  level = 0,
-}: {
-  item: Item;
-  index: number;
-  level?: number;
-}) => {
+const EntityItem = ({ item, level = 0 }: { item: Item; level?: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id });
+
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
+    transition,
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -35,21 +57,20 @@ const EntityItem = ({
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   return (
-    <Draggable draggableId={item.id} index={index}>
-      {(provided, snapshot) => (
-        <li
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className="block rounded-lg"
-        >
-          <div
-            className={cn(
-              "flex items-start gap-2 rounded-lg p-2",
-              snapshot.isDragging && "bg-accent shadow-lg",
-              !snapshot.isDragging && "hover:bg-muted/50"
-            )}
-          >
+    <li
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="block rounded-lg"
+    >
+      <div
+        className={cn(
+          "flex items-start gap-2 rounded-lg p-2",
+          isDragging && "bg-accent shadow-lg",
+          !isDragging && "hover:bg-muted/50"
+        )}
+      >
             <button
               className="hover:bg-accent p-1 rounded-lg"
               onClick={toggleExpand}
@@ -62,30 +83,21 @@ const EntityItem = ({
             </button>
             <span className="font-medium">{item.name}</span>
           </div>
-          {isExpanded && item.items && item.items?.length > 0 && (
-            <Droppable droppableId={item.id} type="ENTITY">
-              {(provided, snapshot) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={cn(
-                    "pl-6 border-l border-muted min-h-[30px] rounded-lg mt-2",
-                    snapshot.isDraggingOver &&
-                      "bg-accent/30 border-2 border-dashed border-primary/20"
-                  )}
-                >
-                  {item.items?.map((childItem: Item, childIndex: number) => (
-                    <EntityItem
-                      key={childItem.id}
-                      item={childItem}
-                      index={childIndex}
-                      level={level + 1}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
+          {isExpanded && item.items?.length > 0 && (
+            <ul className="pl-6 border-l border-muted min-h-[30px] rounded-lg mt-2">
+              <SortableContext
+                items={item.items.map((i) => i.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {item.items?.map((childItem: Item) => (
+                  <EntityItem
+                    key={childItem.id}
+                    item={childItem}
+                    level={level + 1}
+                  />
+                ))}
+              </SortableContext>
+            </ul>
           )}
         </li>
       )}
@@ -137,12 +149,18 @@ export default function EntitiesPage() {
     return [null, null];
   };
 
-  const onDragEnd = (result: any) => {
-    if (!result.destination) return;
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-    const sourceId = result.source.droppableId;
-    const destId = result.destination.droppableId;
-    const draggedItemId = result.draggableId;
+  const onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const draggedItemId = active.id as string;
 
     const updateItems = (items: Item[]): Item[] => {
       let draggedItem: Item | null = null;
@@ -210,26 +228,22 @@ export default function EntitiesPage() {
     <div className="mx-auto p-6">
       <h1 className="text-primary text-2xl font-bold mb-6">Entities</h1>
       <div className="text-secondary bg-background">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="root" type="ENTITY">
-            {(provided, snapshot) => (
-              <ul
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className={cn(
-                  "min-h-[50px] rounded-lg space-y-2",
-                  snapshot.isDraggingOver &&
-                    "border-2 border-dashed border-primary/20"
-                )}
-              >
-                {items.map((item, index) => (
-                  <EntityItem key={item.id} item={item} index={index} />
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={onDragEnd}
+        >
+          <SortableContext
+            items={items.map((i) => i.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <ul className="min-h-[50px] rounded-lg space-y-2">
+              {items.map((item) => (
+                <EntityItem key={item.id} item={item} />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   );
