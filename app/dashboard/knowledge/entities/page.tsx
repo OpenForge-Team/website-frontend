@@ -100,8 +100,6 @@ const EntityItem = ({ item, level = 0 }: { item: Item; level?: number }) => {
             </ul>
           )}
         </li>
-      )}
-    </Draggable>
   );
 };
 
