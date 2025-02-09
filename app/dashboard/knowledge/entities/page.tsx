@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,17 @@ const EntityItem = ({
   index: number;
   level?: number;
 }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    setIsExpanded(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
