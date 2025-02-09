@@ -121,27 +121,65 @@ export default function EntitiesPage() {
 
     const sourceId = result.source.droppableId;
     const destId = result.destination.droppableId;
+    const draggedItemId = result.draggableId;
 
     const updateItems = (items: Item[]): Item[] => {
-      const [sourceItem, sourceParent] = findItemById(items, sourceId);
-      const [destItem, destParent] = findItemById(items, destId);
+      let draggedItem: Item | null = null;
+      let sourceParent: Item[] | null = null;
 
-      if (!sourceItem || !sourceParent || !destParent) return items;
+      // Find and remove the dragged item
+      const removeItem = (list: Item[]): Item[] => {
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].id === draggedItemId) {
+            draggedItem = list[i];
+            sourceParent = list;
+            list.splice(i, 1);
+            return list;
+          }
+          if (list[i].items) {
+            list[i].items = removeItem(list[i].items);
+          }
+        }
+        return list;
+      };
 
-      // Remove the item from its original position
-      sourceParent.splice(sourceParent.indexOf(sourceItem), 1);
+      // Add the item to its new location
+      const addItem = (list: Item[]): boolean => {
+        if (!draggedItem) return false;
 
+        if (destId === "root" && sourceId !== "root") {
+          items.splice(result.destination.index, 0, draggedItem);
+          return true;
+        }
+
+        for (const item of list) {
+          if (item.id === destId) {
+            if (!item.items) item.items = [];
+            item.items.splice(result.destination.index, 0, draggedItem);
+            return true;
+          }
+          if (item.items && addItem(item.items)) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      // Handle the move
+      let newItems = [...items];
+      newItems = removeItem(newItems);
+      
       if (sourceId === destId) {
         // Reorder within the same list
-        sourceParent.splice(result.destination.index, 0, sourceItem);
+        if (sourceParent) {
+          sourceParent.splice(result.destination.index, 0, draggedItem!);
+        }
       } else {
         // Move to a different list
-        if (!destItem) return items; // This shouldn't happen, but TypeScript doesn't know that
-        if (!destItem.items) destItem.items = [];
-        destItem.items.splice(result.destination.index, 0, sourceItem);
+        addItem(newItems);
       }
 
-      return [...items];
+      return newItems;
     };
 
     setItems(updateItems(items));
