@@ -159,6 +159,12 @@ export default function EntitiesPage() {
     if (!over) return;
 
     const draggedItemId = active.id as string;
+    const overId = over.id as string;
+
+    // If the item was dropped over itself, do nothing
+    if (draggedItemId === overId) {
+      return;
+    }
 
     const updateItems = (items: Item[]): Item[] => {
       let draggedItem: Item | null = null;
@@ -184,18 +190,14 @@ export default function EntitiesPage() {
       const addItem = (list: Item[]): boolean => {
         if (!draggedItem) return false;
 
-        if (destId === "root" && sourceId !== "root") {
-          items.splice(result.destination.index, 0, draggedItem);
-          return true;
-        }
-
-        for (const item of list) {
-          if (item.id === destId) {
-            if (!item.items) item.items = [];
-            item.items.splice(result.destination.index, 0, draggedItem);
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].id === overId) {
+            // If dropping onto another item, add it to that item's children
+            if (!list[i].items) list[i].items = [];
+            list[i].items.unshift(draggedItem);
             return true;
           }
-          if (item.items && addItem(item.items)) {
+          if (list[i].items && addItem(list[i].items)) {
             return true;
           }
         }
@@ -206,14 +208,10 @@ export default function EntitiesPage() {
       let newItems = [...items];
       newItems = removeItem(newItems);
 
-      if (sourceId === destId) {
-        // Reorder within the same list
-        if (sourceParent) {
-          sourceParent.splice(result.destination.index, 0, draggedItem!);
-        }
-      } else {
-        // Move to a different list
-        addItem(newItems);
+      // Try to add to a nested location
+      if (!addItem(newItems) && draggedItem) {
+        // If not added to a nested location, add to root level
+        newItems.push(draggedItem);
       }
 
       return newItems;
