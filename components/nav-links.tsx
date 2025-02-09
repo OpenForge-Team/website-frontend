@@ -1,57 +1,81 @@
-"use client"
+"use client";
 
-import { ChevronDown } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
+import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
 export function NavLinks({ mobile = false }: { mobile?: boolean }) {
-  const [isUseCasesOpen, setIsUseCasesOpen] = useState(false)
-  const [isFeaturesOpen, setIsFeaturesOpen] = useState(false)
+  const [isUseCasesOpen, setIsUseCasesOpen] = useState(false);
+  const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
 
-  const linkClass = `font-['Fragment_Mono'] text-[16px] leading-[22px] tracking-[-0.013em] text-[rgba(30,27,75,0.6)] hover:text-[rgba(30,27,75,0.8)]`
+  const linkClass = `font-['Fragment_Mono'] text-[16px] leading-[22px] tracking-[-0.013em] text-[rgba(30,27,75,0.6)] hover:text-[rgba(30,27,75,0.8)]`;
 
   const useCases = [
     { title: "AI Executive Assistant", link: "/use-cases/ai-ea" },
-    { title: "Automated Communications", link: "/use-cases/automated-communications" },
-    { title: "Concierge & Customer Service", link: "/use-cases/concierge-customer-service" },
-    { title: "Cut Employee Onboarding Times", link: "/use-cases/employee-onboarding" },
+    {
+      title: "Automated Communications",
+      link: "/use-cases/automated-communications",
+    },
+    {
+      title: "Concierge & Customer Service",
+      link: "/use-cases/concierge-customer-service",
+    },
+    {
+      title: "Cut Employee Onboarding Times",
+      link: "/use-cases/employee-onboarding",
+    },
     { title: "On-Demand Company Expert", link: "/use-cases/on-demand-expert" },
-    { title: "Onboard Clients Before the First Call", link: "/use-cases/client-onboarding" },
-  ]
+    {
+      title: "Onboard Clients Before the First Call",
+      link: "/use-cases/client-onboarding",
+    },
+  ];
 
   const features = [
-    { title: "Seamless Information Movement", link: "/features/seamless-information-movement" },
+    {
+      title: "Seamless Information Movement",
+      link: "/features/seamless-information-movement",
+    },
     { title: "Unified I/O", link: "/features/unified-io" },
     { title: "Ever-Growing Knowledge Base", link: "/features/knowledge-base" },
-    { title: "Custom Business Blueprint", link: "/features/custom-business-blueprint" },
-  ]
+    {
+      title: "Custom Business Blueprint",
+      link: "/features/custom-business-blueprint",
+    },
+  ];
 
   const links = [
-    { href: "/", label: "Home" },
+    // { href: "/", label: "Home" },
     // { href: "/pricing", label: "Pricing" },
     // { href: "/company", label: "Company" },
     // { href: "/about", label: "About" },
-  ]
+  ];
 
   if (mobile) {
     return (
       <div className="flex flex-col gap-4">
-        {links.map((link) => (
+        {/* {links.map((link) => (
           <Link key={link.href} href={link.href} className={linkClass}>
             {link.label}
           </Link>
-        ))}
+        ))} */}
         <button
           className={`${linkClass} flex items-center justify-between`}
           onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}
         >
           Features
-          <ChevronDown className={`w-4 h-4 transition-transform ${isFeaturesOpen ? "rotate-180" : ""}`} />
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${isFeaturesOpen ? "rotate-180" : ""}`}
+          />
         </button>
         {isFeaturesOpen && (
           <div className="pl-4 flex flex-col gap-2">
             {features.map((feature) => (
-              <Link key={feature.title} href={feature.link} className={linkClass}>
+              <Link
+                key={feature.title}
+                href={feature.link}
+                className={linkClass}
+              >
                 {feature.title}
               </Link>
             ))}
@@ -62,19 +86,25 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
           onClick={() => setIsUseCasesOpen(!isUseCasesOpen)}
         >
           Use cases
-          <ChevronDown className={`w-4 h-4 transition-transform ${isUseCasesOpen ? "rotate-180" : ""}`} />
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${isUseCasesOpen ? "rotate-180" : ""}`}
+          />
         </button>
         {isUseCasesOpen && (
           <div className="pl-4 flex flex-col gap-2">
             {useCases.map((useCase) => (
-              <Link key={useCase.title} href={useCase.link} className={linkClass}>
+              <Link
+                key={useCase.title}
+                href={useCase.link}
+                className={linkClass}
+              >
                 {useCase.title}
               </Link>
             ))}
           </div>
         )}
       </div>
-    )
+    );
   }
 
   return (
@@ -127,6 +157,5 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
