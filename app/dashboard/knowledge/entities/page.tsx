@@ -63,7 +63,7 @@ const EntityItem = ({
             <span className="font-medium">{item.name}</span>
           </div>
           {isExpanded && item.items && item.items?.length > 0 && (
-            <Droppable droppableId={item.id} type={`list-${level}`}>
+            <Droppable droppableId={item.id} type="ENTITY">
               {(provided, snapshot) => (
                 <ul
                   {...provided.droppableProps}
@@ -211,7 +211,7 @@ export default function EntitiesPage() {
       <h1 className="text-primary text-2xl font-bold mb-6">Entities</h1>
       <div className="text-secondary bg-background">
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="root" type="list-0">
+          <Droppable droppableId="root" type="ENTITY">
             {(provided, snapshot) => (
               <ul
                 {...provided.droppableProps}
