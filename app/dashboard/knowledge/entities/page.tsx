@@ -31,7 +31,7 @@ const EntityItem = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="space-y-2 rounded-lg p-2"
+          className="block rounded-lg"
         >
           <div
             className={cn(
@@ -59,7 +59,7 @@ const EntityItem = ({
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   className={cn(
-                    "pl-6 border-l border-muted min-h-[30px] rounded-lg",
+                    "pl-6 border-l border-muted min-h-[30px] rounded-lg mt-2",
                     snapshot.isDraggingOver &&
                       "bg-accent/30 border-2 border-dashed border-primary/20"
                   )}
@@ -207,7 +207,7 @@ export default function EntitiesPage() {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className={cn(
-                  "space-y-4 min-h-[50px] rounded-lg",
+                  "min-h-[50px] rounded-lg space-y-2",
                   snapshot.isDraggingOver &&
                     "border-2 border-dashed border-primary/20"
                 )}
