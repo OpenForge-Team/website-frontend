@@ -186,32 +186,37 @@ export default function EntitiesPage() {
         return list;
       };
 
-      // Add the item to its new location
-      const addItem = (list: Item[]): boolean => {
-        if (!draggedItem) return false;
-
-        for (let i = 0; i < list.length; i++) {
-          if (list[i].id === overId) {
-            // If dropping onto another item, add it to that item's children
-            if (!list[i].items) list[i].items = [];
-            list[i].items.unshift(draggedItem);
-            return true;
+      // Find the target parent
+      const findTargetParent = (list: Item[]): Item[] | null => {
+        for (const item of list) {
+          if (item.id === overId) {
+            return list;
           }
-          if (list[i].items && addItem(list[i].items)) {
-            return true;
+          if (item.items) {
+            const result = findTargetParent(item.items);
+            if (result) return result;
           }
         }
-        return false;
+        return null;
       };
 
       // Handle the move
       let newItems = [...items];
       newItems = removeItem(newItems);
 
-      // Try to add to a nested location
-      if (!addItem(newItems) && draggedItem) {
-        // If not added to a nested location, add to root level
-        newItems.push(draggedItem);
+      // Find target parent list
+      const targetParent = findTargetParent(newItems) || newItems;
+      
+      if (draggedItem) {
+        // Find the position to insert
+        const overIndex = targetParent.findIndex(item => item.id === overId);
+        if (overIndex !== -1) {
+          // Insert at the found position
+          targetParent.splice(overIndex, 0, draggedItem);
+        } else {
+          // If target not found, add to end of list
+          targetParent.push(draggedItem);
+        }
       }
 
       return newItems;
