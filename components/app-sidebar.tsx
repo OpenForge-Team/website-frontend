@@ -47,16 +47,20 @@ const data = {
       isActive: true,
       items: [
         {
+          title: "Arenas",
+          url: "/dashboard/knowledge/arenas",
+        },
+        {
+          title: "Entities",
+          url: "/dashboard/knowledge/entities",
+        },
+        {
           title: "Notes",
           url: "/dashboard/knowledge/note",
         },
         {
           title: "Documents",
           url: "/dashboard/knowledge/documents",
-        },
-        {
-          title: "Subjects",
-          url: "/dashboard/knowledge/subjects",
         },
       ],
     },

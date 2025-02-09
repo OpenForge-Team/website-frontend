@@ -8,7 +8,7 @@ import { getUser } from "@/utils/queries";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 
-export function SubjectsView() {
+export function ArenasView() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
   const [subjects, setSubjects] = useState<any[]>([]);
@@ -55,7 +55,7 @@ export function SubjectsView() {
     if (user) {
       try {
         await deleteSubject(id);
-        setSubjects(subjects.filter(subject => subject.id !== id));
+        setSubjects(subjects.filter((subject) => subject.id !== id));
       } catch (error) {
         console.error("Error deleting subject:", error);
       }
@@ -65,8 +65,8 @@ export function SubjectsView() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {subjects.map((subject) => (
-        <SubjectCard 
-          key={subject.id} 
+        <SubjectCard
+          key={subject.id}
           subject={subject}
           onDelete={handleDelete}
         />
