@@ -44,12 +44,12 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
     },
   ];
 
-  const links = [
-    // { href: "/", label: "Home" },
-    // { href: "/pricing", label: "Pricing" },
-    // { href: "/company", label: "Company" },
-    // { href: "/about", label: "About" },
-  ];
+  // const links = [
+  //   // { href: "/", label: "Home" },
+  //   // { href: "/pricing", label: "Pricing" },
+  //   // { href: "/company", label: "Company" },
+  //   // { href: "/about", label: "About" },
+  // ];
 
   if (mobile) {
     return (
@@ -109,11 +109,11 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
 
   return (
     <div className="flex items-center justify-center gap-8 w-full">
-      {links.map((link) => (
+      {/* {links.map((link) => (
         <Link key={link.href} href={link.href} className={linkClass}>
           {link.label}
         </Link>
-      ))}
+      ))} */}
       <div className="relative group">
         <button
           className={`${linkClass} flex items-center gap-1 p-2 rounded-lg hover:bg-gray-50 transition-all duration-200 ease-in-out`}
