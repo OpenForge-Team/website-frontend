@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { cn } from "@/lib/utils";
 
 type Item = {
   id: string;
@@ -30,9 +31,15 @@ const EntityItem = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="space-y-2"
+          className={cn(
+            "space-y-2 rounded-lg p-2",
+            provided.isDragging && "bg-muted/50 shadow-lg",
+          )}
         >
-          <div className="flex items-start gap-2">
+          <div className={cn(
+            "flex items-start gap-2 rounded-lg p-2",
+            provided.isDragging ? "bg-accent shadow-lg" : "hover:bg-muted/50"
+          )}>
             <button
               className="hover:bg-accent p-1 rounded-lg"
               onClick={toggleExpand}
@@ -51,7 +58,11 @@ const EntityItem = ({
                 <ul
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className="pl-6 border-l border-muted"
+                  className={cn(
+                    "pl-6 border-l border-muted min-h-[30px] rounded-lg",
+                    provided.isDraggingOver && "bg-accent/30",
+                    provided.placeholder ? "border-2 border-dashed border-primary/20" : ""
+                  )}
                 >
                   {item.items.map((childItem: Item, childIndex: number) => (
                     <EntityItem
@@ -195,7 +206,10 @@ export default function EntitiesPage() {
               <ul
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="space-y-4"
+                className={cn(
+                  "space-y-4 min-h-[50px] rounded-lg",
+                  provided.placeholder ? "border-2 border-dashed border-primary/20" : ""
+                )}
               >
                 {items.map((item, index) => (
                   <EntityItem key={item.id} item={item} index={index} />
