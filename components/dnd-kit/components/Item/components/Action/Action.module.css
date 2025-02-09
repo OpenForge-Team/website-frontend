@@ -19,13 +19,13 @@
     &:hover {
       background-color: var(--action-background, rgba(0, 0, 0, 0.05));
 
-      svg {
+      :global(svg) {
         fill: #6f7b88;
       }
     }
   }
 
-  svg {
+  :global(svg) {
     flex: 0 0 auto;
     margin: auto;
     height: 100%;
@@ -36,7 +36,7 @@
   &:active {
     background-color: var(--background, rgba(0, 0, 0, 0.05));
 
-    svg {
+    :global(svg) {
       fill: var(--fill, #788491);
     }
   }
