@@ -12,8 +12,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { trackEvent } from "fathom-client";
+import { Metadata } from "next";
 import Link from "next/link";
 
+export const metadata: Metadata = {
+  title: "Sign Up | OpenForge",
+  description: "Sign Up to Openforge",
+};
 export default async function Signup(props: {
   searchParams: Promise<Message>;
 }) {
@@ -50,21 +55,6 @@ export default async function Signup(props: {
                 </p>
               </div>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="useCase" className="font-fragment-mono text-sm">
-                Use case
-              </Label>
-              <textarea
-                name="useCase"
-                placeholder="What problem are you looking to solve?"
-                required
-                className="w-full h-32 px-3 py-2 resize-none border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email" className="font-fragment-mono text-sm">
                 Email
@@ -214,6 +204,20 @@ export default async function Signup(props: {
             </SubmitButton>
 
             <FormMessage message={searchParams} />
+          </div>
+
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="useCase" className="font-fragment-mono text-sm">
+                Use case
+              </Label>
+              <textarea
+                name="useCase"
+                placeholder="What problem are you looking to solve?"
+                required
+                className="w-full h-32 px-3 py-2 resize-none border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
           </div>
         </form>
       </div>
