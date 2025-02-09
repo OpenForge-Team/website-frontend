@@ -77,37 +77,41 @@ const EntityItem = ({ item, level = 0 }: { item: Item; level?: number }) => {
     <li
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
       className="block rounded-lg"
       data-id={item.id}
     >
-      <div
-        className={cn(
-          "flex items-start gap-2 rounded-lg p-2",
-          isDragging && "bg-accent shadow-lg",
-          !isDragging && "hover:bg-muted/50"
-        )}
-      >
-        {item.items?.length ? (
-          <button
-            className="hover:bg-accent p-1 rounded-lg"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleExpand();
-            }}
-          >
-            {isExpanded ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-          </button>
-        ) : (
-          <div className="w-[34px]" /> // Placeholder for alignment
-        )}
-        <span className="font-medium">{item.name}</span>
+      <div className="flex items-start gap-2 rounded-lg p-2">
+        <div className="flex-none">
+          {item.items?.length ? (
+            <button
+              className="hover:bg-accent p-1 rounded-lg"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleExpand();
+              }}
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+          ) : (
+            <div className="w-[34px]" /> // Placeholder for alignment
+          )}
+        </div>
+        <div
+          {...attributes}
+          {...listeners}
+          className={cn(
+            "flex-1 rounded-lg p-2",
+            isDragging && "bg-accent shadow-lg",
+            !isDragging && "hover:bg-muted/50"
+          )}
+        >
+          <span className="font-medium">{item.name}</span>
+        </div>
       </div>
           {isExpanded && item.items && item.items?.length > 0 && (
             <ul className="pl-6 border-l border-muted min-h-[30px] rounded-lg mt-2">
