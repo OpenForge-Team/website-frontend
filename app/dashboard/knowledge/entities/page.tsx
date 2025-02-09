@@ -83,7 +83,7 @@ const EntityItem = ({ item, level = 0 }: { item: Item; level?: number }) => {
             </button>
             <span className="font-medium">{item.name}</span>
           </div>
-          {isExpanded && item.items?.length > 0 && (
+          {isExpanded && item.items && item.items?.length > 0 && (
             <ul className="pl-6 border-l border-muted min-h-[30px] rounded-lg mt-2">
               <SortableContext
                 items={item.items.map((i) => i.id)}
