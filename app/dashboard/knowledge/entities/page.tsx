@@ -52,7 +52,7 @@ const EntityItem = ({
             </button>
             <span className="font-medium">{item.name}</span>
           </div>
-          {isExpanded && item.items?.length > 0 && (
+          {isExpanded && item.items && item.items?.length > 0 && (
             <Droppable droppableId={item.id} type={`list-${level}`}>
               {(provided, snapshot) => (
                 <ul
@@ -148,7 +148,7 @@ export default function EntitiesPage() {
             return list;
           }
           if (list[i].items) {
-            list[i].items = removeItem(list[i].items);
+            list[i].items = removeItem(list[i].items!);
           }
         }
         return list;
