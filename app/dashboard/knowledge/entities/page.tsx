@@ -31,14 +31,12 @@ const EntityItem = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={cn(
-            "space-y-2 rounded-lg p-2",
-            provided.isDragging && "bg-muted/50 shadow-lg",
-          )}
+          className="space-y-2 rounded-lg p-2"
         >
           <div className={cn(
             "flex items-start gap-2 rounded-lg p-2",
-            provided.isDragging ? "bg-accent shadow-lg" : "hover:bg-muted/50"
+            provided.isDragging && "bg-accent shadow-lg",
+            !provided.isDragging && "hover:bg-muted/50"
           )}>
             <button
               className="hover:bg-accent p-1 rounded-lg"
@@ -60,8 +58,7 @@ const EntityItem = ({
                   ref={provided.innerRef}
                   className={cn(
                     "pl-6 border-l border-muted min-h-[30px] rounded-lg",
-                    provided.isDraggingOver && "bg-accent/30",
-                    provided.placeholder ? "border-2 border-dashed border-primary/20" : ""
+                    provided.isDraggingOver && "bg-accent/30 border-2 border-dashed border-primary/20"
                   )}
                 >
                   {item.items.map((childItem: Item, childIndex: number) => (
@@ -208,7 +205,7 @@ export default function EntitiesPage() {
                 ref={provided.innerRef}
                 className={cn(
                   "space-y-4 min-h-[50px] rounded-lg",
-                  provided.placeholder ? "border-2 border-dashed border-primary/20" : ""
+                  provided.isDraggingOver && "border-2 border-dashed border-primary/20"
                 )}
               >
                 {items.map((item, index) => (
