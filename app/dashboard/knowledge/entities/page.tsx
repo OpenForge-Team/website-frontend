@@ -52,7 +52,7 @@ const EntityItem = ({
             </button>
             <span className="font-medium">{item.name}</span>
           </div>
-          {isExpanded && item.items && item.items.length > 0 && (
+          {isExpanded && item.items?.length > 0 && (
             <Droppable droppableId={item.id} type={`list-${level}`}>
               {(provided, snapshot) => (
                 <ul
@@ -64,7 +64,7 @@ const EntityItem = ({
                       "bg-accent/30 border-2 border-dashed border-primary/20"
                   )}
                 >
-                  {item.items.map((childItem: Item, childIndex: number) => (
+                  {item.items?.map((childItem: Item, childIndex: number) => (
                     <EntityItem
                       key={childItem.id}
                       item={childItem}
