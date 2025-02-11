@@ -86,7 +86,9 @@ export default function AccountPage() {
               <p className="text-sm text-muted-foreground">
                 Connected since{" "}
                 {new Date(
-                  providerUsers.find((p) => p.provider_name === "notion")!.created_at
+                  providerUsers.find(
+                    (p) => p.provider_name === "notion"
+                  )!.created_at
                 ).toLocaleDateString()}
               </p>
             )}
@@ -122,7 +124,7 @@ export default function AccountPage() {
             ) : (
               <Button
                 onClick={() =>
-                  router.push(process.env.NEXT_PUBLIC_INSTAGRAM_OAUTH_URL!)
+                  router.push(process.env.NEXT_INSTAGRAM_OAUTH_REDIRECT_URI!)
                 }
               >
                 Connect
@@ -134,7 +136,9 @@ export default function AccountPage() {
               <p className="text-sm text-muted-foreground">
                 Connected since{" "}
                 {new Date(
-                  providerUsers.find((p) => p.provider_name === "instagram")!.created_at
+                  providerUsers.find(
+                    (p) => p.provider_name === "instagram"
+                  )!.created_at
                 ).toLocaleDateString()}
               </p>
             )}
