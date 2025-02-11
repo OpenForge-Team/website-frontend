@@ -1,13 +1,6 @@
-import { Metadata } from "next";
+"use client";
 import RagChat from "@/components/rag-chat";
 import { useSearchParams } from "next/navigation";
-
-export const metadata: Metadata = {
-  // Allow iframe embedding
-  other: {
-    "Content-Security-Policy": "frame-ancestors *",
-  },
-};
 
 export default function ChatWidgetPage() {
   const searchParams = useSearchParams();
@@ -17,11 +10,7 @@ export default function ChatWidgetPage() {
   console.log(userId);
   return (
     <div className="h-screen w-full">
-      <RagChat 
-        editable={true} 
-        mode={"chat"} 
-        user_id={userId || ""} 
-      />
+      <RagChat editable={true} mode={"chat"} user_id={userId || ""} />
     </div>
   );
 }
