@@ -208,33 +208,40 @@ export default function WorkflowSearch({
                                           user_id,
                                           "notion"
                                         );
-
-                                      if (!providerUser?.token) {
+                                      if (
+                                        providerUser &&
+                                        !providerUser[0]?.token
+                                      ) {
                                         throw new Error(
                                           "Notion integration not connected"
                                         );
+                                      } else {
+                                        if (providerUser) {
+                                          const results = await searchNotion({
+                                            notionToken: providerUser[0]!.token,
+                                            searchQuery: notionPageUrl,
+                                            pageSize: 10,
+                                            resourceType: "page",
+                                          });
+
+                                          const formattedResults =
+                                            results.results.map(
+                                              (page: any) => ({
+                                                id: page.id,
+                                                title:
+                                                  page.properties?.title
+                                                    ?.title[0]?.plain_text ||
+                                                  "Untitled",
+                                                url: page.url,
+                                                last_edited_time:
+                                                  page.last_edited_time,
+                                              })
+                                            );
+
+                                          setSearchResults(formattedResults);
+                                          setIsDialogOpen(true);
+                                        }
                                       }
-
-                                      const results = await searchNotion({
-                                        notionToken: providerUser.token,
-                                        searchQuery: notionPageUrl,
-                                        pageSize: 10,
-                                        resourceType: "page",
-                                      });
-
-                                      const formattedResults =
-                                        results.results.map((page: any) => ({
-                                          id: page.id,
-                                          title:
-                                            page.properties?.title?.title[0]
-                                              ?.plain_text || "Untitled",
-                                          url: page.url,
-                                          last_edited_time:
-                                            page.last_edited_time,
-                                        }));
-
-                                      setSearchResults(formattedResults);
-                                      setIsDialogOpen(true);
                                     } catch (error) {
                                       toast({
                                         variant: "destructive",
