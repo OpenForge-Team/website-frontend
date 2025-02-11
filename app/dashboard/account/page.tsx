@@ -57,6 +57,16 @@ export default function AccountPage() {
                 <p className="text-sm text-muted-foreground">"Not connected"</p>
               )}
             </div>
+            <div>
+              <h3 className="font-semibold">Instagram</h3>
+              {loading ? (
+                <Skeleton className="h-4 w-[120px]" />
+              ) : providerUser ? (
+                <p className="text-sm text-muted-foreground">Connected</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">"Not connected"</p>
+              )}
+            </div>
             {loading ? (
               <Skeleton className="h-9 w-24" />
             ) : providerUser ? (
