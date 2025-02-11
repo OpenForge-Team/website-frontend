@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
   const error = searchParams.get("error");
   const error_reason = searchParams.get("error_reason");
   const error_description = searchParams.get("error_description");
+  console.log(searchParams);
   if (code) {
     await instagram.authorizeUser(
       code,

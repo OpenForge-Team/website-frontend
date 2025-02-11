@@ -50,10 +50,10 @@ const data = {
           title: "Arenas",
           url: "/dashboard/knowledge/arenas",
         },
-        {
-          title: "Entities",
-          url: "/dashboard/knowledge/entities",
-        },
+        // {
+        //   title: "Entities",
+        //   url: "/dashboard/knowledge/entities",
+        // },
         {
           title: "Notes",
           url: "/dashboard/knowledge/note",
