@@ -14,7 +14,7 @@ import { User } from "@supabase/supabase-js";
 
 export default function AccountPage() {
   const router = useRouter();
-  const [providerUser, setProviderUser] = useState<ProviderUsers | null>(null);
+  const [providerUsers, setProviderUsers] = useState<ProviderUsers[]>([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
@@ -28,8 +28,8 @@ export default function AccountPage() {
         if (!user) return;
         setUser(user);
 
-        const notionUser = await getProviderUser(user.id, "notion");
-        setProviderUser(notionUser);
+        const providers = await getProviderUser(user.id);
+        setProviderUsers(providers || []);
       } catch (error) {
         console.error("Error checking connection:", error);
       } finally {
@@ -51,29 +51,30 @@ export default function AccountPage() {
               <h3 className="font-semibold">Notion</h3>
               {loading ? (
                 <Skeleton className="h-4 w-[120px]" />
-              ) : providerUser ? (
+              ) : providerUsers.find(p => p.provider_name === 'notion') ? (
                 <p className="text-sm text-muted-foreground">Connected</p>
               ) : (
-                <p className="text-sm text-muted-foreground">"Not connected"</p>
+                <p className="text-sm text-muted-foreground">Not connected</p>
               )}
             </div>
             <div>
               <h3 className="font-semibold">Instagram</h3>
               {loading ? (
                 <Skeleton className="h-4 w-[120px]" />
-              ) : providerUser ? (
+              ) : providerUsers.find(p => p.provider_name === 'instagram') ? (
                 <p className="text-sm text-muted-foreground">Connected</p>
               ) : (
-                <p className="text-sm text-muted-foreground">"Not connected"</p>
+                <p className="text-sm text-muted-foreground">Not connected</p>
               )}
             </div>
             {loading ? (
               <Skeleton className="h-9 w-24" />
-            ) : providerUser ? (
+            ) : providerUsers.find(p => p.provider_name === 'notion') ? (
               <Button
                 variant="destructive"
                 onClick={async () => {
                   await deleteProviderUser(user!.id, "notion");
+                  setProviderUsers(providerUsers.filter(p => p.provider_name !== 'notion'));
                 }}
               >
                 Disconnect
@@ -90,12 +91,12 @@ export default function AccountPage() {
           </CardHeader>
           <CardContent>
             <div>
-              {providerUser && (
-                <p className="text-sm">
-                  Connected since{" "}
-                  {new Date(providerUser.created_at).toLocaleDateString()}
+              {providerUsers.map(provider => (
+                <p key={provider.id} className="text-sm">
+                  {provider.provider_name} connected since{" "}
+                  {new Date(provider.created_at).toLocaleDateString()}
                 </p>
-              )}
+              ))}
             </div>
           </CardContent>
         </Card>
