@@ -124,7 +124,7 @@ export default function AccountPage() {
             ) : (
               <Button
                 onClick={() =>
-                  router.push(process.env.NEXT_INSTAGRAM_OAUTH_REDIRECT_URI!)
+                  router.push(process.env.NEXT_PUBLIC_INSTAGRAM_OAUTH_URL!)
                 }
               >
                 Connect
