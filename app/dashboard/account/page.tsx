@@ -42,16 +42,16 @@ export default function AccountPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Account</h1>
-      <h2 className="text-xl font-bold mb-3">Integrations</h2>
-      <div className="grid">
+      <h1 className="text-primary text-2xl font-bold mb-6">Account</h1>
+      <h2 className="text-primary text-xl font-bold mb-3">Integrations</h2>
+      <div className="grid bg-secondary">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <h3 className="font-semibold">Notion</h3>
               {loading ? (
                 <Skeleton className="h-4 w-[120px]" />
-              ) : providerUsers.find(p => p.provider_name === 'notion') ? (
+              ) : providerUsers.find((p) => p.provider_name === "notion") ? (
                 <p className="text-sm text-muted-foreground">Connected</p>
               ) : (
                 <p className="text-sm text-muted-foreground">Not connected</p>
@@ -61,7 +61,7 @@ export default function AccountPage() {
               <h3 className="font-semibold">Instagram</h3>
               {loading ? (
                 <Skeleton className="h-4 w-[120px]" />
-              ) : providerUsers.find(p => p.provider_name === 'instagram') ? (
+              ) : providerUsers.find((p) => p.provider_name === "instagram") ? (
                 <p className="text-sm text-muted-foreground">Connected</p>
               ) : (
                 <p className="text-sm text-muted-foreground">Not connected</p>
@@ -69,12 +69,14 @@ export default function AccountPage() {
             </div>
             {loading ? (
               <Skeleton className="h-9 w-24" />
-            ) : providerUsers.find(p => p.provider_name === 'notion') ? (
+            ) : providerUsers.find((p) => p.provider_name === "notion") ? (
               <Button
                 variant="destructive"
                 onClick={async () => {
                   await deleteProviderUser(user!.id, "notion");
-                  setProviderUsers(providerUsers.filter(p => p.provider_name !== 'notion'));
+                  setProviderUsers(
+                    providerUsers.filter((p) => p.provider_name !== "notion")
+                  );
                 }}
               >
                 Disconnect
@@ -91,7 +93,7 @@ export default function AccountPage() {
           </CardHeader>
           <CardContent>
             <div>
-              {providerUsers.map(provider => (
+              {providerUsers.map((provider) => (
                 <p key={provider.id} className="text-sm">
                   {provider.provider_name} connected since{" "}
                   {new Date(provider.created_at).toLocaleDateString()}
