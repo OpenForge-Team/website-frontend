@@ -11,23 +11,13 @@ export const metadata: Metadata = {
 
 export default function ChatWidgetPage() {
   const searchParams = useSearchParams();
-  
-  // Get parameters from URL
-  const workspaceId = searchParams.get('workspaceId');
-  const userId = searchParams.get('userId');
-  const mode = (searchParams.get('mode') as "chat" | "view") || "chat";
-  const editable = searchParams.get('editable') !== "false";
-  const conversationId = searchParams.get('conversationId');
 
+  // Get parameters from URL
+  const userId = searchParams.get("userId");
+  console.log(userId);
   return (
     <div className="h-screen w-full">
-      <RagChat 
-        editable={editable}
-        mode={mode}
-        workspaceId={workspaceId || undefined}
-        userId={userId || undefined}
-        conversationId={conversationId || undefined}
-      />
+      <RagChat editable={true} mode={"chat"} user_id={userId} />
     </div>
   );
 }
