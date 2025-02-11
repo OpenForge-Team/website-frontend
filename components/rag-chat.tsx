@@ -37,6 +37,7 @@ interface Props {
   editable: boolean;
   mode: "chat" | "view";
   conversationId?: string;
+  user_id?: string;
 }
 
 interface ChatMessage {
@@ -44,26 +45,13 @@ interface ChatMessage {
   messageContent: string;
 }
 const mime = require("mime-types");
-export default function RagChat({ editable, mode, conversationId }: Props) {
+export default function RagChat({ editable, mode, conversationId, user_id }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
   const { toast } = useToast();
   const [dialogSourceContent, setDialogSourceContent] = useState<any>(null);
   const [documentViewerContent, setDocumentViewerContent] = useState<any>(null);
   const [messages, setMessages] = useState([]);
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    setIsLoading(true);
-    const getUserCall = async () => {
-      const user = await getUser(supabase);
-      if (user) {
-        setUser(user);
-      } else {
-        console.log("User not authenticated");
-      }
-    };
-    getUserCall().finally(() => setIsLoading(false));
-  }, [supabase]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
   const [chatInputText, setChatInputText] = useState("");
@@ -144,7 +132,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
 
     try {
       const response = await AskAIChat({
-        user_id: user?.id || "",
+        user_id: user_id || "",
         workspace_id: "",
         message: chatInputText,
       });
@@ -193,9 +181,9 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
     }
   };
   const handleGetNoteSource = async (note_id: string) => {
-    if (!user) return;
+    if (!user_id) return;
     try {
-      const note = await getNotebyId(user.id, note_id);
+      const note = await getNotebyId(user_id, note_id);
       setDialogSourceContent({ ...note, type: "note" });
     } catch (error) {
       console.error("Error fetching note:", error);
@@ -203,7 +191,7 @@ export default function RagChat({ editable, mode, conversationId }: Props) {
   };
 
   const handleGetDocumentSource = async (document_id: string) => {
-    if (!user) return;
+    if (!user_id) return;
     try {
       const document = await getDocumentById(document_id);
       setDocumentViewerContent(document);

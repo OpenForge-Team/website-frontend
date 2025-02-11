@@ -17,7 +17,11 @@ export default function ChatWidgetPage() {
   console.log(userId);
   return (
     <div className="h-screen w-full">
-      <RagChat editable={true} mode={"chat"} user_id={userId} />
+      <RagChat 
+        editable={true} 
+        mode={"chat"} 
+        user_id={userId || ""} 
+      />
     </div>
   );
 }
