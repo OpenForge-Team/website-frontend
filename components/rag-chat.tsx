@@ -344,7 +344,7 @@ export default function RagChat({
           value={chatInputText}
           onChange={(e) => setChatInputText(e.target.value)}
           disabled={chatLoading}
-          className="bg-muted/50 border-border"
+          className="bg-white border-border"
           onKeyPress={(e) => {
             if (
               e.key === "Enter" &&

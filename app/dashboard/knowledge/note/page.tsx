@@ -276,8 +276,22 @@ export default function NotePage() {
 
           <Tabs defaultValue="text" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="text">Text Note</TabsTrigger>
-              <TabsTrigger value="voice">Voice Note</TabsTrigger>
+              <TabsTrigger
+                value="text"
+                className={cn(
+                  "data-[state=active]:bg-background data-[state=active]:text-secondary"
+                )}
+              >
+                Text Note
+              </TabsTrigger>
+              <TabsTrigger
+                value="voice"
+                className={cn(
+                  "data-[state=active]:bg-background data-[state=active]:text-secondary"
+                )}
+              >
+                Voice Note
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="text">
               <FormField
