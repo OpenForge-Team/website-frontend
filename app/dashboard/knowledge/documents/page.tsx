@@ -8,7 +8,7 @@ import { useToast } from "@/components/hooks/use-toast";
 import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { getUser } from "@/utils/queries";
-import { getSubjects } from "@/utils/supabase/subjects";
+import { addSubject, getSubjects } from "@/utils/supabase/subjects";
 import { uploadDocument } from "@/utils/supabase/documents";
 import { DocumentList } from "@/components/document-list";
 import { DocumentUploader } from "@/components/document-uploader";
@@ -37,6 +37,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useWorkspace } from "@/providers/workspace-provider";
 
 const formSchema = z.object({
   subject: z.string({
@@ -50,13 +51,13 @@ type FormValues = z.infer<typeof formSchema>;
 export default function DocumentPage() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
-  const [categories, setCategories] = useState<
+  const [subjects, setSubjects] = useState<
     Array<{ value: string; label: string }>
   >([]);
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const { toast } = useToast();
-
+  const { activeWorkspace } = useWorkspace();
   useEffect(() => {
     const getUserCall = async () => {
       const user = await getUser(supabase);
@@ -70,26 +71,26 @@ export default function DocumentPage() {
   }, [supabase]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchsubjects = async () => {
       if (!user) return;
       try {
         const subjects = await getSubjects(user.id);
-        setCategories(
+        setSubjects(
           subjects.map((subject) => ({
             value: subject.id,
             label: subject.name,
           }))
         );
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching subjects:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to fetch categories. Please try again.",
+          description: "Failed to fetch subjects. Please try again.",
         });
       }
     };
-    fetchCategories();
+    fetchsubjects();
   }, [user, toast]);
 
   const form = useForm<FormValues>({
@@ -160,12 +161,14 @@ export default function DocumentPage() {
                           role="combobox"
                           className={cn(
                             "w-full justify-between",
-                            !field.value && "text-muted-foreground"
+                            !field.value
+                              ? "text-muted-foreground"
+                              : "text-secondary" // Add this line
                           )}
                         >
                           {field.value
-                            ? categories.find(
-                                (category) => category.value === field.value
+                            ? subjects.find(
+                                (subject) => subject.value === field.value
                               )?.label
                             : "Select subject"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -179,26 +182,63 @@ export default function DocumentPage() {
                           className="h-9"
                           value={searchValue}
                           onValueChange={setSearchValue}
+                          onKeyDown={async (e) => {
+                            if (e.key === "Enter") {
+                              const input = e.currentTarget.value;
+                              if (
+                                !subjects.find(
+                                  (s) =>
+                                    s.label.toLowerCase() ===
+                                    input.toLowerCase()
+                                )
+                              ) {
+                                try {
+                                  if (!user)
+                                    throw new Error("User not authenticated");
+                                  if (!activeWorkspace)
+                                    throw new Error("Workspace not defined");
+                                  const newSubjects = await addSubject({
+                                    user_id: user.id,
+                                    name: input,
+                                    workspace_id: activeWorkspace.id,
+                                  });
+                                  const value = newSubjects.id;
+                                  setSubjects([
+                                    ...subjects,
+                                    { value, label: input },
+                                  ]);
+                                  form.setValue("subject", value);
+                                  setOpen(false);
+                                  setSearchValue("");
+                                } catch (error) {
+                                  console.error(
+                                    "Failed to add subject:",
+                                    error
+                                  );
+                                }
+                              }
+                            }
+                          }}
                         />
                         <CommandList>
                           <CommandEmpty className="px-2">
                             No subject found. Press Enter to add.
                           </CommandEmpty>
                           <CommandGroup>
-                            {categories.map((category) => (
+                            {subjects.map((subject) => (
                               <CommandItem
-                                key={category.value}
-                                value={category.value}
+                                key={subject.value}
+                                value={subject.value}
                                 onSelect={() => {
-                                  form.setValue("subject", category.value);
+                                  form.setValue("subject", subject.value);
                                   setOpen(false);
                                 }}
                               >
-                                {category.label}
+                                {subject.label}
                                 <Check
                                   className={cn(
                                     "ml-auto h-4 w-4",
-                                    category.value === field.value
+                                    subject.value === field.value
                                       ? "opacity-100"
                                       : "opacity-0"
                                   )}

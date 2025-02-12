@@ -38,7 +38,7 @@ interface Props {
   mode: "chat" | "view";
   conversationId?: string;
   user_id?: string;
-  isWidget?: boolean;
+  is_widget?: boolean;
 }
 
 interface ChatMessage {
@@ -51,6 +51,7 @@ export default function RagChat({
   mode,
   conversationId,
   user_id,
+  is_widget,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
@@ -141,6 +142,7 @@ export default function RagChat({
         user_id: user_id || "",
         workspace_id: "",
         message: chatInputText,
+        is_from_widget: true,
       });
       console.log(response);
       // Add empty AI message that will be updated with streaming content
@@ -206,11 +208,6 @@ export default function RagChat({
     }
   };
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (props.isWidget) {
-      event.preventDefault();
-      return;
-    }
-    
     const href = event.currentTarget.getAttribute("href");
     console.log(href);
     if (href && href.startsWith("#note-")) {

@@ -37,8 +37,14 @@ interface Ask {
   user_id: string;
   workspace_id: string;
   message: string;
+  is_from_widget: boolean;
 }
-export const AskAIChat = async ({ user_id, workspace_id, message }: Ask) => {
+export const AskAIChat = async ({
+  user_id,
+  workspace_id,
+  message,
+  is_from_widget,
+}: Ask) => {
   const startTime = performance.now();
   let lastTime = startTime;
 
@@ -114,7 +120,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
       type: doc.metadata.note_id ? "note" : "document",
     }));
 
-    finalResponse += `\n\n${sourceList}`;
+    if (!is_from_widget) finalResponse += `\n\n${sourceList}`;
 
     logTiming("Response streaming and formatting");
     const totalTime = performance.now() - startTime;

@@ -51,7 +51,12 @@ export default function ChatWidgetPage() {
 
   return (
     <div className="h-screen w-full">
-      <RagChat editable={true} mode={"chat"} user_id={userId || ""} isWidget={true} />
+      <RagChat
+        editable={true}
+        mode={"chat"}
+        user_id={userId || ""}
+        is_widget={true}
+      />
     </div>
   );
 }

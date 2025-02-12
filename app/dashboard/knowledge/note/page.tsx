@@ -170,7 +170,9 @@ export default function NotePage() {
                         role="combobox"
                         className={cn(
                           "w-full justify-between",
-                          !field.value && "text-muted-foreground"
+                          !field.value
+                            ? "text-muted-foreground"
+                            : "text-secondary" // Add this line
                         )}
                       >
                         {field.value
@@ -287,7 +289,7 @@ export default function NotePage() {
                     <FormControl>
                       <Textarea
                         placeholder="Write your note here..."
-                        className="min-h-[200px]"
+                        className="min-h-[200px] text-secondary"
                         {...field}
                       />
                     </FormControl>
@@ -321,7 +323,7 @@ export default function NotePage() {
                         />
                         <Textarea
                           placeholder="Transcribed text will appear here..."
-                          className="min-h-[100px]"
+                          className="min-h-[100px] text-secondary"
                           value={field.value}
                           onChange={field.onChange}
                         />
