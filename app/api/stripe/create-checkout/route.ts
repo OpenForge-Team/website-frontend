@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       user: {
         email: data?.email,
         // If the user has already purchased, it will automatically prefill it's credit card
-        customerId: data?.customer_id,
+        customerId: data?.customer_id ?? undefined,
       },
       // If you send coupons from the frontend, you can pass it here
       // couponId: body.couponId,
