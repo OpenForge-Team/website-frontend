@@ -38,6 +38,7 @@ interface Props {
   mode: "chat" | "view";
   conversationId?: string;
   user_id?: string;
+  isWidget?: boolean;
 }
 
 interface ChatMessage {
@@ -205,6 +206,11 @@ export default function RagChat({
     }
   };
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (props.isWidget) {
+      event.preventDefault();
+      return;
+    }
+    
     const href = event.currentTarget.getAttribute("href");
     console.log(href);
     if (href && href.startsWith("#note-")) {
