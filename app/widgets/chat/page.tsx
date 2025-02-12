@@ -1,7 +1,7 @@
 "use client";
 import RagChat from "@/components/rag-chat";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { WHITELISTED_DOMAINS } from "./config";
 
 export default function ChatWidgetPage() {
@@ -50,15 +50,13 @@ export default function ChatWidgetPage() {
   }
 
   return (
-    <Suspense>
-      <div className="h-screen w-full">
-        <RagChat
-          editable={true}
-          mode={"chat"}
-          user_id={userId || ""}
-          is_widget={true}
-        />
-      </div>
-    </Suspense>
+    <div className="h-screen w-full">
+      <RagChat
+        editable={true}
+        mode={"chat"}
+        user_id={userId || ""}
+        is_widget={true}
+      />
+    </div>
   );
 }

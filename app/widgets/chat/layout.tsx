@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { WHITELISTED_DOMAINS } from "./config";
 
 export default function ChatLayout({
@@ -5,5 +6,5 @@ export default function ChatLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <Suspense>{children}</Suspense>;
 }
