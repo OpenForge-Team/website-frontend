@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function ArenasPage() {
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-6">Subjects</h1>
+      <h1 className="text-primary text-3xl font-bold mb-6">Subjects</h1>
       <ArenasView />
     </div>
   );

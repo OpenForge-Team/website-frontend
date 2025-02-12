@@ -19,11 +19,11 @@ export default function ChatWidgetPage() {
     // Check if domain is whitelisted
     const isDomainAllowed = WHITELISTED_DOMAINS.includes(domain);
     setIsAllowed(isDomainAllowed);
-  }, []);
+  }, [searchParams]);
 
   // Get parameters from URL
   const userId = searchParams.get("userId");
-
+  console.log(userId);
   if (isAllowed === null) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -36,9 +36,12 @@ export default function ChatWidgetPage() {
     return (
       <div className="h-screen w-full flex items-center justify-center">
         <div className="text-center p-6 max-w-md">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Access Denied
+          </h2>
           <p className="text-gray-600">
-            Invalid site identity. This widget can only be embedded on whitelisted domains.
+            Invalid site identity. This widget can only be embedded on
+            whitelisted domains.
           </p>
           <p className="text-sm text-gray-500 mt-2">Origin: {origin}</p>
         </div>
@@ -48,12 +51,7 @@ export default function ChatWidgetPage() {
 
   return (
     <div className="h-screen w-full">
-      <RagChat 
-        editable={true} 
-        mode={"chat"} 
-        user_id={userId || ""} 
-        origin={origin}
-      />
+      <RagChat editable={true} mode={"chat"} user_id={userId || ""} />
     </div>
   );
 }

@@ -45,7 +45,12 @@ interface ChatMessage {
   messageContent: string;
 }
 const mime = require("mime-types");
-export default function RagChat({ editable, mode, conversationId, user_id }: Props) {
+export default function RagChat({
+  editable,
+  mode,
+  conversationId,
+  user_id,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
   const { toast } = useToast();
@@ -276,7 +281,7 @@ export default function RagChat({ editable, mode, conversationId, user_id }: Pro
                     <div
                       className={`px-4 py-2 rounded-lg relative bg-primary  ${
                         message.role === "ai"
-                          ? "bg-muted/50 text-foreground prose prose-a:text-blue-500 prose-headings:text-white prose-strong:text-white text-white"
+                          ? "bg-muted/50 text-foreground prose prose-code:text-white prose-a:text-blue-500 prose-headings:text-white prose-strong:text-white text-white"
                           : "bg-primary text-primary-foreground"
                       }`}
                     >

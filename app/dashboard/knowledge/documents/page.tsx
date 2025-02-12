@@ -145,74 +145,79 @@ export default function DocumentPage() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="subject"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Subject</FormLabel>
-                <Popover open={open} onOpenChange={setOpen}>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-full justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? categories.find(
-                              (category) => category.value === field.value
-                            )?.label
-                          : "Select subject"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search subject or add new..."
-                        className="h-9"
-                        value={searchValue}
-                        onValueChange={setSearchValue}
-                      />
-                      <CommandList>
-                        <CommandEmpty className="px-2">
-                          No subject found. Press Enter to add.
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {categories.map((category) => (
-                            <CommandItem
-                              key={category.value}
-                              value={category.value}
-                              onSelect={() => {
-                                form.setValue("subject", category.value);
-                                setOpen(false);
-                              }}
-                            >
-                              {category.label}
-                              <Check
-                                className={cn(
-                                  "ml-auto h-4 w-4",
-                                  category.value === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-2 grid-rows-1 gap-20">
+            <FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Subject</FormLabel>
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-full justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? categories.find(
+                                (category) => category.value === field.value
+                              )?.label
+                            : "Select subject"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search subject or add new..."
+                          className="h-9"
+                          value={searchValue}
+                          onValueChange={setSearchValue}
+                        />
+                        <CommandList>
+                          <CommandEmpty className="px-2">
+                            No subject found. Press Enter to add.
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {categories.map((category) => (
+                              <CommandItem
+                                key={category.value}
+                                value={category.value}
+                                onSelect={() => {
+                                  form.setValue("subject", category.value);
+                                  setOpen(false);
+                                }}
+                              >
+                                {category.label}
+                                <Check
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    category.value === field.value
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="my-auto ml-auto max-w-min" type="submit">
+              Upload Documents
+            </Button>
+          </div>
 
           <FormField
             control={form.control}
@@ -229,8 +234,6 @@ export default function DocumentPage() {
               </FormItem>
             )}
           />
-
-          <Button type="submit">Upload Documents</Button>
         </form>
       </Form>
 

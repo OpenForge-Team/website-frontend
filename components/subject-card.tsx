@@ -37,7 +37,7 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
   const notes = subject.notes || [];
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="bg-secondary hover:shadow-md transition-shadow">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{subject.name}</span>

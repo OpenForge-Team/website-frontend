@@ -59,7 +59,7 @@ export const uploadDocument = async ({
   const fileBuffer = await file.arrayBuffer();
   const blob = new Blob([fileBuffer], { type: file.type });
   const file_name = crypto.randomUUID();
-  const extension = mime.extension(file.type);
+  const extension = mime.extension(mime.lookup(file.name));
   // Create document record in the database
   const { data, error } = await supabase
     .from("documents")
@@ -84,6 +84,7 @@ export const uploadDocument = async ({
 
     // Generate embeddings with the text content
     generateContentChunks({
+      mime_type: extension,
       document_id: data.id,
       document_buffer: blob,
     });
