@@ -1,5 +1,5 @@
-import { createCheckout } from "@/libs/stripe";
-import { createClient } from "@/libs/supabase/server";
+import { createCheckout } from "@/lib/stripe";
+import { createClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 // This function is used to create a Stripe Checkout Session (one-time payment or subscription)
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const {
       data: { user },
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     const { data } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", user?.id)
+      .eq("id", user!.id)
       .single();
 
     const stripeSessionURL = await createCheckout({
@@ -63,6 +63,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: stripeSessionURL });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: e?.message }, { status: 500 });
+    return NextResponse.json({ error: e }, { status: 500 });
   }
 }

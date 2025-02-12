@@ -275,21 +275,24 @@ export type Database = {
       };
       profiles: {
         Row: {
-          email: string | null;
+          customer_id: string | null;
+          email: string;
           firstname: string;
           id: string;
           is_allowed_prelaunch: boolean;
           lastname: string;
         };
         Insert: {
-          email?: string | null;
+          customer_id?: string | null;
+          email: string;
           firstname: string;
           id: string;
           is_allowed_prelaunch?: boolean;
           lastname: string;
         };
         Update: {
-          email?: string | null;
+          customer_id?: string | null;
+          email?: string;
           firstname?: string;
           id?: string;
           is_allowed_prelaunch?: boolean;
