@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
       const subject_id = searchParams.get("subject_id") || undefined;
 
       if (!message) {
-        return new Response(JSON.stringify({ error: "Message is required" }), {
+        const errorResponse: ApiChatQueryResponse = { error: "Message is required" };
+        return new Response(JSON.stringify(errorResponse), {
           status: 400,
           headers: { "Content-Type": "application/json" },
         });
@@ -33,14 +34,16 @@ export async function GET(request: NextRequest) {
         subject_id,
       });
 
-      return new Response(JSON.stringify({ response }), {
+      const successResponse: ApiChatQueryResponse = { response };
+      return new Response(JSON.stringify(successResponse), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
     }
   }
 
-  return new Response(JSON.stringify({ error: "Invalid API key" }), {
+  const unauthorizedResponse: ApiChatQueryResponse = { error: "Invalid API key" };
+  return new Response(JSON.stringify(unauthorizedResponse), {
     status: 401,
     headers: { "Content-Type": "application/json" },
   });
