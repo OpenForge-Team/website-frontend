@@ -162,7 +162,7 @@ export default function RagChat({
 
     try {
       const response = await AskAIChat({
-        user_id: user_id || "",
+        user_id: user_id || user?.id || "",
         workspace_id: "",
         message: chatInputText,
         is_from_widget: true,
@@ -212,9 +212,10 @@ export default function RagChat({
     }
   };
   const handleGetNoteSource = async (note_id: string) => {
-    if (!user_id) return;
+    const effectiveUserId = user_id || user?.id;
+    if (!effectiveUserId) return;
     try {
-      const note = await getNotebyId(user_id, note_id);
+      const note = await getNotebyId(effectiveUserId, note_id);
       setDialogSourceContent({ ...note, type: "note" });
     } catch (error) {
       console.error("Error fetching note:", error);
@@ -222,7 +223,8 @@ export default function RagChat({
   };
 
   const handleGetDocumentSource = async (document_id: string) => {
-    if (!user_id) return;
+    const effectiveUserId = user_id || user?.id;
+    if (!effectiveUserId) return;
     try {
       const document = await getDocumentById(document_id);
       setDocumentViewerContent(document);
@@ -246,9 +248,10 @@ export default function RagChat({
   // Fetch subjects
   useEffect(() => {
     const fetchSubjects = async () => {
-      if (!user_id) return;
+      const effectiveUserId = user_id || user?.id;
+      if (!effectiveUserId) return;
       try {
-        const subjects = await getSubjects(user_id);
+        const subjects = await getSubjects(effectiveUserId);
         setSubjects(subjects);
       } catch (error) {
         console.error("Error fetching subjects:", error);
