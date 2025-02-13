@@ -18,9 +18,9 @@ export async function GET(request: NextRequest) {
       const subject_id = searchParams.get("subject_id") || undefined;
 
       if (!message) {
-        return new Response(JSON.stringify({ error: "Message is required" }), { 
+        return new Response(JSON.stringify({ error: "Message is required" }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' }
+          headers: { "Content-Type": "application/json" },
         });
       }
 
@@ -35,13 +35,13 @@ export async function GET(request: NextRequest) {
 
       return new Response(JSON.stringify({ response }), {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { "Content-Type": "application/json" },
       });
     }
   }
-  
+
   return new Response(JSON.stringify({ error: "Invalid API key" }), {
     status: 401,
-    headers: { 'Content-Type': 'application/json' }
+    headers: { "Content-Type": "application/json" },
   });
 }
