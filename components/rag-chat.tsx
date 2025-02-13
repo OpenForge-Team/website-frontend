@@ -5,7 +5,9 @@ import { Button } from "./ui/button";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
@@ -40,6 +42,7 @@ import { getNotebyId } from "@/utils/supabase/notes";
 import { Textarea } from "./ui/textarea";
 import { getDocumentById } from "@/utils/supabase/documents";
 import { DocumentViewer } from "./document-viewer";
+import { getSubjects } from "@/utils/supabase/subjects";
 interface Props {
   editable: boolean;
   mode: "chat" | "view";
@@ -63,6 +66,7 @@ export default function RagChat({
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
   const { toast } = useToast();
+  const [user, setUser] = useState<User | null>(null);
   const [dialogSourceContent, setDialogSourceContent] = useState<any>(null);
   const [documentViewerContent, setDocumentViewerContent] = useState<any>(null);
   const [subjects, setSubjects] = useState<any[]>([]);
@@ -76,7 +80,17 @@ export default function RagChat({
   );
   const [isConversationSaved, setIsConversationSaved] = useState(false);
   const router = useRouter();
-
+  useEffect(() => {
+    const getUserCall = async () => {
+      const user = await getUser(supabase);
+      if (user) {
+        setUser(user);
+      } else {
+        console.log("User not authenticated");
+      }
+    };
+    getUserCall();
+  }, [supabase]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   async function fetchConversationById(conversationId: string) {
@@ -234,9 +248,8 @@ export default function RagChat({
     const fetchSubjects = async () => {
       if (!user_id) return;
       try {
-        const response = await fetch(`/api/subjects?userId=${user_id}`);
-        const data = await response.json();
-        setSubjects(data);
+        const subjects = await getSubjects(user_id);
+        setSubjects(subjects);
       } catch (error) {
         console.error("Error fetching subjects:", error);
       }
@@ -283,12 +296,17 @@ export default function RagChat({
               <SelectValue placeholder="All Subjects" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Subjects</SelectItem>
-              {subjects.map((subject) => (
-                <SelectItem key={subject.id} value={subject.id}>
-                  {subject.name}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                <SelectLabel>All Subjects</SelectLabel>
+                {subjects.map((subject) => {
+                  console.log(subject);
+                  return (
+                    <SelectItem key={subject.id} value={subject.id}>
+                      {subject.name}
+                    </SelectItem>
+                  );
+                })}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
