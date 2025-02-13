@@ -14,11 +14,11 @@ export async function GET(request: NextRequest) {
     if (userIdForKey) {
       //params
       const message = searchParams.get("message");
-      const subject_id = searchParams.get("subject_id");
+      const subject_id = searchParams.get("subject_id") || undefined;
 
       await AskAIChat({
         user_id: userIdForKey,
-        subject_id: subject_id,
+        subject_id,
       });
     }
   }
