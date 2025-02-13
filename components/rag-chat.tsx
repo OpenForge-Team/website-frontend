@@ -1,7 +1,14 @@
 "use client";
-import { Send } from "lucide-react";
+import { ChevronDown, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import {
   Card,
   CardHeader,
@@ -58,6 +65,8 @@ export default function RagChat({
   const { toast } = useToast();
   const [dialogSourceContent, setDialogSourceContent] = useState<any>(null);
   const [documentViewerContent, setDocumentViewerContent] = useState<any>(null);
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
   const [messages, setMessages] = useState([]);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
@@ -220,6 +229,21 @@ export default function RagChat({
       handleGetDocumentSource(targetId); // Call your function
     }
   };
+  // Fetch subjects
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      if (!user_id) return;
+      try {
+        const response = await fetch(`/api/subjects?userId=${user_id}`);
+        const data = await response.json();
+        setSubjects(data);
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+      }
+    };
+    fetchSubjects();
+  }, [user_id]);
+
   useEffect(() => {
     if (mode === "view" && conversationId) {
       fetchConversationById(conversationId);
@@ -252,7 +276,22 @@ export default function RagChat({
   return (
     <Card className="w-full mx-auto h-[calc(100vh-6rem)] flex flex-col bg-background border-border">
       <CardHeader className="border-b border-border">
-        <CardTitle className="text-primary">Forge AI</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-primary">Forge AI</CardTitle>
+          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="All Subjects" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All Subjects</SelectItem>
+              {subjects.map((subject) => (
+                <SelectItem key={subject.id} value={subject.id}>
+                  {subject.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
 
       <CardContent className="flex-1 overflow-y-auto p-4 chat-content">
