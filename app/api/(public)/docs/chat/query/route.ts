@@ -18,17 +18,30 @@ export async function GET(request: NextRequest) {
       const subject_id = searchParams.get("subject_id") || undefined;
 
       if (!message) {
-        return new Response({}<ApiChatQueryResponse>, { status: 400 });
+        return new Response(JSON.stringify({ error: "Message is required" }), { 
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        });
       }
 
-      await AskAIChat({
+      const response = await AskAIChat({
         user_id: userIdForKey,
-        workspace_id: "", // Using "public" for API requests
+        workspace_id: "public", // Using "public" for API requests
         message,
         is_from_widget: false,
-        stream: true,
+        stream: false,
         subject_id,
+      });
+
+      return new Response(JSON.stringify({ response }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
       });
     }
   }
+  
+  return new Response(JSON.stringify({ error: "Invalid API key" }), {
+    status: 401,
+    headers: { 'Content-Type': 'application/json' }
+  });
 }
