@@ -10,6 +10,10 @@ export const revalidate = 30;
  * /api/chat/query:
  *   get:
  *     description: Returns a chat response
+ *     parameters:
+ *       api_key:
+ *         description: The Api key provided to you on your dashboard
+ *
  *     responses:
  *       200:
  *         description: Chat response from the AI
@@ -48,29 +52,34 @@ export async function GET(request: NextRequest) {
         workspace_id: "public", // Using "public" for API requests
         message,
         is_from_widget: false,
+        show_sources: false,
         stream,
         subject_id,
       });
-
-      // If it's already a Response object (from streaming), return it directly
-      if (response instanceof Response) {
-        return response;
+      if (typeof response === "string") {
+        const validResponse: ApiChatQueryResponse = {
+          chat_response: response,
+          error: "Invalid API key",
+          status: 401,
+        };
+        return new Response(JSON.stringify(validResponse), {
+          status: 200,
+          headers: { "Content-Type": "text/plain" },
+        });
+      } else {
+        return new Response(response, {
+          status: 200,
+          headers: { "Content-Type": "text/plain" },
+        });
       }
-
-      // Otherwise wrap the string response in a Response object
-      return new Response(response, {
-        status: 200,
-        headers: { "Content-Type": "text/plain" },
-      });
     }
-  } else {
-    const unauthorizedResponse: ApiErrorResponse = {
-      error: "Invalid API key",
-      status: 401,
-    };
-    return new Response(JSON.stringify(unauthorizedResponse), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
   }
+  const unauthorizedResponse: ApiErrorResponse = {
+    error: "Invalid API key",
+    status: 401,
+  };
+  return new Response(JSON.stringify(unauthorizedResponse), {
+    status: 401,
+    headers: { "Content-Type": "application/json" },
+  });
 }
