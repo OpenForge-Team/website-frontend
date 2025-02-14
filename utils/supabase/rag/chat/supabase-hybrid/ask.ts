@@ -38,12 +38,16 @@ interface Ask {
   workspace_id: string;
   message: string;
   is_from_widget: boolean;
+  subject_id?: string;
+  stream: boolean;
 }
 export const AskAIChat = async ({
   user_id,
   workspace_id,
   message,
   is_from_widget,
+  subject_id,
+  stream,
 }: Ask) => {
   const startTime = performance.now();
   let lastTime = startTime;
@@ -85,7 +89,11 @@ If the context doesn't contain relevant information, respond with "I don't have 
       prompt: questionAnsweringPrompt,
     });
     logTiming("Chain creation");
-    const { context, sourceList } = await retrieveContext(message);
+    const { context, sourceList } = await retrieveContext(
+      message,
+      user_id,
+      subject_id
+    );
 
     logTiming("Context retrieval");
 
