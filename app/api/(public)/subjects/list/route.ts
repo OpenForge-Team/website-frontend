@@ -35,6 +35,14 @@ import { ApiErrorResponse } from "../../types";
  *                       name:
  *                         type: string
  *                         description: The subject's name
+ *               example:
+ *                 subjects:
+ *                   - id: "9411bdb1-4a21-406a-8947-7ca4f7f64966"
+ *                     name: "AI Knowledge"
+ *                   - id: "51337547-d400-4f0f-a159-83a88ebe36f7"
+ *                     name: "Ben's Properties"
+ *                   - id: "aae54b1e-741c-41fa-966a-252d645fcca5"
+ *                     name: "Marc Lou's ShipFast"
  *       400:
  *         description: Bad request - missing API key
  *         content:
