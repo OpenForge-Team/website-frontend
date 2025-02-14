@@ -1,5 +1,5 @@
 import { validateApiKey } from "@/utils/public-api/validate-query";
-import { createClient } from "@/utils/supabase/server";
+import { getSubjects } from "@/utils/supabase/subjects";
 import { type NextRequest } from "next/server";
 import { ApiErrorResponse } from "../../types";
 
@@ -40,16 +40,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const supabase = await createClient();
-    const { data: subjects, error } = await supabase
-      .from("subjects")
-      .select("id, name")
-      .eq("user_id", userIdForKey);
-
-    if (error) throw error;
-
+    const subjects = await getSubjects(userIdForKey);
+    
     const response: ApiSubjectsListResponse = {
-      subjects: subjects || [],
+      subjects: subjects.map(subject => ({
+        id: subject.id,
+        name: subject.name
+      }))
     };
 
     return new Response(JSON.stringify(response), {
