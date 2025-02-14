@@ -70,6 +70,35 @@ export type Database = {
           },
         ];
       };
+      api_queries: {
+        Row: {
+          created_at: string;
+          data: Json;
+          id: number;
+          subject_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          data?: Json;
+          id?: number;
+          subject_id: string;
+        };
+        Update: {
+          created_at?: string;
+          data?: Json;
+          id?: number;
+          subject_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "api_queries_subject_id_fkey";
+            columns: ["subject_id"];
+            isOneToOne: false;
+            referencedRelation: "subjects";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       document_content_embeddings: {
         Row: {
           content: string | null;

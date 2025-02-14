@@ -45,7 +45,7 @@ import { ApiErrorResponse } from "../../types";
  *                   - id: "51337547-d400-4f0f-a159-83a88ebe36f7"
  *                     name: "Ben's Properties"
  *                   - id: "aae54b1e-741c-41fa-966a-252d645fcca5"
- *                     name: "Marc Lou's ShipFast"
+ *                     name: "Gino's Business"
  *       400:
  *         description: Bad request - missing API key
  *         content:
@@ -112,9 +112,8 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  const userIdForKey = await validateApiKey(api_key);
-  console.log(userIdForKey);
-  if (!userIdForKey) {
+  const { user_id, api_key_id } = await validateApiKey(api_key);
+  if (!user_id) {
     const unauthorizedResponse: ApiErrorResponse = {
       error: "Invalid API key",
       status: 401,
@@ -126,8 +125,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const subjects = await getSubjects(userIdForKey);
-    console.log(await subjects);
+    const subjects = await getSubjects(user_id);
     const response: ApiSubjectsListResponse = {
       subjects: subjects.map((subject) => ({
         id: subject.id,

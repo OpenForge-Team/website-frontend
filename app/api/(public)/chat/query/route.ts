@@ -3,6 +3,7 @@ import { AskAIChat } from "@/utils/supabase/rag/chat/supabase-hybrid/ask";
 import { type NextRequest } from "next/server";
 import { ApiChatQueryResponse } from "../types";
 import { ApiErrorResponse } from "../../types";
+import { logQuery } from "@/utils/supabase/api-queries";
 export const revalidate = 30;
 
 /**
@@ -88,8 +89,8 @@ export async function GET(request: NextRequest) {
   const auth_header = request.headers.get("Authorization");
   const api_key = auth_header?.replace("Bearer ", "");
   if (api_key) {
-    const userIdForKey = await validateApiKey(api_key);
-    if (userIdForKey) {
+    const { user_id, api_key_id } = await validateApiKey(api_key);
+    if (user_id) {
       //params
       const message = searchParams.get("message");
       const subject_id = searchParams.get("subject_id") || undefined;
@@ -107,13 +108,19 @@ export async function GET(request: NextRequest) {
       }
 
       const response = await AskAIChat({
-        user_id: userIdForKey,
+        user_id: user_id,
         workspace_id: "public", // Using "public" for API requests
         message,
         is_from_widget: false,
         show_sources: false,
         stream,
         subject_id,
+      });
+      await logQuery({
+        subject_id: subject_id ?? "",
+        api_key_id: api_key_id,
+        query_data: { message: message },
+        query_type: "chat",
       });
       if (typeof response === "string") {
         const validResponse: ApiChatQueryResponse = {

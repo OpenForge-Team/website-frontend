@@ -3,10 +3,12 @@
 import {
   BadgeCheck,
   Bell,
+  UserCog,
   ChevronsUpDown,
   CreditCard,
   LogOut,
   Sparkles,
+  CloudCog,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -83,7 +85,7 @@ export function NavUser({ profile }: { profile: Profile }) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="gap-2">
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
@@ -91,22 +93,27 @@ export function NavUser({ profile }: { profile: Profile }) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem
+                className="gap-2"
                 onClick={() => router.push("/dashboard/account")}
               >
-                <BadgeCheck />
+                <UserCog />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="gap-2">
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem
+                className="gap-2"
+                onClick={() => router.push("/dashboard/developper-settings")}
+              >
+                <CloudCog />
+                Developper Center
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
+              className="gap-2"
               onClick={async () => {
                 await supabase.auth.signOut();
                 router.push("/");
