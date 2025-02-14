@@ -14,6 +14,7 @@ const embeddings = new OllamaEmbeddings({
 interface generateChunksProps {
   mime_type: string;
   document_id: string;
+  subject_id: string;
   document_buffer: Blob;
 }
 
@@ -21,13 +22,15 @@ export const generateContentChunks = async ({
   mime_type,
   document_id,
   document_buffer,
+  subject_id,
 }: generateChunksProps) => {
   const supabase = await createClient();
   //Check if chunks already exist --> delete first
   await supabase
     .from("document_content_embeddings")
     .delete()
-    .eq("metadata->>document_id", document_id);
+    .eq("metadata->>document_id", document_id)
+    .eq("metadata->>subject_id", subject_id);
   var splitter;
   var documents;
   switch (mime_type) {
@@ -78,7 +81,7 @@ export const generateContentChunks = async ({
     // Add note_id to each document object
     const documentWithNoteIds = documents.map((doc) => ({
       ...doc,
-      metadata: { ...(doc.metadata || {}), document_id }, // Add document_id to metadata
+      metadata: { ...(doc.metadata || {}), document_id, subject_id }, // Add document_id to metadata
     }));
 
     const res = await vectorStore.addDocuments(documentWithNoteIds);

@@ -71,7 +71,6 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
                         className="flex items-center space-x-2"
                         onClick={() => {
                           setSelectedDocument(doc);
-                          console.log(doc);
                         }}
                       >
                         <File size={16} />
@@ -132,6 +131,7 @@ export function SubjectCard({ subject, onDelete }: SubjectCardProps) {
       )}
       <NoteEditDialog
         selectedNote={selectedNote}
+        subjectId={subject.id}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onNoteUpdated={() => {

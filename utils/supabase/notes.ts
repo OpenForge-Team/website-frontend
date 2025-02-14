@@ -27,6 +27,7 @@ interface updateNoteprops {
   note_id: string;
   title: string;
   content: string;
+  subject_id: string;
 }
 export const addNote = async ({
   user_id,
@@ -36,7 +37,6 @@ export const addNote = async ({
   subject_id,
   audioBuffer,
 }: addNoteprops) => {
-  console.log(user_id, title, content, workspace_id, subject_id, audioBuffer);
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("notes")
@@ -57,10 +57,12 @@ export const addNote = async ({
   generateTitleChunks({
     note_id: data.id,
     content: title,
+    subject_id: subject_id,
   });
   generateContentChunks({
     note_id: data.id,
     content: content,
+    subject_id: subject_id,
   });
 
   if (audioBuffer) {
@@ -123,6 +125,7 @@ export const updateNote = async ({
   note_id,
   title,
   content,
+  subject_id,
 }: updateNoteprops) => {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -141,10 +144,12 @@ export const updateNote = async ({
   generateTitleChunks({
     note_id: data.id,
     content: title,
+    subject_id: subject_id,
   });
   generateContentChunks({
     note_id: data.id,
     content: content,
+    subject_id: subject_id,
   });
   return data;
 };

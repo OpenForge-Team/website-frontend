@@ -22,6 +22,7 @@ interface NoteEditDialogProps {
     title: string;
     content: string;
   } | null;
+  subjectId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onNoteUpdated: () => void;
@@ -29,13 +30,16 @@ interface NoteEditDialogProps {
 
 export function NoteEditDialog({
   selectedNote,
+  subjectId,
   open,
   onOpenChange,
   onNoteUpdated,
 }: NoteEditDialogProps) {
   const { toast } = useToast();
   const [editedTitle, setEditedTitle] = useState(selectedNote?.title || "");
-  const [editedContent, setEditedContent] = useState(selectedNote?.content || "");
+  const [editedContent, setEditedContent] = useState(
+    selectedNote?.content || ""
+  );
 
   useEffect(() => {
     if (selectedNote) {
@@ -49,6 +53,7 @@ export function NoteEditDialog({
     try {
       await updateNote({
         note_id: selectedNote.id,
+        subject_id: subjectId,
         title: editedTitle,
         content: editedContent,
       });

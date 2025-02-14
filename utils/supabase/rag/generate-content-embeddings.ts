@@ -12,10 +12,12 @@ const embeddings = new OllamaEmbeddings({
 interface generateChunksProps {
   note_id: string;
   content: string;
+  subject_id: string;
 }
 
 export const generateContentChunks = async ({
   note_id,
+  subject_id,
   content,
 }: generateChunksProps) => {
   const supabase = await createClient();
@@ -23,6 +25,7 @@ export const generateContentChunks = async ({
   await supabase
     .from("note_content_embeddings")
     .delete()
+    .eq("metadata->>subject_id", subject_id)
     .eq("metadata->>note_id", note_id);
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 1024,
@@ -40,7 +43,7 @@ export const generateContentChunks = async ({
   // Add note_id to each document object
   const documentWithNoteIds = documents.map((doc) => ({
     ...doc,
-    metadata: { ...(doc.metadata || {}), note_id }, // Add note_id to metadata
+    metadata: { ...(doc.metadata || {}), note_id, subject_id }, // Add note_id to metadata
   }));
 
   const res = await vectorStore.addDocuments(documentWithNoteIds);

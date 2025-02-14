@@ -14,7 +14,9 @@ interface GetDocumentsProps {
   user_id: string;
 }
 
-export const getDocuments = async ({ user_id }: GetDocumentsProps) => {
+export const getDocuments = async ({
+  user_id,
+}: GetDocumentsProps): Promise<Documents[]> => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -87,6 +89,7 @@ export const uploadDocument = async ({
       mime_type: extension,
       document_id: data.id,
       document_buffer: blob,
+      subject_id: subject_id,
     });
   } catch (error: any) {
     throw new Error(error.message);
@@ -106,6 +109,23 @@ export const getDocumentById = async (documentId: string) => {
     .select("*")
     .eq("id", documentId)
     .single();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+interface getDocumentBySubjectIdProps {
+  user_id: string;
+  subject_id: string;
+}
+export const getDocumentBySubjectId = async ({
+  user_id,
+  subject_id,
+}: getDocumentBySubjectIdProps): Promise<Documents[]> => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("subject_id", subject_id);
 
   if (error) throw new Error(error.message);
   return data;

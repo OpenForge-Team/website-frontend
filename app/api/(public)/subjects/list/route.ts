@@ -101,6 +101,7 @@ export async function GET(request: NextRequest) {
   }
 
   const userIdForKey = await validateApiKey(api_key);
+  console.log(userIdForKey);
   if (!userIdForKey) {
     const unauthorizedResponse: ApiErrorResponse = {
       error: "Invalid API key",
@@ -114,19 +115,18 @@ export async function GET(request: NextRequest) {
 
   try {
     const subjects = await getSubjects(userIdForKey);
-    
+    console.log(await subjects);
     const response: ApiSubjectsListResponse = {
-      subjects: subjects.map(subject => ({
+      subjects: subjects.map((subject) => ({
         id: subject.id,
-        name: subject.name
-      }))
+        name: subject.name,
+      })),
     };
 
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-
   } catch (error) {
     const errorResponse: ApiErrorResponse = {
       error: "Failed to fetch subjects",

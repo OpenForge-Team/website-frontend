@@ -1,11 +1,14 @@
 "use server";
 
+import { Database } from "@/database.types";
 import { createClient } from "@/utils/supabase/server";
+export type Subjects = Database["public"]["Tables"]["subjects"]["Row"];
 interface addSubjectProps {
   user_id: string;
   name: string;
   workspace_id: string;
 }
+
 export const getSubjects = async (user_id: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase

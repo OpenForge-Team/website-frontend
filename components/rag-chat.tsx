@@ -48,6 +48,7 @@ interface Props {
   mode: "chat" | "view";
   conversationId?: string;
   user_id?: string;
+  subject_id?: string;
   is_widget?: boolean;
 }
 
@@ -61,6 +62,7 @@ export default function RagChat({
   mode,
   conversationId,
   user_id,
+  subject_id,
   is_widget,
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -166,33 +168,40 @@ export default function RagChat({
         workspace_id: "",
         message: chatInputText,
         is_from_widget: true,
+        show_sources: true,
+        subject_id: is_widget ? subject_id : selectedSubject || undefined,
+        stream: false,
       });
-      console.log(response);
-      // Add empty AI message that will be updated with streaming content
-      setChatMessages((prev) => [...prev, { role: "ai", messageContent: "" }]);
+      if (typeof response == "string") {
+        // Add empty AI message that will be updated with streaming content
+        setChatMessages((prev) => [
+          ...prev,
+          { role: "ai", messageContent: "" },
+        ]);
 
-      let aiResponse = "";
-      for await (const part of response) {
-        aiResponse += part;
-        setChatMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1].messageContent = aiResponse;
-          return updated;
-        });
+        let aiResponse = "";
+        for await (const part of response) {
+          aiResponse += part;
+          setChatMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1].messageContent = aiResponse;
+            return updated;
+          });
+        }
+
+        const newConversation: any = [
+          ...chatMessages,
+          userMessage,
+          { role: "ai", messageContent: aiResponse },
+        ];
+        // const updatedConversationId = await saveConversation(
+        //   newConversation,
+        //   savedConversationId || conversationId
+        // );
+        // setSavedConversationId(updatedConversationId);
+        // setIsConversationSaved(true);
+        setChatLoading(false);
       }
-
-      const newConversation: any = [
-        ...chatMessages,
-        userMessage,
-        { role: "ai", messageContent: aiResponse },
-      ];
-      // const updatedConversationId = await saveConversation(
-      //   newConversation,
-      //   savedConversationId || conversationId
-      // );
-      // setSavedConversationId(updatedConversationId);
-      // setIsConversationSaved(true);
-      setChatLoading(false);
     } catch (error) {
       console.error("Error fetching AI response:", error);
       const errorMessage: ChatMessage = {
@@ -258,7 +267,7 @@ export default function RagChat({
       }
     };
     fetchSubjects();
-  }, [user_id]);
+  }, [user, user_id]);
 
   useEffect(() => {
     if (mode === "view" && conversationId) {
@@ -294,24 +303,31 @@ export default function RagChat({
       <CardHeader className="border-b border-border">
         <div className="flex justify-between items-center">
           <CardTitle className="text-primary">Forge AI</CardTitle>
-          <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="All Subjects" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>All Subjects</SelectLabel>
-                {subjects.map((subject) => {
-                  console.log(subject);
-                  return (
-                    <SelectItem key={subject.id} value={subject.id}>
-                      {subject.name}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {!is_widget && (
+            <Select
+              value={selectedSubject}
+              onValueChange={(val) => {
+                setSelectedSubject(val);
+                console.log(val);
+              }}
+            >
+              <SelectTrigger className="w-auto">
+                <SelectValue placeholder="All Subjects" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>All Subjects</SelectLabel>
+                  {subjects.map((subject) => {
+                    return (
+                      <SelectItem key={subject.id} value={subject.id}>
+                        {subject.name}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
       </CardHeader>
 

@@ -40,6 +40,7 @@ interface Ask {
   is_from_widget: boolean;
   subject_id?: string;
   stream: boolean;
+  show_sources: boolean;
 }
 export const AskAIChat = async ({
   user_id,
@@ -48,6 +49,7 @@ export const AskAIChat = async ({
   is_from_widget,
   subject_id,
   stream,
+  show_sources,
 }: Ask) => {
   const startTime = performance.now();
   let lastTime = startTime;
@@ -92,6 +94,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
     const { context, sourceList } = await retrieveContext(
       message,
       user_id,
+      show_sources,
       subject_id
     );
 
@@ -102,7 +105,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
       return "I couldn't find any relevant information to answer that question.";
     }
     logTiming("Pre-stream preparation");
-    
+
     const responseStream = await documentChain.stream({
       messages: [new HumanMessage(message)],
       context: context,
@@ -121,11 +124,11 @@ If the context doesn't contain relevant information, respond with "I don't have 
                 console.warn("Received non-string chunk:", chunk);
               }
             }
-            
-            if (!is_from_widget) {
+
+            if (!is_from_widget && show_sources) {
               controller.enqueue(encoder.encode(`\n\n${sourceList}`));
             }
-            
+
             controller.close();
           } catch (streamError) {
             console.error("Stream Error:", streamError);
@@ -135,9 +138,7 @@ If the context doesn't contain relevant information, respond with "I don't have 
       });
 
       logTiming("Response streaming setup");
-      return new Response(stream, {
-        headers: { "Content-Type": "text/plain" },
-      });
+      return stream;
     } else {
       // Non-streaming response
       let finalResponse = "";

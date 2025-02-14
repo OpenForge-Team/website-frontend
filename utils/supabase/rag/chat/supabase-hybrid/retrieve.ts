@@ -30,11 +30,19 @@ export interface RetrievedContext {
 }
 
 export async function retrieveContext(
-  message: string
+  message: string,
+  user_id: string,
+  show_sources: boolean,
+  subject_id?: string
 ): Promise<RetrievedContext> {
-  const notesContext = await retrieveContentChunks({ query: message });
+  const notesContext = await retrieveContentChunks({
+    query: message,
+    subject_id: subject_id,
+  });
   const documentsContext = await retrieveDocumentContentChunks({
     query: message,
+    subject_id: subject_id,
+    user_id: user_id,
   });
   const context = [...notesContext, ...documentsContext];
 
@@ -44,47 +52,52 @@ export async function retrieveContext(
       sourceList: "",
     };
   }
+  if (show_sources) {
+    // Build source variable with metadata (avoiding duplicates)
+    let sourceList = "## Information Sources\n\n";
+    const uniqueSourceIds = new Set();
+    const sourceDetails = [];
 
-  // Build source variable with metadata (avoiding duplicates)
-  let sourceList = "## Information Sources\n\n";
-  const uniqueSourceIds = new Set();
-  const sourceDetails = [];
-
-  // First collect all source metadata
-  for (const doc of context) {
-    const sourceId = doc.metadata.note_id || doc.metadata.document_id;
-    if (sourceId && !uniqueSourceIds.has(sourceId)) {
-      uniqueSourceIds.add(sourceId);
-      sourceDetails.push({
-        id: sourceId,
-        type: doc.metadata.note_id ? "note" : "document",
-      });
+    // First collect all source metadata
+    for (const doc of context) {
+      const sourceId = doc.metadata.note_id || doc.metadata.document_id;
+      if (sourceId && !uniqueSourceIds.has(sourceId)) {
+        uniqueSourceIds.add(sourceId);
+        sourceDetails.push({
+          id: sourceId,
+          type: doc.metadata.note_id ? "note" : "document",
+        });
+      }
     }
-  }
 
-  // Then fetch titles in parallel
-  const titlePromises = sourceDetails.map(async (src) => {
-    if (src.type === "note") {
+    // Then fetch titles in parallel
+    const titlePromises = sourceDetails.map(async (src) => {
+      if (src.type === "note") {
+        return {
+          ...src,
+          title: await getNoteTitle(src.id),
+        };
+      }
       return {
         ...src,
-        title: await getNoteTitle(src.id),
+        title: await getDocumentTitle(src.id),
       };
-    }
+    });
+
+    const sourcesWithTitles = await Promise.all(titlePromises);
+
+    // Build the source list with actual titles
+    sourcesWithTitles.forEach((src) => {
+      sourceList += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
+    });
     return {
-      ...src,
-      title: await getDocumentTitle(src.id),
+      context,
+      sourceList,
     };
-  });
-
-  const sourcesWithTitles = await Promise.all(titlePromises);
-
-  // Build the source list with actual titles
-  sourcesWithTitles.forEach((src) => {
-    sourceList += `- ${src.type === "note" ? "Note" : "Document"}: [${src.title}](#${src.type}-${src.id})\n`;
-  });
-
-  return {
-    context,
-    sourceList,
-  };
+  } else {
+    return {
+      context,
+      sourceList: "",
+    };
+  }
 }

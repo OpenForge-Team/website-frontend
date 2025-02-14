@@ -12,6 +12,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { CopyBlock, dracula } from "react-code-blocks";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { getSubjects } from "@/utils/supabase/subjects";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -19,7 +29,8 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
-
+  const [subjects, setSubjects] = useState<any[]>([]);
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
   useEffect(() => {
     const checkConnection = async () => {
       try {
@@ -40,7 +51,19 @@ export default function AccountPage() {
 
     checkConnection();
   }, []);
-
+  // Fetch subjects
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      if (!user) return;
+      try {
+        const subjects = await getSubjects(user.id);
+        setSubjects(subjects);
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+      }
+    };
+    fetchSubjects();
+  }, [user]);
   return (
     <div>
       <h1 className="text-primary text-2xl font-bold mb-6">Account</h1>
@@ -49,17 +72,44 @@ export default function AccountPage() {
         Place this snippet anywhere on your website to display the chat
         interface so that your visitors can interact with your knowledge base.
       </p>
-      <div className="m-4">
-        <CopyBlock
-          text={
-            '<iframe src="https://open-forge.com/widgets/chat?userId=68723abd-6fda-48d5-86b6-0d9badcae0e8" width="100%" height="600px"></iframe>'
-          }
-          language={"html"}
-          showLineNumbers={false}
-          theme={dracula}
-          codeBlock
-          wrapLongLines
-        />
+      <div className="grid m-4 grid-cols-4 gap-4">
+        <div className="col-span-1 my-auto">
+          <Select
+            value={selectedSubject}
+            onValueChange={(val) => {
+              setSelectedSubject(val);
+              console.log(val);
+            }}
+          >
+            <SelectTrigger className="w-auto">
+              <SelectValue placeholder="All Subjects" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>All Subjects</SelectLabel>
+                {subjects.map((subject) => {
+                  return (
+                    <SelectItem key={subject.id} value={subject.id}>
+                      {subject.name}
+                    </SelectItem>
+                  );
+                })}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="col-span-3">
+          {user && (
+            <CopyBlock
+              text={`<iframe src="https://open-forge.com/widgets/chat?subjectId=${selectedSubject}&userId=${user.id}" width="100%" height="600px"></iframe>`}
+              language={"html"}
+              showLineNumbers={false}
+              theme={dracula}
+              codeBlock
+              wrapLongLines
+            />
+          )}
+        </div>
       </div>
       <h2 className="text-primary text-xl font-bold mb-3">Integrations</h2>
       <div className="grid gap-4 md:grid-cols-2">

@@ -1,5 +1,8 @@
 "use server";
-import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import {
+  SupabaseFilterRPCCall,
+  SupabaseVectorStore,
+} from "@langchain/community/vectorstores/supabase";
 import { OllamaEmbeddings } from "@langchain/ollama";
 import { createClient } from "@/utils/supabase/server";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
@@ -12,20 +15,28 @@ const embeddings = new OllamaEmbeddings({
 interface retrieveChunksProps {
   note_id: string;
   query: string;
+  subject_id?: string;
 }
 
 export const retrieveTitleChunks = async ({
   note_id,
   query,
+  subject_id,
 }: retrieveChunksProps) => {
   const supabase = await createClient();
-  const retriever = new SupabaseHybridSearch(embeddings, {
+  const vectorStore = new SupabaseVectorStore(embeddings, {
     client: supabase,
-    similarityK: 5,
-    keywordK: 5,
     tableName: "note_title_embeddings",
-    similarityQueryName: "match_note_title_embeddings",
-    keywordQueryName: "kw_match_note_title_embeddings",
+    queryName: "match_note_title_embeddings",
+  });
+  const funcFilter: SupabaseFilterRPCCall = (rpc) =>
+    rpc.filter("metadata->>subject_id", "eq", subject_id);
+
+  const retriever = vectorStore.asRetriever({
+    filter: subject_id ? funcFilter : undefined,
+    k: 20,
+    verbose: true,
+    searchType: "mmr",
   });
   const results = await retriever.invoke(query);
 

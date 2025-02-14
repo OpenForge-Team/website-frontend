@@ -23,7 +23,7 @@ export default function ChatWidgetPage() {
 
   // Get parameters from URL
   const userId = searchParams.get("userId");
-  console.log(userId);
+  const subjectId = searchParams.get("subjectId");
   if (isAllowed === null) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -55,6 +55,7 @@ export default function ChatWidgetPage() {
         editable={true}
         mode={"chat"}
         user_id={userId || ""}
+        subject_id={subjectId || ""}
         is_widget={true}
       />
     </div>
