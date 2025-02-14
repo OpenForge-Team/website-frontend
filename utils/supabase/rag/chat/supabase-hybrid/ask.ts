@@ -102,38 +102,65 @@ If the context doesn't contain relevant information, respond with "I don't have 
       return "I couldn't find any relevant information to answer that question.";
     }
     logTiming("Pre-stream preparation");
-    // Stream the response
+    
     const responseStream = await documentChain.stream({
       messages: [new HumanMessage(message)],
       context: context,
     });
-    let finalResponse = "";
 
-    try {
-      for await (const chunk of responseStream) {
-        if (typeof chunk === "string") {
-          finalResponse += chunk;
-        } else {
-          console.warn("Received non-string chunk:", chunk);
+    if (stream) {
+      // Create a ReadableStream to return to the client
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        async start(controller) {
+          try {
+            for await (const chunk of responseStream) {
+              if (typeof chunk === "string") {
+                controller.enqueue(encoder.encode(chunk));
+              } else {
+                console.warn("Received non-string chunk:", chunk);
+              }
+            }
+            
+            if (!is_from_widget) {
+              controller.enqueue(encoder.encode(`\n\n${sourceList}`));
+            }
+            
+            controller.close();
+          } catch (streamError) {
+            console.error("Stream Error:", streamError);
+            controller.error(new Error("Failed to process response stream"));
+          }
+        },
+      });
+
+      logTiming("Response streaming setup");
+      return new Response(stream, {
+        headers: { "Content-Type": "text/plain" },
+      });
+    } else {
+      // Non-streaming response
+      let finalResponse = "";
+      try {
+        for await (const chunk of responseStream) {
+          if (typeof chunk === "string") {
+            finalResponse += chunk;
+          } else {
+            console.warn("Received non-string chunk:", chunk);
+          }
         }
+      } catch (streamError) {
+        console.error("Stream Error:", streamError);
+        throw new Error("Failed to process response stream");
       }
-    } catch (streamError) {
-      console.error("Stream Error:", streamError);
-      throw new Error("Failed to process response stream");
+
+      if (!is_from_widget) finalResponse += `\n\n${sourceList}`;
+
+      logTiming("Response streaming and formatting");
+      const totalTime = performance.now() - startTime;
+
+      return finalResponse;
     }
-
-    // Add metadata markers to the response
-    const sourceMetadata = context.map((doc) => ({
-      id: doc.metadata.note_id || doc.metadata.document_id,
-      type: doc.metadata.note_id ? "note" : "document",
-    }));
-
-    if (!is_from_widget) finalResponse += `\n\n${sourceList}`;
-
-    logTiming("Response streaming and formatting");
-    const totalTime = performance.now() - startTime;
-
-    return finalResponse;
   } catch (error) {
     console.error("AI Response Error:", error);
     throw new Error(
