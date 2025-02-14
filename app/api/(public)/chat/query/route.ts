@@ -43,13 +43,24 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      return await AskAIChat({
+      const response = await AskAIChat({
         user_id: userIdForKey,
         workspace_id: "public", // Using "public" for API requests
         message,
         is_from_widget: false,
         stream,
         subject_id,
+      });
+
+      // If it's already a Response object (from streaming), return it directly
+      if (response instanceof Response) {
+        return response;
+      }
+
+      // Otherwise wrap the string response in a Response object
+      return new Response(response, {
+        status: 200,
+        headers: { "Content-Type": "text/plain" },
       });
     }
   } else {
