@@ -12,10 +12,13 @@ export const revalidate = 30;
  *     summary: Get AI chat response
  *     description: Returns a chat response based on the provided message and optional parameters
  *     parameters:
- *       - in: query
- *         name: api_key
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
  *         required: true
- *         description: The API key provided to you on your dashboard
+ *         description: Bearer token for authentication (format - Bearer <your_api_key>)
  *         schema:
  *           type: string
  *       - in: query

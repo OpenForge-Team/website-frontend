@@ -10,10 +10,13 @@ import { ApiErrorResponse } from "../../types";
  *     summary: Get list of subjects
  *     description: Returns a list of subjects with their IDs and names
  *     parameters:
- *       - in: query
- *         name: api_key
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
  *         required: true
- *         description: The API key provided to you on your dashboard
+ *         description: Bearer token for authentication (format - Bearer <your_api_key>)
  *         schema:
  *           type: string
  *     responses:
