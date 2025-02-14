@@ -9,18 +9,74 @@ export const revalidate = 30;
  * @swagger
  * /api/chat/query:
  *   get:
- *     description: Returns a chat response
+ *     summary: Get AI chat response
+ *     description: Returns a chat response based on the provided message and optional parameters
  *     parameters:
- *       api_key:
- *         description: The Api key provided to you on your dashboard
- *
+ *       - in: query
+ *         name: api_key
+ *         required: true
+ *         description: The API key provided to you on your dashboard
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: message
+ *         required: true
+ *         description: The message to send to the AI
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: subject_id
+ *         required: false
+ *         description: Optional subject ID to contextualize the chat
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: stream
+ *         required: false
+ *         description: Whether to stream the response (true/false)
+ *         schema:
+ *           type: boolean
+ *           default: false
  *     responses:
  *       200:
- *         description: Chat response from the AI
+ *         description: Successful chat response from the AI
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 chat_response:
+ *                   type: string
+ *                   description: The AI's response
  *       400:
- *         description: Multiple errors possible, please check error message
+ *         description: Bad request - missing or invalid parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message
+ *                 status:
+ *                   type: number
+ *                   example: 400
  *       401:
- *         description: Api key passed is not valid
+ *         description: Unauthorized - invalid API key
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid API key"
+ *                 status:
+ *                   type: number
+ *                   example: 401
  */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
