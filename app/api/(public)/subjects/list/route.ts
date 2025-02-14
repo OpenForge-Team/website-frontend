@@ -95,7 +95,8 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
   //api key validation
-  const api_key = searchParams.get("api_key");
+  const auth_header = request.headers.get("Authorization");
+  const api_key = auth_header?.replace("Bearer ", "");
 
   if (!api_key) {
     const errorResponse: ApiErrorResponse = {
