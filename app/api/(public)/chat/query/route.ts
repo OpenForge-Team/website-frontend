@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       //params
       const message = searchParams.get("message");
       const subject_id = searchParams.get("subject_id") || undefined;
-      const stream = searchParams.get("subject_id");
+      const stream = searchParams.get("stream") === "true";
 
       if (!message) {
         const errorResponse: ApiErrorResponse = {
@@ -43,25 +43,14 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      const response = await AskAIChat({
+      return await AskAIChat({
         user_id: userIdForKey,
         workspace_id: "public", // Using "public" for API requests
         message,
         is_from_widget: false,
-        stream: true,
+        stream,
         subject_id,
       });
-      if (stream === "true") {
-        return new Response(response, {
-          status: 200,
-          headers: { "Content-Type": "text/plain" },
-        });
-      } else {
-        return new Response(response, {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
     }
   } else {
     const unauthorizedResponse: ApiErrorResponse = {
