@@ -86,6 +86,7 @@ export default function NotesViewCarousel({
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onNoteUpdated={onNoteUpdated}
+        subjectId={subject}
       />
     </div>
   );
