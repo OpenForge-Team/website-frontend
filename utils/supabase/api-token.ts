@@ -7,17 +7,18 @@ interface checkKeyExistsProps {
 }
 export const checkKeyExists = async ({
   value,
-}: checkKeyExistsProps): Promise<string> => {
+}: checkKeyExistsProps): Promise<string | null> => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("api_key")
     .select("user_id")
-    .eq("value", value);
+    .eq("value", value)
+    .single();
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data ? data[0].user_id : null;
+  return data ? data.user_id : null;
 };
