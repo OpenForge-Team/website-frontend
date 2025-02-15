@@ -4,7 +4,7 @@ import { kmeans } from "ml-kmeans";
 export default async function IntegrationAnalyticsPage() {
   interface DataInterface {
     word: string;
-    embedding: number[];
+    embedding: number[];  // Each embedding is a vector of numbers
   }
 
   // Sample data with words
@@ -25,7 +25,7 @@ export default async function IntegrationAnalyticsPage() {
   );
 
   // Extract embeddings into a 2D array
-  const embeddings = processedData.map((item) => item.embedding);
+  const embeddings: number[][] = processedData.map((item) => item.embedding);
 
   // Perform K-means clustering
   const K = 2;
