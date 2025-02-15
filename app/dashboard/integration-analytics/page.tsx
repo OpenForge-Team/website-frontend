@@ -1,59 +1,59 @@
 import { getEmbedding } from "@/utils/ai/embed";
-import React from "react";
 import { kmeans } from "ml-kmeans";
-export default function IntegrationAnalyticsPage() {
-  interface dataInterface {
+
+export default async function IntegrationAnalyticsPage() {
+  interface DataInterface {
     word: string;
-    embedding: number[][];
+    embedding: number[];
   }
-  // Sample data with words and their embeddings
-  var data: dataInterface[] = [
+
+  // Sample data with words
+  const initialData: DataInterface[] = [
     { word: "apple", embedding: [] },
     { word: "banana", embedding: [] },
     { word: "cherry", embedding: [] },
     { word: "orange", embedding: [] },
     { word: "grape", embedding: [] },
   ];
-  async function processData() {
-    // Get embeddings for each word
-    const processedData = await Promise.all(
-      data.map(async (item) => ({
-        ...item,
-        embedding: await getEmbedding(item.word),
-      }))
-    );
 
-    // Extract embeddings into a 2D array
-    const embeddings = processedData.map((item) => item.embedding);
+  // Get embeddings for each word
+  const processedData = await Promise.all(
+    initialData.map(async (item) => ({
+      ...item,
+      embedding: await getEmbedding(item.word),
+    }))
+  );
 
-    // Perform K-means clustering
-    const K = 2;
-    const result = kmeans(embeddings, K, {});
-    return { processedData, result };
-  }
+  // Extract embeddings into a 2D array
+  const embeddings = processedData.map((item) => item.embedding);
 
-  // Use React's useEffect to handle the async operation
-  React.useEffect(() => {
-    processData().then(({ processedData, result }) => {
-      // Map clusters to words
-      const clusteredWords = {};
-      processedData.forEach(({ word }, index) => {
-        const cluster = result.clusters[index];
-        clusteredWords[cluster] = clusteredWords[cluster] || [];
-        clusteredWords[cluster].push(word);
-      });
-      console.log(clusteredWords);
-    });
-  }, []);
+  // Perform K-means clustering
+  const K = 2;
+  const result = kmeans(embeddings, K, {});
 
   // Map clusters to words
-  const clustersWithWords = {};
-  data.forEach(({ word }, index) => {
+  const clusteredWords: { [key: string]: string[] } = {};
+  processedData.forEach(({ word }, index) => {
     const cluster = result.clusters[index];
-    clustersWithWords[cluster] = clustersWithWords[cluster] || [];
-    clustersWithWords[cluster].push(word);
+    clusteredWords[cluster] = clusteredWords[cluster] || [];
+    clusteredWords[cluster].push(word);
   });
 
-  console.log(clustersWithWords);
-  return <div></div>;
+  console.log(clusteredWords);
+
+  return (
+    <div>
+      <h1>Clustering Results</h1>
+      {Object.entries(clusteredWords).map(([cluster, words]) => (
+        <div key={cluster}>
+          <h2>Cluster {cluster}</h2>
+          <ul>
+            {words.map((word) => (
+              <li key={word}>{word}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
 }
