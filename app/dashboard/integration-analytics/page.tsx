@@ -1,4 +1,5 @@
 import { getEmbedding } from "@/utils/ai/embed";
+import React from "react";
 import { kmeans } from "ml-kmeans";
 export default function IntegrationAnalyticsPage() {
   interface dataInterface {
@@ -13,15 +14,37 @@ export default function IntegrationAnalyticsPage() {
     { word: "orange", embedding: [] },
     { word: "grape", embedding: [] },
   ];
-  data = data.map(
-    async (x) => await (x.embedding = await getEmbedding(x.word))
-  );
-  // Extract embeddings into a 2D array
-  const embeddings = data.map((item) => item.embedding);
+  async function processData() {
+    // Get embeddings for each word
+    const processedData = await Promise.all(
+      data.map(async (item) => ({
+        ...item,
+        embedding: await getEmbedding(item.word)
+      }))
+    );
 
-  // Perform K-means clustering
-  const K = 2;
-  const result = kmeans(embeddings, K, {});
+    // Extract embeddings into a 2D array
+    const embeddings = processedData.map((item) => item.embedding);
+
+    // Perform K-means clustering
+    const K = 2;
+    const result = kmeans(embeddings, K, {});
+    return { processedData, result };
+  }
+
+  // Use React's useEffect to handle the async operation
+  React.useEffect(() => {
+    processData().then(({ processedData, result }) => {
+      // Map clusters to words
+      const clusteredWords = {};
+      processedData.forEach(({ word }, index) => {
+        const cluster = result.clusters[index];
+        clusteredWords[cluster] = clusteredWords[cluster] || [];
+        clusteredWords[cluster].push(word);
+      });
+      console.log(clusteredWords);
+    });
+  }, []);
 
   // Map clusters to words
   const clustersWithWords = {};
