@@ -12,7 +12,6 @@ export const revalidate = 30;
  *   get:
  *     summary: Get AI chat response
  *     description: Returns a chat response based on the provided message and optional parameters
- *     parameters:
  *     security:
  *       - bearerAuth: []
  *     parameters:
