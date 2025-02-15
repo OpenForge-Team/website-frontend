@@ -17,10 +17,29 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 interface props {
-  chartData: [];
+  chartData: { date: string; count: number }[];
 }
+
 export default function ApiUsageChart({ chartData }: props) {
-  console.log(chartData);
+  // Create an array of the last 30 days
+  const paddedData = Array.from({ length: 30 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    return {
+      date: date.toISOString().split('T')[0],
+      messages: 0
+    };
+  }).reverse();
+
+  // Merge existing data with padded data
+  const mergedData = paddedData.map(pad => {
+    const match = chartData.find(d => d.date === pad.date);
+    return {
+      date: pad.date,
+      messages: match ? match.count : 0
+    };
+  });
+
   return (
     <ChartContainer config={chartConfig} className="h-[200px] w-full">
       <BarChart accessibilityLayer data={chartData}>
