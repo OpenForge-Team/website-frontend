@@ -7,7 +7,7 @@ interface logQueryProps {
   subject_id: string;
   api_key_id: string;
   query_data: Json;
-  query_type: Json;
+  query_type: string;
 }
 export const logQuery = async ({
   subject_id,
@@ -40,11 +40,11 @@ export const getQueriesbyDay = async ({
 
   const { data, error } = await supabase
     .from("api_queries")
-    .select("date:created_at::date, count:created_at", { count: 'exact' })
+    .select("date:created_at::date, count:created_at", { count: "exact" })
     .eq("api_key.value", api_key_value)
     .eq("query_type", query_type)
-    .group('created_at::date')
-    .order('created_at::date');
+    .group("created_at::date")
+    .order("created_at::date");
   if (error) {
     throw new Error(error.message);
   }
