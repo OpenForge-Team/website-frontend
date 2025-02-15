@@ -40,10 +40,11 @@ export const getQueriesbyDay = async ({
 
   const { data, error } = await supabase
     .from("api_queries")
-    .select("created_at,query_type, api_key(id,value)")
+    .select("date:created_at::date, count:created_at", { count: 'exact' })
     .eq("api_key.value", api_key_value)
-    .eq("query_type", query_type);
-  console.log(data);
+    .eq("query_type", query_type)
+    .group('created_at::date')
+    .order('created_at::date');
   if (error) {
     throw new Error(error.message);
   }
