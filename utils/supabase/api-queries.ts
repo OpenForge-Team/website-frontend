@@ -50,15 +50,15 @@ export const getQueriesbyDay = async ({
   }
 
   // Process the data to count queries per day
-  const queriesPerDay = data.reduce((acc: {[key: string]: number}, query) => {
-    const date = new Date(query.created_at).toISOString().split('T')[0];
-    acc[date] = (acc[date] || 0) + 1;
+  const queriesPerDay = data.reduce((acc: { [key: string]: number }, query) => {
+    const day = new Date(query.created_at).toISOString().split("T")[0];
+    acc[day] = (acc[day] || 0) + 1;
     return acc;
   }, {});
 
   // Convert to array format
-  return Object.entries(queriesPerDay).map(([date, count]) => ({
-    date,
-    count
+  return Object.entries(queriesPerDay).map(([day, messages]) => ({
+    day,
+    messages,
   }));
 };
