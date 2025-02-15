@@ -48,7 +48,7 @@ export default function DevelopperSettingsPage() {
     async function getQueries() {
       if (user && apiKey) {
         try {
-          const queriesbyDay = await getQueriesbyDay({
+          const queriesbyDay: any = await getQueriesbyDay({
             api_key_value: apiKey,
             query_type: "chat",
           });
@@ -98,10 +98,10 @@ export default function DevelopperSettingsPage() {
           <h2 className="text-primary text-xl font-bold mb-3">Usage</h2>
           <div>
             <h3 className="text-primary text-md font-bold mb-3">
-              Chat Requests
+              Chat Requests (Daily)
             </h3>
             <div>
-              <ApiUsageChart />
+              {queriesbyDay && <ApiUsageChart chartData={queriesbyDay} />}
             </div>
           </div>
         </div>

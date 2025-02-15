@@ -39,7 +39,7 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navInput: [
+  navKnowledgeBase: [
     {
       title: "Knowledge",
       url: "#",
@@ -74,6 +74,14 @@ const data = {
       title: "Chat",
       url: "/dashboard/chat",
       icon: Bot,
+      items: [],
+    },
+  ],
+  navIntegrations: [
+    {
+      title: "Analytics",
+      url: "/dashboard/integration-analytics",
+      icon: BookOpen,
       items: [],
     },
   ],
@@ -133,7 +141,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         )}
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navInput} />
+        <NavMain title={"Knowledge Base"} items={data.navKnowledgeBase} />
+        <NavMain
+          title={"Knowledge Base Integrations"}
+          items={data.navIntegrations}
+        />
       </SidebarContent>
       <SidebarFooter>
         {user && profile && <NavUser profile={profile} />}

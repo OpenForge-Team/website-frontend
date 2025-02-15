@@ -13,8 +13,8 @@ export const getApiDocs = async () => {
         securitySchemes: {
           BearerAuth: {
             type: "http",
-            scheme: "url",
-            bearerFormat: "api_key",
+            scheme: "bearer",
+            bearerFormat: "JWT",
           },
         },
       },
