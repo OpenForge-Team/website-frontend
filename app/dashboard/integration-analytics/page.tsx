@@ -19,7 +19,7 @@ export default function IntegrationAnalyticsPage() {
     const processedData = await Promise.all(
       data.map(async (item) => ({
         ...item,
-        embedding: await getEmbedding(item.word)
+        embedding: await getEmbedding(item.word),
       }))
     );
 
