@@ -9,7 +9,6 @@ import { ApiErrorResponse } from "../../types";
  *   get:
  *     summary: Get list of subjects
  *     description: Returns a list of subjects with their IDs and names
- *     parameters:
  *     security:
  *       - bearerAuth: []
  *     parameters:
