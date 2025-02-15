@@ -40,13 +40,25 @@ export const getQueriesbyDay = async ({
 
   const { data, error } = await supabase
     .from("api_queries")
-    .select("date:created_at::date, count:created_at", { count: "exact" })
+    .select("created_at")
     .eq("api_key.value", api_key_value)
     .eq("query_type", query_type)
-    .group("created_at::date")
-    .order("created_at::date");
+    .order("created_at");
+
   if (error) {
     throw new Error(error.message);
   }
-  return data;
+
+  // Process the data to count queries per day
+  const queriesPerDay = data.reduce((acc: {[key: string]: number}, query) => {
+    const date = new Date(query.created_at).toISOString().split('T')[0];
+    acc[date] = (acc[date] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Convert to array format
+  return Object.entries(queriesPerDay).map(([date, count]) => ({
+    date,
+    count
+  }));
 };
