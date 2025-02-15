@@ -18,8 +18,8 @@ export const logQuery = async ({
   const supabase = await createClient();
 
   const { data, error } = await supabase.from("api_queries").insert({
-    subject_id,
-    api_key_id,
+    subject_id: subject_id,
+    api_key_id: api_key_id,
     data: query_data,
     query_type: query_type,
   });
