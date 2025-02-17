@@ -4,6 +4,7 @@ import QueryProviders from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Fragment_Mono } from "next/font/google";
 import Fathom from "@/components/Fathom";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
