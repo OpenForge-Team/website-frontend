@@ -8,12 +8,14 @@ interface logQueryProps {
   api_key_id: string;
   query_data: Json;
   query_type: string;
+  source: string;
 }
 export const logQuery = async ({
   subject_id,
   api_key_id,
   query_data,
   query_type,
+  source,
 }: logQueryProps) => {
   const supabase = await createClient();
 
@@ -22,6 +24,7 @@ export const logQuery = async ({
     api_key_id: api_key_id,
     data: query_data,
     query_type: query_type,
+    source: source,
   });
 
   if (error) {

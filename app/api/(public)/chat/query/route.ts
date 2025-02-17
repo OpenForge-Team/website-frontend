@@ -120,6 +120,7 @@ export async function GET(request: NextRequest) {
         api_key_id: api_key_id,
         query_data: { message: message },
         query_type: "chat",
+        source: "api",
       });
       if (typeof response === "string") {
         const validResponse: ApiChatQueryResponse = {

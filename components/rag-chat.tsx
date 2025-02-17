@@ -43,6 +43,8 @@ import { Textarea } from "./ui/textarea";
 import { getDocumentById } from "@/utils/supabase/documents";
 import { DocumentViewer } from "./document-viewer";
 import { getSubjects } from "@/utils/supabase/subjects";
+import { logQuery } from "@/utils/supabase/api-queries";
+import { getApiKey } from "@/utils/supabase/api-token";
 interface Props {
   editable: boolean;
   mode: "chat" | "view";
@@ -200,6 +202,18 @@ export default function RagChat({
         // );
         // setSavedConversationId(updatedConversationId);
         // setIsConversationSaved(true);
+        if (is_widget) {
+          const api_key = await getApiKey({
+            user_id: user_id || user?.id || "",
+          });
+          await logQuery({
+            subject_id: subject_id ?? "",
+            api_key_id: api_key ? api_key : "",
+            query_data: { message: chatInputText },
+            query_type: "chat",
+            source: "iframe",
+          });
+        }
         setChatLoading(false);
       }
     } catch (error) {
