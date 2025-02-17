@@ -143,7 +143,6 @@ export default function DocumentPage() {
       <h1 className="text-primary text-2xl font-bold mb-6">
         Document Management
       </h1>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-2 grid-rows-1 gap-20">
