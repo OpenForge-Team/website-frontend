@@ -10,6 +10,8 @@ import { getDocumentsChunks } from "../document_content_embeddings";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import { getDocumentBySubjectId, getDocuments } from "../documents";
+import { ScoreThresholdRetriever } from "langchain/retrievers/score_threshold";
+
 const embeddings = new OllamaEmbeddings({
   model: "nomic-embed-text:v1.5",
   baseUrl: process.env.OLLAMA_BASEURL,
@@ -29,21 +31,45 @@ export const retrieveDocumentContentChunks = async ({
 }: retrieveChunksProps) => {
   const supabase = await createClient();
 
+  const funcFilter: SupabaseFilterRPCCall = (rpc) =>
+    rpc.filter("metadata->>subject_id", "eq", subject_id);
+
   const vectorStore = new SupabaseVectorStore(embeddings, {
     client: supabase,
     tableName: "document_content_embeddings",
     queryName: "match_document_content_embeddings",
   });
-  const funcFilter: SupabaseFilterRPCCall = (rpc) =>
-    rpc.filter("metadata->>subject_id", "eq", subject_id);
 
-  const retriever = vectorStore.asRetriever({
-    filter: subject_id ? funcFilter : undefined,
-    k: 20,
-    verbose: true,
-    searchType: "mmr",
-  });
-  const results = await retriever.invoke(query);
+  // Perform similarity search (retrieving 20 results initially)
+  const resultsWithScore = await vectorStore.similaritySearchWithScore(
+    query, // Query string
+    30, // Retrieve top 20 for sorting
+    subject_id ? funcFilter : undefined // Optional filter
+  );
 
-  return results;
+  // Sort results by descending similarity score and take the top 5
+  const topResults = resultsWithScore
+    .filter(([_, score]) => score > 0.7) // Keep only results with score > 0.5
+    .sort((a, b) => b[1] - a[1]) // Sort by highest similarity score
+    .slice(0, 5) // Take the top 5 results
+    .map(([doc]) => doc); // Extract only Document instances
+
+  // Log top 5 results
+  for (const [doc, score] of resultsWithScore) {
+    console.log(
+      `* [SIM=${score.toFixed(6)}] [${JSON.stringify(doc.metadata, null, 2)}]`
+    );
+  }
+
+  // ⬇️ Previous method using a retriever (commented out, in case needed later) ⬇️
+
+  // const retriever = vectorStore.asRetriever({
+  //   filter: subject_id ? funcFilter : undefined,
+  //   k: 20,
+  //   verbose: false,
+  //   searchType: "mmr",
+  // });
+  // const results = await retriever.invoke(query);
+  // return results;
+  return topResults;
 };

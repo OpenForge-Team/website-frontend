@@ -169,7 +169,7 @@ export default function RagChat({
         user_id: user_id || user?.id || "",
         workspace_id: "",
         message: chatInputText,
-        is_from_widget: true,
+        is_from_widget: false,
         show_sources: true,
         subject_id: is_widget ? subject_id : selectedSubject || undefined,
         stream: false,
@@ -230,7 +230,10 @@ export default function RagChat({
   const addInitialMessageIfNeeded = () => {
     if (chatMessages.length === 0 && mode === "chat") {
       setChatMessages([
-        { role: "ai", messageContent: "Ask me to retrieve your knowledge" },
+        {
+          role: "ai",
+          messageContent: "Ask me anything about Marc Lou's ShipFast",
+        },
       ]);
     }
   };
