@@ -23,7 +23,7 @@ export default function IntegrationAnalyticsPage() {
         const user = await getUser(supabase);
         if (user) {
           setUser(user);
-          const results = await parseQueries(user.id);
+          const results: any = await parseQueries(user.id);
           setSubjectData(results);
         } else {
           console.log("User not authenticated");
@@ -42,10 +42,12 @@ export default function IntegrationAnalyticsPage() {
   }
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Integration Analytics</h1>
+    <div className="p-4 mx-auto">
+      <h1 className="text-primary text-2xl font-bold mb-6">
+        Integration Analytics
+      </h1>
       {subjectData.length === 0 ? (
-        <p className="text-gray-500">No data available</p>
+        <p className="text-secondary">No data available</p>
       ) : (
         <div className="space-y-6">
           {subjectData.map((subject) => (
@@ -53,12 +55,12 @@ export default function IntegrationAnalyticsPage() {
               key={subject.subject_id}
               className="border rounded-lg p-4 shadow-sm"
             >
-              <h2 className="text-xl font-semibold mb-3">
+              <h2 className="text-secondary text-xl font-semibold mb-3">
                 {subject.subject_name}
               </h2>
               <div className="space-y-2">
                 <p className="text-sm text-gray-500 mb-2">
-                  {subject.messages.length} messages
+                  {subject.messages.length} mentions
                 </p>
                 <ul className="list-disc pl-5 space-y-1">
                   {subject.messages.map((message, index) => (
