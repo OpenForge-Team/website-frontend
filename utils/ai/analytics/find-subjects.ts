@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 
 interface QueryData {
-  api_queries_message_subject_id: string;
+  api_queries_message_subject_id: number;
   api_queries: {
     message: string;
     api_key: {
@@ -13,6 +13,14 @@ interface QueryData {
   api_queries_message_subjects: {
     id: string;
     name: string;
+  };
+}
+
+interface GroupedMessages {
+  [key: number]: {
+    subject_id: number;
+    subject_name: string;
+    messages: string[];
   };
 }
 
@@ -57,7 +65,7 @@ export async function parseQueries(user_id: string) {
         if (!acc[x.api_queries_message_subject_id]) {
           // Create the subject object if it doesn't exist
           acc[x.api_queries_message_subject_id] = {
-            subject_id: x.api_queries_message_subject_id,
+            subject_id: x.api_queries_message_subject_id as number,
             subject_name: x.api_queries_message_subjects.name,
             messages: [],
           };
