@@ -2,6 +2,28 @@
 
 import { createClient } from "@/utils/supabase/server";
 
+interface QueryData {
+  api_queries_message_subject_id: string;
+  api_queries: {
+    message: string;
+    api_key: {
+      user_id: string;
+    };
+  };
+  api_queries_message_subjects: {
+    id: string;
+    name: string;
+  };
+}
+
+interface GroupedMessages {
+  [key: string]: {
+    subject_id: string;
+    subject_name: string;
+    messages: string[];
+  };
+}
+
 export async function parseQueries(user_id: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -30,23 +52,26 @@ export async function parseQueries(user_id: string) {
   }
   if (data) {
     // Process data to group messages by subject_id
-    const messageBySubject = data?.reduce((acc, x) => {
-      if (!acc[x.api_queries_message_subject_id]) {
-        // Create the subject object if it doesn't exist
-        acc[x.api_queries_message_subject_id] = {
-          subject_id: x.api_queries_message_subject_id,
-          subject_name: x.api_queries_message_subjects.name,
-          messages: [],
-        };
-      }
+    const messageBySubject = data.reduce(
+      (acc: GroupedMessages, x: QueryData) => {
+        if (!acc[x.api_queries_message_subject_id]) {
+          // Create the subject object if it doesn't exist
+          acc[x.api_queries_message_subject_id] = {
+            subject_id: x.api_queries_message_subject_id,
+            subject_name: x.api_queries_message_subjects.name,
+            messages: [],
+          };
+        }
 
-      // Add the message to the respective subject's messages array
-      acc[x.api_queries_message_subject_id].messages.push(
-        x.api_queries.message
-      );
+        // Add the message to the respective subject's messages array
+        acc[x.api_queries_message_subject_id].messages.push(
+          x.api_queries.data.message
+        );
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     // Convert the grouped data into an array
     const result = Object.values(messageBySubject);
