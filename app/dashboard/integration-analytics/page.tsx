@@ -132,11 +132,20 @@ export default function IntegrationAnalyticsPage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader className="inline-block">
+          <DialogHeader>
             <DialogTitle className="text-primary">
               Generated Blog Post - {currentSubject}
             </DialogTitle>
-            <div className="mt-4 flex justify-end">
+          </DialogHeader>
+          <div className="mt-4">
+            <div className="flex justify-end gap-2 mb-4">
+              <Button
+                className="text-secondary"
+                onClick={() => navigator.clipboard.writeText(generatedContent || '')}
+                variant="outline"
+              >
+                Copy Content
+              </Button>
               <Button
                 className="text-secondary"
                 onClick={handleDownload}
@@ -145,8 +154,6 @@ export default function IntegrationAnalyticsPage() {
                 Download as Markdown
               </Button>
             </div>
-          </DialogHeader>
-          <div className="mt-4">
             <pre className="text-secondary whitespace-pre-wrap text-sm p-4 rounded-lg">
               {generatedContent}
             </pre>
