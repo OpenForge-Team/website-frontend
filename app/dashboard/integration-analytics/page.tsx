@@ -24,7 +24,11 @@ export default function IntegrationAnalyticsPage() {
   const handleGeneratePost = async (subject: SubjectData) => {
     try {
       setGeneratingPost(subject.subject_id);
-      const content = await generateBlogPost(500, subject.subject_name, subject.messages);
+      const content = await generateBlogPost(
+        500,
+        subject.subject_name,
+        subject.messages
+      );
       setGeneratedContent(content);
     } catch (error) {
       console.error("Error generating blog post:", error);
@@ -54,7 +58,7 @@ export default function IntegrationAnalyticsPage() {
   }, [supabase]);
 
   if (loading) {
-    return <div className="p-4">Loading...</div>;
+    return <div className="text-secondary p-4">Loading...</div>;
   }
 
   return (
@@ -76,16 +80,15 @@ export default function IntegrationAnalyticsPage() {
                   {subject.subject_name}
                 </h2>
                 <Button
+                  className="text-secondary"
                   variant="outline"
                   size="sm"
                   onClick={() => handleGeneratePost(subject)}
                   disabled={generatingPost === subject.subject_id}
                 >
-                  {generatingPost === subject.subject_id ? (
-                    "Generating..."
-                  ) : (
-                    "Generate Blog Post"
-                  )}
+                  {generatingPost === subject.subject_id
+                    ? "Generating..."
+                    : "Generate Blog Post"}
                 </Button>
               </div>
               <div className="space-y-2">
@@ -101,7 +104,9 @@ export default function IntegrationAnalyticsPage() {
                 </ul>
                 {generatedContent && generatingPost === subject.subject_id && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <h3 className="text-lg font-semibold mb-2">Generated Blog Post</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Generated Blog Post
+                    </h3>
                     <pre className="whitespace-pre-wrap text-sm">
                       {generatedContent}
                     </pre>
