@@ -132,18 +132,24 @@ export default function IntegrationAnalyticsPage() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Generated Blog Post - {currentSubject}</DialogTitle>
+          <DialogHeader className="inline-block">
+            <DialogTitle className="text-primary">
+              Generated Blog Post - {currentSubject}
+            </DialogTitle>
+            <div className="mt-4 flex justify-end">
+              <Button
+                className="text-secondary"
+                onClick={handleDownload}
+                variant="outline"
+              >
+                Download as Markdown
+              </Button>
+            </div>
           </DialogHeader>
           <div className="mt-4">
-            <pre className="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded-lg">
+            <pre className="text-secondary whitespace-pre-wrap text-sm p-4 rounded-lg">
               {generatedContent}
             </pre>
-          </div>
-          <div className="mt-4 flex justify-end">
-            <Button onClick={handleDownload} variant="outline">
-              Download as Markdown
-            </Button>
           </div>
         </DialogContent>
       </Dialog>
