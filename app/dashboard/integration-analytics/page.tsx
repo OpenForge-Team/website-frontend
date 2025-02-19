@@ -138,10 +138,12 @@ export default function IntegrationAnalyticsPage() {
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4">
-            <div className="flex justify-end gap-2 mb-4">
+            <div className="flex justify-start gap-2 mb-4">
               <Button
                 className="text-secondary"
-                onClick={() => navigator.clipboard.writeText(generatedContent || '')}
+                onClick={() =>
+                  navigator.clipboard.writeText(generatedContent || "")
+                }
                 variant="outline"
               >
                 Copy Content
