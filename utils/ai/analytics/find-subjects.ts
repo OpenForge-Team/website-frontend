@@ -24,32 +24,35 @@ export async function parseQueries(user_id: string) {
     .eq("api_queries.api_key.user_id", user_id)
     .not("api_queries_message_subject_id", "is", null);
 
-  console.log(data);
   if (error) {
     console.error("Error fetching data:", error);
     return [];
   }
+  if (data) {
+    // Process data to group messages by subject_id
+    const messageBySubject = data?.reduce((acc, x) => {
+      if (!acc[x.api_queries_message_subject_id]) {
+        // Create the subject object if it doesn't exist
+        acc[x.api_queries_message_subject_id] = {
+          subject_id: x.api_queries_message_subject_id,
+          subject_name: x.api_queries_message_subjects.name,
+          messages: [],
+        };
+      }
 
-  // Process data to group messages by subject_id
-  const messageBySubject = data?.reduce((acc, x) => {
-    // Create the subject object if it doesn't exist
-    if (!acc[x.api_queries_message_subject_id]) {
-      acc[x.api_queries_message_subject_id] = {
-        subject_id: x.api_queries_message_subject_id,
-        subject_name: x.api_queries_message_subjects.name,
-        messages: [],
-      };
-    }
+      // Add the message to the respective subject's messages array
+      acc[x.api_queries_message_subject_id].messages.push(
+        x.api_queries.message
+      );
 
-    // Add the message to the respective subject's messages array
-    acc[x.api_queries_message_subject_id].messages.push(x.api_queries.message);
+      return acc;
+    }, {});
 
-    return acc;
-  }, {});
+    // Convert the grouped data into an array
+    const result = Object.values(messageBySubject);
 
-  // Convert the grouped data into an array
-  const result = Object.values(messageBySubject);
-
-  console.log(result);
-  return result;
+    return result;
+  } else {
+    return [];
+  }
 }
