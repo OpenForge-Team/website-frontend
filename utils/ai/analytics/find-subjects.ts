@@ -24,14 +24,6 @@ interface GroupedMessages {
   };
 }
 
-interface GroupedMessages {
-  [key: string]: {
-    subject_id: string;
-    subject_name: string;
-    messages: string[];
-  };
-}
-
 export async function parseQueries(user_id: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
