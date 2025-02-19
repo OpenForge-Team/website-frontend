@@ -131,7 +131,7 @@ export default function IntegrationAnalyticsPage() {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto [&>button]:text-secondary">
           <DialogHeader>
             <DialogTitle className="text-primary">
               Generated Blog Post - {currentSubject}
