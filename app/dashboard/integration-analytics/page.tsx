@@ -6,6 +6,12 @@ import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface SubjectData {
   subject_id: number;
@@ -20,16 +26,32 @@ export default function IntegrationAnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [generatingPost, setGeneratingPost] = useState<number | null>(null);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentSubject, setCurrentSubject] = useState<string>("");
+
+  const handleDownload = () => {
+    if (generatedContent && currentSubject) {
+      const element = document.createElement("a");
+      const file = new Blob([generatedContent], { type: "text/markdown" });
+      element.href = URL.createObjectURL(file);
+      element.download = `${currentSubject.toLowerCase().replace(/\s+/g, "-")}-blog-post.md`;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+  };
 
   const handleGeneratePost = async (subject: SubjectData) => {
     try {
       setGeneratingPost(subject.subject_id);
+      setCurrentSubject(subject.subject_name);
       const content = await generateBlogPost(
         500,
         subject.subject_name,
         subject.messages
       );
       setGeneratedContent(content);
+      setDialogOpen(true);
     } catch (error) {
       console.error("Error generating blog post:", error);
     } finally {
@@ -102,21 +124,29 @@ export default function IntegrationAnalyticsPage() {
                     </li>
                   ))}
                 </ul>
-                {generatedContent && generatingPost === subject.subject_id && (
-                  <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <h3 className="text-lg font-semibold mb-2">
-                      Generated Blog Post
-                    </h3>
-                    <pre className="whitespace-pre-wrap text-sm">
-                      {generatedContent}
-                    </pre>
-                  </div>
-                )}
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Generated Blog Post - {currentSubject}</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            <pre className="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded-lg">
+              {generatedContent}
+            </pre>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <Button onClick={handleDownload} variant="outline">
+              Download as Markdown
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
