@@ -1,9 +1,11 @@
 "use client";
 import { parseQueries } from "@/utils/ai/analytics/find-subjects";
+import { generateBlogPost } from "@/utils/ai/generation/blog-post";
 import { getUser } from "@/utils/queries";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface SubjectData {
   subject_id: number;
@@ -16,6 +18,20 @@ export default function IntegrationAnalyticsPage() {
   const [user, setUser] = useState<User | null>(null);
   const [subjectData, setSubjectData] = useState<SubjectData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [generatingPost, setGeneratingPost] = useState<number | null>(null);
+  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+
+  const handleGeneratePost = async (subject: SubjectData) => {
+    try {
+      setGeneratingPost(subject.subject_id);
+      const content = await generateBlogPost(500, subject.subject_name, subject.messages);
+      setGeneratedContent(content);
+    } catch (error) {
+      console.error("Error generating blog post:", error);
+    } finally {
+      setGeneratingPost(null);
+    }
+  };
 
   useEffect(() => {
     const getUserCall = async () => {
@@ -55,9 +71,23 @@ export default function IntegrationAnalyticsPage() {
               key={subject.subject_id}
               className="border rounded-lg p-4 shadow-sm"
             >
-              <h2 className="text-secondary text-xl font-semibold mb-3">
-                {subject.subject_name}
-              </h2>
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-secondary text-xl font-semibold">
+                  {subject.subject_name}
+                </h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleGeneratePost(subject)}
+                  disabled={generatingPost === subject.subject_id}
+                >
+                  {generatingPost === subject.subject_id ? (
+                    "Generating..."
+                  ) : (
+                    "Generate Blog Post"
+                  )}
+                </Button>
+              </div>
               <div className="space-y-2">
                 <p className="text-sm text-gray-500 mb-2">
                   {subject.messages.length} mentions
@@ -69,6 +99,14 @@ export default function IntegrationAnalyticsPage() {
                     </li>
                   ))}
                 </ul>
+                {generatedContent && generatingPost === subject.subject_id && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-2">Generated Blog Post</h3>
+                    <pre className="whitespace-pre-wrap text-sm">
+                      {generatedContent}
+                    </pre>
+                  </div>
+                )}
               </div>
             </div>
           ))}
