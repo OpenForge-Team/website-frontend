@@ -12,41 +12,19 @@ Welcome to **Open Forge**, the open-source AI-powered Business Operating System 
 
 - **Custom Business Blueprint**: A flexible system designed to adapt to your unique business structure, allowing you to model your entities and workflows in natural language without conforming to rigid systems.
 
-## Impact
+## Quick Start
 
-Implementing Open Forge can lead to:
+### 1. Clone and install
 
-- **Reduced Operational Overhead**: Streamline processes to minimize costs and resource expenditure.
+Clone the repo and use either `npm` or `bun` like: `[npm/bun] install`
 
-- **Freed-Up Valuable Time and Resources**: Automate routine tasks, allowing your team to focus on strategic initiatives.
+### 2. Start NextJS
 
-- **Consistent and Predictable Deliverables**: Enhance reliability and quality of outputs across all departments.
-
-- **Improved Margins**: Increase efficiency to boost profitability.
-
-- **Higher Throughput, Higher Profits**: Accelerate operations to handle more business without additional resources.
-
-## Use Cases
-
-Explore how Open Forge can transform various aspects of your business operations:
-
-- **AI Executive Assistant**: An executive secretary that never sleeps—helping you schedule, summarize, and streamline tasks.
-
-- **Automated Communications**: Keep your team aligned effortlessly, reducing the need for unnecessary meetings.
-
-- **Concierge & Customer Service**: Provide clients with an on-demand, personalized experience by granting access to knowledge and actions seamlessly.
-
-- **Accelerated Employee Onboarding**: Equip new hires with an expert at their fingertips, ensuring faster starts and smoother transitions.
-
-- **On-Demand Company Expert**: Empower your team with an always-on research assistant that instantly retrieves and organizes the knowledge they need.
-
-- **Client Pre-Onboarding**: Arrive prepared with a deep understanding of client needs, ensuring every engagement begins with confidence.
+Run `[npm/bun] run dev` and access the UI at `localhost:3000`
 
 ## Getting Started
 
-Open Forge is currently accepting applications for our limited beta program. To join the waitlist or learn more, visit our [official website](https://open-forge.com).
-
-For a hands-on experience, access our early version of the Knowledge Base [here](https://open-forge.com/sign-in).
+Open Forge Cloud version is currently accepting applications for our limited beta program. To join the waitlist or learn more, visit our [official website](https://open-forge.com).
 
 ## Contributing
 
