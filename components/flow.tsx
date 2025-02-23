@@ -27,11 +27,14 @@ import { User } from "@supabase/supabase-js";
 import { getUser } from "@/utils/queries";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-
+import processStartNode from "./processes-mappings/nodes/processStartNode";
+const nodeTypes = {
+  processStartNode: processStartNode,
+};
 const initialNodes = [
   {
     id: "1",
-    type: "input",
+    type: "processStartNode",
     data: { label: "input node" },
     position: { x: 250, y: 5 },
   },
@@ -171,6 +174,7 @@ const DnDFlow = () => {
           onConnectEnd={onConnectEnd}
           onNodesDelete={onNodesDelete}
           nodeOrigin={nodeOrigin}
+          nodeTypes={nodeTypes}
           fitView
         >
           <Controls />

@@ -15,9 +15,12 @@ interface ProcessEditDialogProps {
   onLabelChange: (newLabel: string) => void;
 }
 
-export function ProcessEditDialog({ label, onLabelChange }: ProcessEditDialogProps) {
+export function ProcessEditDialog({
+  label,
+  onLabelChange,
+}: ProcessEditDialogProps) {
   const [value, setValue] = React.useState(label);
-  
+
   const handleSave = () => {
     if (value.trim()) {
       onLabelChange(value);
@@ -33,13 +36,13 @@ export function ProcessEditDialog({ label, onLabelChange }: ProcessEditDialogPro
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Process Name</DialogTitle>
+          <DialogTitle className="text-primary">Edit Process Name</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Input
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+            onKeyDown={(e) => e.key === "Enter" && handleSave()}
             placeholder="Process name"
             autoFocus
           />
