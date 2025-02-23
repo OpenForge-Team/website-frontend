@@ -2,6 +2,8 @@
 
 Welcome to **Open Forge**, the open-source AI-powered Business Operating System designed to revolutionize the way organizations manage their operations. By seamlessly integrating automation, connectivity, and dynamic knowledge management, Open Forge empowers businesses to scale efficiently without the typical growing pains.
 
+## Looking for contributors: [Apply Here](https://forms.gle/ZLjswoaSdnLd1mYF9)
+
 ## Key Features
 
 - **Seamless Information Movement**: Automated workflows ensure every process flows effortlessly within your business, eliminating bottlenecks and inefficiencies.
@@ -12,7 +14,7 @@ Welcome to **Open Forge**, the open-source AI-powered Business Operating System 
 
 - **Custom Business Blueprint**: A flexible system designed to adapt to your unique business structure, allowing you to model your entities and workflows in natural language without conforming to rigid systems.
 
-## Quick Start
+## Local Development
 
 ### Prerequesites
 
@@ -36,6 +38,12 @@ Acces the Supabase Dashboard at `localhost:54323`
 ### 4. Start NextJS
 
 Run `[npm/bun] run dev` and access the UI at `localhost:3000`
+
+## Deployment
+
+### Docker (Using Coolify)
+
+Refer to this tutorial to self-host Open Forge on Coolify on any VPS.
 
 ## Getting Started
 
