@@ -3,7 +3,13 @@ import { Handle, Position } from "@xyflow/react";
 import { ProcessEditDialog } from "../process-edit-dialog";
 
 export default memo(({ data, isConnectable }: any) => {
-  const handleSave = ({ label, description }: { label: string; description: string }) => {
+  const handleSave = ({
+    label,
+    description,
+  }: {
+    label: string;
+    description: string;
+  }) => {
     data.label = label;
     data.description = description;
   };
@@ -19,9 +25,6 @@ export default memo(({ data, isConnectable }: any) => {
             onSave={handleSave}
           />
         </div>
-        {data.description && (
-          <p className="text-sm text-muted-foreground">{data.description}</p>
-        )}
       </div>
       <Handle
         type="target"
