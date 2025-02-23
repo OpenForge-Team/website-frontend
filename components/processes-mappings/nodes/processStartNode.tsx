@@ -27,9 +27,9 @@ export default memo(({ data, isConnectable }: any) => {
         </div>
       </div>
       <Handle
-        type="target"
+        type="source"
         position={Position.Right}
-        onConnect={(params) => console.log("handle onConnect", params)}
+        style={{ background: '#555' }}
         isConnectable={isConnectable}
       />
     </>
