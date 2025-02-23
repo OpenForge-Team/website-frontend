@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
+import { Label } from "../ui/label";
 
 interface ProcessEditDialogProps {
   label: string;
@@ -18,7 +19,7 @@ interface ProcessEditDialogProps {
 
 export function ProcessEditDialog({
   label,
-  description = '',
+  description = "",
   onSave,
 }: ProcessEditDialogProps) {
   const [value, setValue] = React.useState(label);
@@ -61,7 +62,9 @@ export function ProcessEditDialog({
               placeholder="Process description"
             />
           </div>
-          <Button onClick={handleSave} className="mt-2">Save Changes</Button>
+          <Button onClick={handleSave} className="mt-2">
+            Save Changes
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
