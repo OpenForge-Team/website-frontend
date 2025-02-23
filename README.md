@@ -14,11 +14,26 @@ Welcome to **Open Forge**, the open-source AI-powered Business Operating System 
 
 ## Quick Start
 
-### 1. Clone and install
+### Prerequesites
+
+- Docker Engine
+- NodeJS v20
+- NPM
+
+### 1. Install Supabase CLI
+
+Use `npm install supabase --save-dev` to install the Supabase CLI.
+
+### 2. Clone and install
 
 Clone the repo and use either `npm` or `bun` like: `[npm/bun] install`
 
-### 2. Start NextJS
+### 3. Start the Local Dev Environment
+
+Use `npx supabase start` to create the Docker containers.
+Acces the Supabase Dashboard at `localhost:54323`
+
+### 4. Start NextJS
 
 Run `[npm/bun] run dev` and access the UI at `localhost:3000`
 
