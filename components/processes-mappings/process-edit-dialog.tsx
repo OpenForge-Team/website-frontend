@@ -24,15 +24,17 @@ export function ProcessEditDialog({
 }: ProcessEditDialogProps) {
   const [value, setValue] = React.useState(label);
   const [desc, setDesc] = React.useState(description);
+  const [open, setOpen] = React.useState(false);
 
   const handleSave = () => {
     if (value.trim()) {
       onSave({ label: value, description: desc });
+      setOpen(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm">
           <Pencil className="h-4 w-4" />
