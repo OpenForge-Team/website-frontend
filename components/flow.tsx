@@ -35,7 +35,7 @@ const initialNodes = [
   {
     id: "1",
     type: "processStartNode",
-    data: { label: "input node" },
+    data: { label: "input node", description: '' },
     position: { x: 250, y: 5 },
   },
 ];
@@ -127,7 +127,7 @@ const DnDFlow = () => {
         id: getId(),
         type,
         position,
-        data: { label: `${type} node` },
+        data: { label: `${type} node`, description: '' },
       };
 
       setNodes((nds: any) => nds.concat(newNode));

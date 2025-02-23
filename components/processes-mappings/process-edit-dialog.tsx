@@ -12,18 +12,21 @@ import { Pencil } from "lucide-react";
 
 interface ProcessEditDialogProps {
   label: string;
-  onLabelChange: (newLabel: string) => void;
+  description?: string;
+  onSave: (data: { label: string; description: string }) => void;
 }
 
 export function ProcessEditDialog({
   label,
-  onLabelChange,
+  description = '',
+  onSave,
 }: ProcessEditDialogProps) {
   const [value, setValue] = React.useState(label);
+  const [desc, setDesc] = React.useState(description);
 
   const handleSave = () => {
     if (value.trim()) {
-      onLabelChange(value);
+      onSave({ label: value, description: desc });
     }
   };
 
@@ -39,14 +42,26 @@ export function ProcessEditDialog({
           <DialogTitle className="text-primary">Edit Process Name</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <Input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSave()}
-            placeholder="Process name"
-            autoFocus
-          />
-          <Button onClick={handleSave}>Save Changes</Button>
+          <div className="grid gap-2">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Process name"
+              autoFocus
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
+            <Input
+              id="description"
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              placeholder="Process description"
+            />
+          </div>
+          <Button onClick={handleSave} className="mt-2">Save Changes</Button>
         </div>
       </DialogContent>
     </Dialog>
