@@ -5,23 +5,35 @@ import { Button } from "../ui/button";
 import { Check, Pencil } from "lucide-react";
 
 export default memo(({ data, isConnectable }: any) => {
-  const [labelEditMode, setLabelEditMode] = useState(false);
+  const [labelEditMode, setLabelEditMode] = useState(!data.label);
+  const [label, setLabel] = useState(data.label || '');
+
+  const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLabel(e.target.value);
+  };
+
+  const handleLabelConfirm = () => {
+    data.label = label;
+    setLabelEditMode(false);
+  };
+
   return (
     <>
-      {(!data.label || labelEditMode) && (
+      {labelEditMode ? (
         <div className="flex w-full max-w-sm items-center space-x-2">
           <Input
             type="text"
             placeholder="Process name"
-            value={data.label}
-            onChange={(e) => (data.label = e.target.value)}
+            value={label}
+            onChange={handleLabelChange}
+            onKeyDown={(e) => e.key === 'Enter' && handleLabelConfirm()}
+            autoFocus
           />
-          <Button size={"sm"} onClick={() => setLabelEditMode(false)}>
+          <Button size={"sm"} onClick={handleLabelConfirm}>
             <Check />
           </Button>
         </div>
-      )}
-      {data.label && !labelEditMode && (
+      ) : (
         <div className="flex w-full max-w-sm items-center space-x-2">
           <p className="text-lg">{data.label}</p>
           <Button size={"sm"} onClick={() => setLabelEditMode(true)}>
