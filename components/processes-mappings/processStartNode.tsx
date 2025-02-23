@@ -28,7 +28,7 @@ export default memo(({ data, isConnectable }: any) => {
   return (
     <>
       {labelEditMode ? (
-        <div className="flex w-full max-w-sm items-center space-x-2">
+        <div className="flex w-full max-w-[200px] items-center space-x-2">
           <Input
             type="text"
             placeholder="Process name"
@@ -42,7 +42,7 @@ export default memo(({ data, isConnectable }: any) => {
           </Button>
         </div>
       ) : (
-        <div className="flex w-full max-w-sm items-center space-x-2">
+        <div className="flex w-full max-w-[200px] items-center space-x-2">
           <p className="text-lg">{data.label}</p>
           <Button size={"sm"} onClick={() => setLabelEditMode(true)}>
             <Pencil />
