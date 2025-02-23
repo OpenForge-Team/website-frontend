@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { Handle, Position } from "@xyflow/react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -13,9 +13,17 @@ export default memo(({ data, isConnectable }: any) => {
   };
 
   const handleLabelConfirm = () => {
-    data.label = label;
-    setLabelEditMode(false);
+    if (label.trim()) {
+      data.label = label;
+      setLabelEditMode(false);
+    }
   };
+
+  useEffect(() => {
+    if (data.label && labelEditMode) {
+      setLabelEditMode(false);
+    }
+  }, [data.label]);
 
   return (
     <>
