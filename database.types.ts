@@ -398,6 +398,51 @@ export type Database = {
           },
         ];
       };
+      processes_mappings: {
+        Row: {
+          created_at: string;
+          edges: Json;
+          id: string;
+          name: string;
+          nodes: Json;
+          user_id: string;
+          workspace_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          edges?: Json;
+          id?: string;
+          name: string;
+          nodes?: Json;
+          user_id: string;
+          workspace_id: string;
+        };
+        Update: {
+          created_at?: string;
+          edges?: Json;
+          id?: string;
+          name?: string;
+          nodes?: Json;
+          user_id?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workflow_diagrams_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflow_diagrams_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           customer_id: string | null;
@@ -554,135 +599,6 @@ export type Database = {
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      workflow_diagrams: {
-        Row: {
-          created_at: string;
-          edges: Json;
-          id: string;
-          name: string;
-          nodes: Json;
-          user_id: string;
-          workspace_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          edges?: Json;
-          id?: string;
-          name: string;
-          nodes?: Json;
-          user_id: string;
-          workspace_id: string;
-        };
-        Update: {
-          created_at?: string;
-          edges?: Json;
-          id?: string;
-          name?: string;
-          nodes?: Json;
-          user_id?: string;
-          workspace_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "workflow_diagrams_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "workflow_diagrams_workspace_id_fkey";
-            columns: ["workspace_id"];
-            isOneToOne: false;
-            referencedRelation: "workspaces";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      workflow_favorites: {
-        Row: {
-          added_at: string;
-          id: number;
-          user_id: string;
-          workflow_id: number | null;
-        };
-        Insert: {
-          added_at?: string;
-          id?: number;
-          user_id: string;
-          workflow_id?: number | null;
-        };
-        Update: {
-          added_at?: string;
-          id?: number;
-          user_id?: string;
-          workflow_id?: number | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "workflow_favorites_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "workflow_favorites_workflow_id_fkey";
-            columns: ["workflow_id"];
-            isOneToOne: false;
-            referencedRelation: "workflows";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      workflow_tasks: {
-        Row: {
-          ended_at: string | null;
-          id: number;
-          input_data: Json;
-          note: string | null;
-          started_at: string;
-          status: string;
-          user_id: string;
-          workflow_id: number;
-        };
-        Insert: {
-          ended_at?: string | null;
-          id?: number;
-          input_data: Json;
-          note?: string | null;
-          started_at?: string;
-          status?: string;
-          user_id: string;
-          workflow_id: number;
-        };
-        Update: {
-          ended_at?: string | null;
-          id?: number;
-          input_data?: Json;
-          note?: string | null;
-          started_at?: string;
-          status?: string;
-          user_id?: string;
-          workflow_id?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "workflow_tasks_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "workflow_tasks_workflow_id_fkey";
-            columns: ["workflow_id"];
-            isOneToOne: false;
-            referencedRelation: "workflows";
             referencedColumns: ["id"];
           },
         ];

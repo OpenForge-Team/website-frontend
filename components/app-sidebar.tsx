@@ -14,6 +14,7 @@ import {
   Settings2,
   SquareTerminal,
   Workflow,
+  Zap,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -85,6 +86,14 @@ const data = {
       items: [],
     },
   ],
+  navSystems: [
+    {
+      title: "Processes Mappings",
+      url: "/dashboard/processes-mappings",
+      icon: Zap,
+      items: [],
+    },
+  ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -142,10 +151,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain title={"Knowledge Base"} items={data.navKnowledgeBase} />
-        <NavMain
+        <NavMain title={"Systems"} items={data.navSystems} />
+        {/* <NavMain
           title={"Knowledge Base Integrations"}
           items={data.navIntegrations}
-        />
+        /> */}
       </SidebarContent>
       <SidebarFooter>
         {user && profile && <NavUser profile={profile} />}

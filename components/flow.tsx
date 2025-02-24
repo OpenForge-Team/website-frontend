@@ -28,14 +28,16 @@ import { getUser } from "@/utils/queries";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import processStartNode from "./processes-mappings/nodes/processStartNode";
+import processBetweenNode from "./processes-mappings/nodes/processBetweenNode";
 const nodeTypes = {
   processStartNode: processStartNode,
+  processBetweenNode: processBetweenNode,
 };
 const initialNodes = [
   {
     id: "1",
     type: "processStartNode",
-    data: { label: "input node", description: '' },
+    data: { label: "input node", description: "" },
     position: { x: 250, y: 5 },
   },
 ];
@@ -127,7 +129,7 @@ const DnDFlow = () => {
         id: getId(),
         type,
         position,
-        data: { label: `${type} node`, description: '' },
+        data: { label: `${type} node`, description: "" },
       };
 
       setNodes((nds: any) => nds.concat(newNode));
@@ -144,17 +146,23 @@ const DnDFlow = () => {
           "changedTouches" in event ? event.changedTouches[0] : event;
         const newNode: any = {
           id,
+          type: "processBetweenNode",
           position: screenToFlowPosition({
             x: clientX,
             y: clientY,
           }),
-          data: { label: `Node ${id}` },
+          data: { label: `New node ${id.split("_")[1]}` },
           origin: [0.5, 0.0],
         };
 
         setNodes((nds) => nds.concat(newNode));
         setEdges((eds: any) =>
-          eds.concat({ id, source: connectionState.fromNode.id, target: id })
+          eds.concat({
+            id,
+            type: "step",
+            source: connectionState.fromNode.id,
+            target: id,
+          })
         );
       }
     },
@@ -181,7 +189,7 @@ const DnDFlow = () => {
           <Background />
         </ReactFlow>
       </div>
-      <Sidebar />
+      {/* <Sidebar /> */}
     </div>
   );
 };

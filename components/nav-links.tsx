@@ -3,6 +3,7 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import GithubPill from "./github-pill";
 
 export function NavLinks({ mobile = false }: { mobile?: boolean }) {
   const [isUseCasesOpen, setIsUseCasesOpen] = useState(false);
@@ -103,6 +104,7 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
             ))}
           </div>
         )}
+        <GithubPill />
       </div>
     );
   }
@@ -156,6 +158,7 @@ export function NavLinks({ mobile = false }: { mobile?: boolean }) {
           </div>
         </div>
       </div>
+      <GithubPill />
     </div>
   );
 }

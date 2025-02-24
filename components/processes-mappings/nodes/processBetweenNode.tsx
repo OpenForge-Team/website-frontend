@@ -16,6 +16,12 @@ export default memo(({ data, isConnectable }: any) => {
 
   return (
     <>
+      <Handle
+        type="target"
+        position={Position.Left}
+        onConnect={(params) => console.log("handle onConnect", params)}
+        isConnectable={isConnectable}
+      />
       <div className="flex w-full max-w-[200px] flex-col">
         <div className="flex items-center space-x-2">
           <p className="text-lg">{data.label || "New Process"}</p>
@@ -29,7 +35,7 @@ export default memo(({ data, isConnectable }: any) => {
       <Handle
         type="source"
         position={Position.Right}
-        style={{ background: "#555" }}
+        onConnect={(params) => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       />
     </>
